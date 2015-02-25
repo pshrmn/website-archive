@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add a new recipe | MyMenu
+{% endblock title %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css"
+    href="{{ STATIC_URL }}css/typeahead.min.css">
+
+{{ block.super }}
+
+<link rel="stylesheet" type="text/css"
+    href="{{ STATIC_URL }}css/recipe_form.css">
+{% endblock stylesheets %}
+
+{% block content %}
+	<form action="{% url 'recipe_api_search' %}" method="post" id="search_form">{% csrf_token %}
+		<p>
+			<label for="q">Name:</label>
+			<input type="text" name="q" id="q"></input>
+		</p>
+		<p>
+			<label for="i">Ingredients:</label>
+			<input type="text" name="i" id="i"></input>
+		</p>
+		<input type="hidden" name="p" id="p" value="1"></input>
+		<p class="submit">
+			<button type="submit" name="submit">Find Recipes</button>
+			<span class="note">Recipes from <a href="http://www.recipepuppy.com">Recipe Puppy</a></span>
+		</p>
+
+	</form>
+	<div id="recipe_selector" class="clearfix"></div>
+	{% block submit_form %}
+	<form action="{% url 'create_recipe' %}" method="post" id="recipe_form">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<p class="submit"><button type="submit" name="submit">Add Recipe</button></p>
+	</form>
+	{% endblock submit_form %}
+{% endblock content %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}js/handlebars.runtime.js"></script>
+<script src="{{ STATIC_URL }}js/options.tmpl"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/typeahead.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/recipe_form.js"></script>
+{% endblock javascript%}

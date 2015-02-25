@@ -1,0 +1,31 @@
+#user_recipes{
+	margin: 15px 0;
+	line-height: 1.5;
+	background: #efefef;
+	padding: 10px 25px;
+	min-height: 250px;
+	border-top: 3px solid #ccc;
+}
+
+#user_recipes li{
+	list-style: none;
+}
+
+#content .button{
+	padding: 2px 5px;
+	margin: 15px 0 0;
+	display: inline-block;
+	border: 2px outset;
+}
+
+#content .blue{
+	color: #fff;
+	background: #64A2B4;
+	border-color: #64A2B4;
+}
+
+#content .pink{
+	color: #fff;
+	background: #E55B90;
+	border-color: #E55B90;
+}

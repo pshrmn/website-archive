@@ -1,0 +1,5 @@
+venv
+*.pyc
+.env
+menu/settings/local.py
+

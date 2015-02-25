@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ object.name }} Recipes | {{ block.super }}
+{% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css"
+    href="{{ STATIC_URL }}css/recipe_list.css">
+{% endblock stylesheets %}
+
+{% block content %}
+<ul id="recipes">
+    {% if object_list %}
+        {% for recipe in object_list %}
+            <li class="choice">
+            <p class="title"><a href="{% url 'view_recipe' recipe.id %}">
+            {{ recipe.name }}
+            </a></p>
+            <p class="inspired_info">
+            à la {{ recipe.dish_name }} at {{ recipe.restaurant }}
+            </p>
+            {% if user == recipe.owner %}
+                <p class="edit">
+                <a href="{% url 'update_recipe' recipe.id %}">Update</a>
+                |
+                <a href="{% url 'delete_recipe' recipe.id %}">Remove</a>
+                </p>
+            {% endif %}
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>No results returned</li>
+    {% endif %}
+</ul>
+{% endblock %}

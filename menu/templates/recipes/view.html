@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ recipe.name }}
+{% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css"
+    href="{{ STATIC_URL }}css/recipe_view.css">
+{% endblock stylesheets %}
+
+{% block content %}
+{{ context }}
+<h1>{{ recipe.name }}</h1>
+<h2>Inspired by {{ recipe.dish_name }} at {{ recipe.restaurant }}</h2>
+{% if user == recipe.owner %}
+<div id="user_controls">
+    <p>
+		<a href="{% url 'update_recipe' recipe.id %}">Update</a>
+    	|
+    	<a href="{% url 'delete_recipe' recipe.id %}">Remove</a>
+	</p>
+</div>
+{% endif %}
+<div id="view_options">
+	<p><a href="{{ recipe.url }}">Visit Site</a><p>
+	<iframe src="{{ recipe.url }}">Browser does not support iframes</iframe>
+</div>
+
+{% endblock content%}
+
+{% block javascript %}
+{{ block.super }}
+
+{% endblock javascript %}

@@ -1,0 +1,17 @@
+{{#if results}}
+	{{#results}}
+	<div class="recipe_choice">
+		<p class="name"><a href="{{ href }}" target="_blank" title="{{ href }}">{{ title }}</a></p>
+		<p class="link">from <a href="{{ href }}" target="_blank" title="{{ href }}">{{ name }}</a></p>
+		<p>Ingredients</p>
+		<ul>
+		{{#each ingredients}}
+			<li>{{this}}</li>
+		{{/each}}
+		</ul>
+		<p class="selector" data-href="{{ href }}" data-title="{{ title }}">Select</p>
+	</div>
+	{{/results}}
+{{else}}
+	<p>No results returned, try refining your search</p>
+{{/if}}

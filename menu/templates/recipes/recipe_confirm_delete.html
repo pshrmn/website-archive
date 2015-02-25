@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{% load url from future %}
+Add a new recipe
+{% endblock title %}
+
+{% block content %}
+	<h2>Name: {{ recipe.name }}</h2>
+	<form action="{% url 'delete_recipe' object.id %}" method="post" class="recipe_form">{% csrf_token %}
+	<p class="submit"><button type="submit" name="submit" value="create_recipe">Confirm Delete</button></p>
+	</form>
+{% endblock content %}
