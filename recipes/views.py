@@ -3,12 +3,19 @@ from django.http import Http404
 from django.core.urlresolvers import reverse
 from django.views.generic import (DetailView, ListView, CreateView, DeleteView,
                                   UpdateView)
+from django.contrib.auth.decorators import login_required
 
-from braces.views import LoginRequiredMixin
 from itertools import chain
 
 from .models import Recipe
 from .forms import RecipeForm
+
+
+class LoginRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
+        return login_required(view)
 
 
 class RecipeCreateView(LoginRequiredMixin, CreateView):

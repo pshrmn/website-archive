@@ -30,6 +30,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'recipes',
+    'registration',
+    'api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -45,6 +47,10 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'menu.urls'
 
 WSGI_APPLICATION = 'menu.wsgi.application'
+
+# registration settings
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -64,3 +70,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_URL = "/accounts/login"
+LOGIN_REDIRECT_URL = "/"
