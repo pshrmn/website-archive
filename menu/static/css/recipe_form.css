@@ -16,6 +16,10 @@ label{
 	border: 1px solid #ccc;
 }
 
+.recipe_choice.hidden{
+	display: none;
+}
+
 .recipe_choice:hover {
 	border-color: #444;
 }

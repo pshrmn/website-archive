@@ -25,7 +25,6 @@ Add a new recipe | MyMenu
 			<label for="i">Ingredients:</label>
 			<input type="text" name="i" id="i"></input>
 		</p>
-		<input type="hidden" name="p" id="p" value="1"></input>
 		<p class="submit">
 			<button type="submit" name="submit">Find Recipes</button>
 			<span class="note">Recipes from <a href="http://www.recipepuppy.com">Recipe Puppy</a></span>
@@ -44,8 +43,5 @@ Add a new recipe | MyMenu
 
 {% block javascript %}
 {{ block.super }}
-<script type="text/javascript" src="{% static 'js/handlebars.runtime.js' %}"></script>
-<script src="{% static 'js/options.tmpl' %}"></script>
-<script type="text/javascript" src="{% static 'js/typeahead.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/recipe_form.js' %}"></script>
 {% endblock javascript%}

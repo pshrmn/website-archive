@@ -1,4 +1,5 @@
 venv
-*.pyc
 .env
 menu/settings/local.py
+__pycache__
+*.py[co]

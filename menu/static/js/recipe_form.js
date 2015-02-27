@@ -1,113 +1,134 @@
-// override search with ajax call
-(function(){
+document.getElementById("search_form").addEventListener("submit", searchSubmit, false);
 
-    var selected = false,
-        page = 1;
+/**************
+Ingredient lookup
+**************/
+function searchSubmit(event){
+    event.preventDefault();
+    var form = document.getElementById("search_form");
+    var url = form.action;
+    var data = {
+        "q": document.getElementById("q").value,
+        "i": document.getElementById("i").value
+    };
+    var csrf = form.querySelector("input[name=csrfmiddlewaretoken]").value;
+    post(url, JSON.stringify(data), csrf, showRecipeOptions);
+}
 
-    jQuery(function($) {
-        fadeIfEmpty();
-        
-        if ( window.localStorage ) {
-            var now = (new Date()).valueOf();
-            if ( localStorage['cache_expires'] && 
-                    parseInt(localStorage['cache_expires'], 10) < now) {
-                localStorage.clear();
-                localStorage['cache_expires'] = now + 7200000;
-            } else {
-                localStorage['cache_expires'] = now + 7200000;
-            }
-            
-            $("#id_restaurant").typeahead({
-                name: "restaurants",
-                prefetch: "/api/restaurants"
-            });
+function post(url, data, csrf, callback){
+    var req = new XMLHttpRequest();
+    req.onload = callback;
+    req.open("POST", url, true);
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.setRequestHeader("X-CSRFToken", csrf);
+    req.send(data);
+}
+
+function showRecipeOptions(){
+    var data = JSON.parse(this.responseText);
+
+    var result_len = data.results.length;
+    var hostname_link = document.createElement("a");
+    var name;
+    var html;
+    if ( result_len > 0 ) {
+        var rs = document.getElementById("recipe_selector");
+        rs.innerHTML = "";
+        for( var r = 0; r < result_len; r++ ) {
+            // extend the results object
+            var href = data.results[r].href;
+            hostname_link.href = data.results[r].href;
+            var name = hostname_link.hostname;
+            var ingredients = data.results[r].ingredients.split(", ").map(function(ingredient){
+                return "<li>" + ingredient + "</li>";
+            }).join("");
+            var title = data.results[r].title.replace(/\&amp;/g, "&");
+
+            var div = document.createElement("div");
+            div.classList.add("recipe_choice");
+            div.innerHTML = '<p class="name"><a href="' + href + '" target="_blank" title="' + href + '">' + title + '</a></p>' +
+            '<p class="link">from <a href="' + href +'}" target="_blank" title="' + href + '">' + name + '</a></p>' +
+            '<p>Ingredients</p>' +
+                '<ul>' + ingredients + '</ul>'
+            var selector = document.createElement("p")
+            selector.classList.add("selector");
+            selector.dataset["href"] = href;
+            selector.dataset["title"] = title;
+            selector.textContent = "Select";
+            selector.addEventListener("click", selectRecipe, false);
+            div.appendChild(selector);
+            rs.appendChild(div);
         }
+    } else {
+        document.getElementById("recipe_selector").innerHTML = "<p>No results returned, try refining your search</p>";
+    }
+}
 
-        $('#recipe_form input').focus(function(){
-            $('#recipe_form').css('opacity', '1');
+/**************
+Select recipe
+**************/
+var selected = false;
+function selectRecipe(event){
+    parent = getParent(this, "recipe_choice");
+    if ( !parent ) {
+        return;
+    }
+    var choices = [].slice.call(document.querySelectorAll(".recipe_choice"));
+    var name = document.getElementById("id_name");
+    var url = document.getElementById("id_url");
+    var button = document.querySelector("#recipe_form button");
+    var form = document.getElementById("recipe_form");
+    if ( !selected ){
+        // hide the others
+        choices.forEach(function(choice){
+            if ( choice !== parent ) {
+                choice.classList.add("hidden");
+            }
         });
-        
-        $("#search_form").submit(ajaxSubmit);
+        name.value = this.dataset["title"];
+        url.value = this.dataset["href"];
+        button.removeAttribute("disabled");
+        this.textContent = "Deselect";
+    } else {
+        choices.forEach(function(choice){
+            choice.classList.remove("hidden");
+        });
+        name.value = "";
+        url.value = "";
+        button.setAttribute("disabled", "disabled");
+        this.textContent = "Select";
+    }
+    fadeIfEmpty();
+    selected = !selected;
+}
 
-        $("#content")
-            .on("click", ".selector", selectRecipe);
+function getParent(ele, className){
+    while ( ele != null ){
+        ele = ele.parentElement;
+        if ( ele.classList.contains(className) ) {
+            return ele;
+        }
+    }
+    return undefined;
+}
 
-        
+function fadeIfEmpty(){
+    var rf = document.getElementById("recipe_form");
+    var empty = [].slice.call(rf.querySelectorAll("input[type='text']")).every(function(input){
+        return input.value == "";
     });
+    rf.style.opacity = empty ? 0.5 : 1;
+}
+fadeIfEmpty();
 
-    function ajaxSubmit(event){
-        event.preventDefault();
-        var form = $(this),
-            action = form.prop("action"),
-            info = form.serialize();
-        
-        $.ajax({
-            type: "POST",
-            url: action,
-            data: info,
-            success: function(data){
-                recipe_global = data.results;
-                selected = false;
-                showRecipeOptions(data);
-            },
-            dataType: "json"
-        });
-    }
-
-    function selectRecipe(){
-        var _this = $(this),
-        parent = _this.parents(".recipe_choice");
-        if ( !selected ){
-            // hide the others
-            parent.siblings().hide();
-            $("#id_name").val(_this.data("title"));
-            $("#id_url").val(_this.data("href"));
-            $("#recipe_form button").removeProp("disabled");
-            _this.text("Deselect");
-            $("#recipe_form").css("opacity", "1");
-        } else {
-            parent.siblings().show();
-            $("#id_name").val("");
-            $("#id_url").val("");
-            $("#recipe_form button").prop("disabled","disabled");
-            _this.text("Select");
+(function fadeOnFocus(){
+    var rf = document.getElementById("recipe_form");
+    [].slice.call(rf.querySelectorAll("input")).forEach(function(input){
+        input.addEventListener("focus", function(){
+            rf.style.opacity = 1;
+        }, false);
+        input.addEventListener("blur", function(){
             fadeIfEmpty();
-        }
-        selected = !selected;
-    }
-
-    function fadeIfEmpty(){
-        var rf = $("#recipe_form"),
-            inputs = $("input[type='text']", rf),
-            empty = true;
-        inputs.each(function(){
-            if( $(this).val() !== "" ) {
-                empty = false
-            }
-        })
-        if ( empty ) {
-            rf.css("opacity", "0.5");
-        }
-    }
-
-    function showRecipeOptions(opts){
-        var result_len = opts.results.length,
-            hostname_link = document.createElement("a"),
-            name,
-            html;
-        if ( result_len > 0 ) {
-            for( var r = 0; r < result_len; r++ ) {
-                // extend the results object
-                hostname_link.href = opts.results[r].href;
-                opts.results[r].name = hostname_link.hostname;
-                opts.results[r].ingredients = opts.results[r].ingredients.split(", ");
-                opts.results[r].title = opts.results[r].title.replace(/\&amp;/g, "&");
-            }
-        }
-        template = Handlebars.templates.options;
-        html = template(opts);
-        $("#recipe_selector").html(html);
-    }
-
-
+        }, false);
+    });
 })();
