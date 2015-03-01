@@ -113,121 +113,128 @@ CLEARFIX FOR FLOATED ELEMENTS
 /*
 GENERAL UI
 */
-a, a:visited{
-    color: #444;
-    text-decoration: none;
+
+body{
+    background: #F5F4F0;
+    min-width: 300px;
+    box-sizing: border-box;
 }
-a:hover{
-    text-decoration: underline;
+
+iframe{
+    background: #fff;
 }
+
 
 /*
 HEADER MENU CSS
 */
-#header_holder{
-    width: 100%;
-    padding: 2px 0;
-    background: #6A983B;
-}
 header{
+    background: #E0DED1;
+    padding: 2px 0;
+    width: 100%;
     margin: 0 auto;
-    height: 30px;
-    width: 960px;
-}
-
-header menu{
-    float: left;
-}
-
-#header_holder a{
-    color: #fff;
-}
-
-#header_holder li ul a{
-    color: #444;
-}
-
-#main_menu li a{
-    display: block;
-    height: 32px;
-}
-
-#main_menu li ul{
-    display: none;
-    z-index: 2;
-    position: absolute;
-    background: #fff;
-    padding: 0;
-    margin: 0;
-    border-width: 0 1px 1px;
-    border-style: solid;
-    border-color: #888;
-}
-
-#main_menu li:hover ul{
-    display: block;
-}
-
-#main_menu li li{
+    color: #153363;
+    padding: 25px 0;
     position: relative;
-    float: none;
 }
 
-#main_menu li li a{
-    padding: 2px;
+menu a, menu a:visited{
+    color: #666;
+    text-decoration: none;
+    text-shadow: #F5F4F0 1px 1px;
 }
 
-menu .home{
-    font-size: 24px;
+.home{
+    font-size: 36px;
+    padding: 0 15px 15px;
+    text-align: center;
 }
 
-#user_info{
-    float: right;
+.home a{
+    text-decoration: none;
+    color: #153363;
 }
 
-header ul{
+menu{
     list-style: none;
+    text-align: center;
 }
 
-header li{
-    float: left;
+menu li{
     margin-right: 15px;
-    line-height: 30px;
+    display: inline-block;
+    height: 100%;
+    vertical-align: bottom;
+}
+
+menu > li a {
+    padding: 5px;
+}
+
+menu form{
+    display: inline-block;
+}
+
+menu ul{
+    list-style: none;
 }
 
 /*
 SEARCH BAR
 */
 
+menu form {
+    letter-spacing: -3px;
+}
+
 menu input, menu button{
     padding-top: 0;
     padding-bottom: 0;
-
 }
 menu input{
     height: 21px;
-    border: 0;
     padding-left: 10px;
+    border: 0;
+    border-radius: 15px 0 0 15px;
 }
 menu button{
     /* line-height because height shrinks strangely in IE*/
     line-height: 21px;
+    border: 0;
+    background: #153363;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 0 15px 15px 0;
 }
+
+form p{
+    margin: 10px 0;
+}
+
 
 /*
 CONTENT BLOCK
 */
-#content{
-    width: 960px;
+.content{
+    max-width: 960px;
     margin: 10px auto 0;
 }
 
-#content input[type=text], #content input[type=password]{
+.content a{
+    text-decoration: underline;
+    color: #444;
+}
+
+.content a:visited{
+    color: #444;   
+}
+
+.content input[type=text], .content input[type=password]{
     width: 200px;
     border: 1px solid #555;
 }
 
-#content label{
+.content label{
     display: inline-block;
     width: 100px;
 }
@@ -239,4 +246,18 @@ CONTENT BLOCK
 
 .errorlist + p input{
     background: #F7FF9C;
+}
+
+@media (min-width: 800px){
+
+}
+
+@media (max-width: 800px){
+    menu li {
+        display: block;
+        padding: 5px 0;
+    }
+    menu, #content{
+        padding: 0 25px;
+    }
 }

@@ -21,44 +21,42 @@ MyMenu
 
 </head>
 <body>
-<div id="header_holder">
 <header>
 {% block header %}
+    <div class="home">
+        <a href="/">MyMenu</a>    
+    </div>
     <menu id="main_menu">
-        <ul>
-            <li><a href="/" class="home">MyMenu</a></li>
     {% if user.is_authenticated %}     
-            <li><a href="{% url 'recipe_list' %}">View Recipes</a>
-                <ul>
-                    <li><a href="{% url 'recipe_list' %}">Your Recipes</a></li>
-                    <li><a href="{% url 'public_recipe_list' %}">Public Recipes</a></li>
-                </ul>
-            </li>
-            <li><a href="{% url 'create_recipe' %}">Add Recipe</a></li>
+        <li><a href="{% url 'public_recipe_list' %}">All Recipes</a></li>
+        <li><a href="{% url 'recipe_list' %}">Your Recipes</a></li>
     {% else %}
-            <li><a href="{% url 'recipe_list' %}">View Recipes</a></li>
+        <li>
+            <a href="{% url 'recipe_list' %}">View Recipes</a>
+        </li>
     {% endif %}
+        <li>
+            <a href="{% url 'create_recipe' %}">Add Recipe</a>
+        </li>
+        <li>
+            <form action="/recipes/search" method="get">
+                <input type="text" name="name" placeholder="Search recipes..."></input>
+                <button type="submit">Search</button>
+            </form>
+        </li>
+        {% if user.is_authenticated %}     
             <li>
-                <form action="/recipes/search" method="get">
-                    <input type="text" name="name" placeholder="Search recipes..."></input>
-                    <button type="submit">Go</button>
-                </form>
+                {{ user.username|capfirst }}
+                <a href="{% url 'auth_logout' %}?next=/">Logout</a>
             </li>
-        </ul>
+        {% else %}
+            <li><a href="{% url 'auth_login' %}">Login</a></li>
+            <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
+        {% endif %}
     </menu>
-    <ul id="user_info">
-    {% if user.is_authenticated %}     
-        <li>{{ user.username|capfirst }}</li>
-        <li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>
-    {% else %}
-        <li><a href="{% url 'auth_login' %}">Login</a></li>
-        <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
-    {% endif %}
-    </ul>
 {% endblock header %}
 </header>
-</div>
-<div id="content">
+<div class="content">
 {% block content %}
 {% endblock content %}
 </div>

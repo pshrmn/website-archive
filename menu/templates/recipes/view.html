@@ -14,19 +14,16 @@
 {{ context }}
 <h1>{{ recipe.name }}</h1>
 <h2>Inspired by {{ recipe.dish_name }} at {{ recipe.restaurant }}</h2>
-{% if user == recipe.owner %}
-<div id="user_controls">
-    <p>
-		<a href="{% url 'update_recipe' recipe.id %}">Update</a>
+<p>
+    {% if user == recipe.owner %}
+    	<a href="{% url 'update_recipe' recipe.id %}">Update</a>
     	|
     	<a href="{% url 'delete_recipe' recipe.id %}">Remove</a>
-	</p>
-</div>
-{% endif %}
-<div id="view_options">
-	<p><a href="{{ recipe.url }}">Visit Site</a><p>
-	<iframe src="{{ recipe.url }}">Browser does not support iframes</iframe>
-</div>
+        |
+    {% endif %}
+    <a href="{{ recipe.url }}">Visit Site</a>
+</p>
+<iframe src="{{ recipe.url }}">Browser does not support iframes</iframe>
 
 {% endblock content%}
 

@@ -1,5 +1,5 @@
 #content input[type=text]{
-	width: 500px;
+	min-width: 300px;
 }
 
 label{

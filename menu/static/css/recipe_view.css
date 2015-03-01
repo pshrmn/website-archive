@@ -6,22 +6,18 @@ iframe{
 
 h1, h2{
 	color: #444;
-	text-align: center;
+	font-weight: normal;
 	padding: 5px 0;
 }
 
 h1{
-	border-top: 2px solid #000;
 	font-size: 1.5em;
 }
 
 h2{
-	border-bottom: 2px solid #000;
 	font-size: 1.1em;
-	margin-bottom: 25px;
 }
 
-
-#user_controls{
-	text-align: right;
+p{
+    margin: 5px 0;
 }
