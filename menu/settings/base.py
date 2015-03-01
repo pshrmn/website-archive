@@ -13,7 +13,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'recipes',
     'registration',
-    'api',
 )
 
 MIDDLEWARE_CLASSES = (

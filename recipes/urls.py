@@ -11,4 +11,5 @@ urlpatterns = patterns(
     url(r'^delete/(?P<pk>\d+)', RecipeDeleteView.as_view(), name='delete_recipe'),
     url(r'^search$', RecipeSearchList.as_view(), name='recipe_search_list'),
     url(r'^public$', PublicRecipeList.as_view(), name='public_recipe_list'),
+    url(r'^search/', RecipeSearchJSONView.as_view(), name='recipe_api_search')
 )
