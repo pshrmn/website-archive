@@ -8,6 +8,7 @@ label{
 }
 
 .recipe_choice {
+	background: #fff;
 	display: inline-block;
 	width: 175px;
 	overflow: hidden;

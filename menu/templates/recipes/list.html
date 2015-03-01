@@ -18,19 +18,19 @@
 <ul id="recipes">
     {% for recipe in object_list %}
         <li class="choice">
-        <p class="title"><a href="{% url 'view_recipe' recipe.id %}">
-        {{ recipe.name }}
-        </a></p>
-        <p class="inspired_info">
-        à la {{ recipe.dish_name }} at {{ recipe.restaurant }}
-        </p>
-        {% if user == recipe.owner %}
-            <p class="edit">
-            <a href="{% url 'update_recipe' recipe.id %}">Update</a>
-            |
-            <a href="{% url 'delete_recipe' recipe.id %}">Remove</a>
+            <p class="title"><a href="{% url 'view_recipe' recipe.id %}">
+            {{ recipe.name }}
+            </a></p>
+            <p class="inspired_info">
+            à la {{ recipe.dish_name }} at {{ recipe.restaurant }}
             </p>
-        {% endif %}
+            {% if user == recipe.owner %}
+                <p class="edit">
+                <a href="{% url 'update_recipe' recipe.id %}">Update</a>
+                |
+                <a href="{% url 'delete_recipe' recipe.id %}">Remove</a>
+                </p>
+            {% endif %}
         </li>
     {% endfor %}
 </ul>

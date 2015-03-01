@@ -133,7 +133,7 @@ header{
     padding: 2px 0;
     width: 100%;
     margin: 0 auto;
-    color: #153363;
+    color: #2B5B69;
     padding: 25px 0;
     position: relative;
 }
@@ -152,7 +152,7 @@ menu a, menu a:visited{
 
 .home a{
     text-decoration: none;
-    color: #153363;
+    color: #2B5B69;
 }
 
 menu{
@@ -201,7 +201,7 @@ menu button{
     /* line-height because height shrinks strangely in IE*/
     line-height: 21px;
     border: 0;
-    background: #153363;
+    background: #2B5B69;
     color: #fff;
     cursor: pointer;
     border-radius: 0 15px 15px 0;

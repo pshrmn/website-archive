@@ -2,17 +2,10 @@
 	list-style: none;
 }
 .choice{
-	float: left;
-	border: 1px solid #2B5B69;
-	width: 200px;
-	height: 200px;
 	margin: 0 15px 15px 0;
-	position: relative;
 }
 
 .edit{
-	position: absolute;
-	bottom: 5px;
 	font-size: 0.8em;
 }
 
@@ -20,17 +13,7 @@
 	padding: 5px 10px;
 }
 
-.choice .title{
-	background: #2B5B69;
-}
-
 .choice .title a{
-	min-height: 50px;
-	max-height: 75px;	
-	color: #fff;
-	display: block;
-}
-
-.inspired_info{
+	font-size: 1.5em;
 	color: #2B5B69;
 }
