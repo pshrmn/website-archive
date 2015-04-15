@@ -183,10 +183,6 @@ menu ul{
 SEARCH BAR
 */
 
-menu form {
-    letter-spacing: -3px;
-}
-
 menu input, menu button{
     padding-top: 0;
     padding-bottom: 0;
