@@ -1,0 +1,61 @@
+/*
+colors:
+$red: #CD0D32;
+$gray: #F1F4F7;
+$blue: #29608C;
+$dark-blue: #143D5E;
+$light-green: #9CC8A5;
+$green: #3DB366;
+$dark-green: #3E7350;
+$light-brown: #EAE7D8;
+$brown: #696243;
+*/
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #EAE7D8;
+    font-family: 'Oswald', sans-serif;
+}
+
+header {
+    background: #3DB366;
+    padding: 25px 0 5px;
+}
+
+.home {
+    font-family: 'Oswald', sans-serif;
+    margin-left: 50px;
+    font-size: 32px;
+}
+
+.home img {
+    height: 30px;
+    padding-right: 10px;
+}
+
+.home a, .home a:visited {
+    color: #EAE7D8;
+    text-shadow:  1px 1px #143D5E, 2px 2px #143D5E, 3px 3px #143D5E, 4px 4px #143D5E, 5px 5px #143D5E;
+    text-decoration: none;
+}
+
+.content {
+    padding: 25px 75px 0;
+}
+
+.workout {
+    font-size: 30px;
+}
+
+.workout select, .workout input {
+    font-size: 30px;
+}
+
+.workout select {
+    border-color: transparent;
+}
+
+.workout input {
+    width: 50px;
+}
