@@ -24,8 +24,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'workouts',
     'distances',
+    'registration',
+    'users',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -73,3 +76,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'staticfiles'
+
+LOGIN_URL = "/accounts/login"
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+INCLUDE_AUTH_URLS = False
+
+SITE_ID = 1

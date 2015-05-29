@@ -20,9 +20,27 @@ How Far?
 <body>
 <header>
 {% block header %}
-    <div class="home">
-        <a href="/"><img src="{% static 'img/earth.png' %}">How Far?</a>
-    </div>
+    <ul>
+        <li>
+            <a class="home" href="/"><img src="{% static 'img/earth.png' %}">How Far?</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li>
+            {{ user.username | capfirst }}
+        </li>
+        <li>
+            <a href="{% url 'logout' %}?next=/">Logout</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="{% url 'login' %}">Login</a>
+        </li>
+        <li>
+            <a href="{% url 'registration_register' %}">Sign Up</a>
+        </li>
+        {% endif %}
+        
+    </ul>
 {% endblock header %}
 </header>
 <div class="content">
