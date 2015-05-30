@@ -2,14 +2,25 @@
 These views are wrappers so that I can add behavior based on if the user is
 logged in or not
 """
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, View, CreateView
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
-from django.contrib.auth.views import login, logout, password_change, \
-    password_reset
-
+from django.contrib.auth.views import login, logout, password_change
+from django.contrib.auth.forms import UserCreationForm
 
 User = get_user_model()
+
+
+class SignUpView(CreateView):
+
+    """
+    create a new user
+    """
+
+    template_name = "users/signup.html"
+    model = User
+    form_class = UserCreationForm
+    success_url = '/'
 
 
 class LoginView(View):
@@ -23,7 +34,8 @@ class LoginView(View):
         if self.request.user.is_authenticated():
             return redirect("home")
         next_page = self.request.GET.get("next", '/')
-        return login(extra_context={"next": next_page}, *args, **kwargs)
+        return login(template_name="users/login.html",
+                     extra_context={"next": next_page}, *args, **kwargs)
 
     def post(self, *args, **kwargs):
         return login(*args, **kwargs)
@@ -40,7 +52,8 @@ class LogoutView(View):
     def get(self, *args, **kwargs):
         if not self.request.user.is_authenticated():
             return redirect("home")
-        return logout(next_page="/", *args, **kwargs)
+        return logout(template_name="users/logout.html", next_page="/",
+                      *args, **kwargs)
 
     def post(self, *args, **kwargs):
         return logout(next_page="/", *args, **kwargs)
@@ -57,14 +70,3 @@ class PasswordChangeView(TemplateView):
     def post(self, *args, **kwargs):
         return password_change(post_change_redirect="/",
                                *args, **kwargs)
-
-
-class PasswordResetView(TemplateView):
-
-    def get(self, *args, **kwargs):
-        if self.request.user.is_authenticated():
-            return redirect("home")
-        return password_reset(*args, **kwargs)
-
-    def post(self, *args, **kwargs):
-        return password_reset(*args, **kwargs)

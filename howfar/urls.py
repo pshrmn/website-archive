@@ -17,8 +17,10 @@ Including another URLconf
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
+# from django.views.generic.edit import CreateView
+# from django.contrib.auth.forms import UserCreationForm
 
-from users.views import LoginView, LogoutView, PasswordResetView
+from users.views import LoginView, LogoutView, SignUpView
 
 admin.autodiscover()
 
@@ -27,8 +29,7 @@ urlpatterns = patterns(
     url(r'^$', TemplateView.as_view(template_name="home.html"), name="home"),
     url(r'^login', LoginView.as_view(), name='login'),
     url(r'^logout', LogoutView.as_view(), name='logout'),
-    url(r'^reset_password', PasswordResetView.as_view(), name='password_reset'),
-    url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'^signup', SignUpView.as_view(), name='signup'),
 )
 
 urlpatterns += patterns(
