@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<ul>
+{% for goal in goal_list %}
+    <li>
+        <a href="{% url 'goal' goal.id %}">{{ goal.exercise | capfirst }} from {{ goal.distance }}</a>
+    </li>
+{% empty %}
+    <li>
+        You have no goals. <a href="{% url 'add_goal' %}">Add a goal.</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock content %}

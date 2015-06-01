@@ -17,21 +17,33 @@ Including another URLconf
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
-# from django.views.generic.edit import CreateView
-# from django.contrib.auth.forms import UserCreationForm
 
 from users.views import LoginView, LogoutView, SignUpView
+from workouts.views import (AddGoalView, GoalsView, GoalView,
+                            AddWorkoutView, WorkoutsView, WorkoutView)
 
 admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^$', TemplateView.as_view(template_name="home.html"), name="home"),
+    url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
+    url(r'^add_workout', AddWorkoutView.as_view(), name='add_workout'),
+    url(r'^workouts', WorkoutsView.as_view(), name='workouts'),
+    url(r'^workout/(?P<pk>\d+)', WorkoutView.as_view(), name='workout'),
+    url(r'^add_goal', AddGoalView.as_view(), name='add_goal'),
+    url(r'^goals', GoalsView.as_view(), name='goals'),
+    url(r'^goal/(?P<pk>\d+)', GoalView.as_view(), name='goal'),
+)
+
+# user account related views
+urlpatterns += patterns(
+    '',
     url(r'^login', LoginView.as_view(), name='login'),
     url(r'^logout', LogoutView.as_view(), name='logout'),
     url(r'^signup', SignUpView.as_view(), name='signup'),
 )
 
+# admin views
 urlpatterns += patterns(
     '',
     url(r'^admin/', include(admin.site.urls), name='admin'),

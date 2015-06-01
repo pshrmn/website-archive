@@ -6,4 +6,4 @@ class Distance(models.Model):
     length = models.FloatField()
 
     def __str__(self):
-        return self.name
+        return "{} ({} miles)".format(self.name, self.length)

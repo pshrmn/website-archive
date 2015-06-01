@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="about">
+    Create goals and track your progress for running, walking, biking, or swimming the equivalent of distances between well known places.
+</div>
 <div class="workout">
     <form>
         I
@@ -13,9 +16,9 @@
         for
         <input type=text placeholder="1"/>
         miles!
-        <p>
-            <button>Save</button>
-        </p>
+        {% if user.is_authenticated %}
+        <button>Save</button>
+        {% endif %}
     </form>
 </div>
 {% endblock content %}

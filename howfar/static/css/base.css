@@ -28,13 +28,53 @@ a:visited {
 
 header {
     background: #3DB366;
-    padding: 25px 0 5px;
     color: #EAE7D8;
+}
+
+menu {
+    padding: 0;
+    margin: 0;
+}
+
+header ul {
+    padding: 0;
+    margin: 0;
 }
 
 header li {
     display: inline-block;
     margin-right: 15px;
+
+}
+
+menu > ul > li {
+    position: relative;
+}
+
+header li ul {
+    display: none;
+    position: absolute;
+    background: #3DB366;
+    width: 125px;
+}
+
+header li li {
+    display: block;
+    color: #3DB366;
+    padding: 0 3px;
+    margin: 0;
+}
+
+header li li:hover {
+    background: #3E7350;
+}
+
+header li a {
+    display: block;
+}
+
+header li:hover ul {
+    display: block;
 }
 
 header a, header a:visited {
@@ -77,4 +117,28 @@ header a, header a:visited {
     width: 75px;
     border-color: transparent;
     text-align: right;
+}
+
+.workout button {
+    font-size: 24px;
+    border-radius: 10px;
+}
+
+.about {
+    font-size: 24px;
+}
+
+span.helptext {
+  display: block;
+  font-size: 0.8em;
+  color: #29608C;
+}
+
+p label {
+    display: block;
+}
+
+form p {
+    margin: 2px 0;
+    padding: 0;
 }

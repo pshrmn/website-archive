@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<ul>    
+{% for workout in workout_list %}
+    <li>
+        <a href="{% url 'workout' workout.id %}">{{ workout.exercise.past_tense | capfirst }} for {{ workout.distance }} miles</a>
+    </li>
+{% empty %}
+    <li>
+        You have no saved workouts. <a href="{% url 'add_workout' %}">Add a workout.</a>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock content %}

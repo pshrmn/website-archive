@@ -20,11 +20,34 @@ How Far?
 <body>
 <header>
 {% block header %}
+<menu>
     <ul>
         <li>
             <a class="home" href="/"><img src="{% static 'img/earth.png' %}">How Far?</a>
         </li>
         {% if user.is_authenticated %}
+        <li>
+            <a href="{% url 'workouts' %}">Workouts</a>
+            <ul>
+                <li>
+                    <a href="{% url 'add_workout' %}">Add Workout</a>
+                </li>
+                <li>
+                    <a href="{% url 'workouts' %}">Workouts</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="{% url 'goals' %}">Goals</a>
+            <ul>
+                <li>
+                    <a href="{% url 'add_goal' %}">Add Goal</a>
+                </li>
+                <li>
+                    <a href="{% url 'goals' %}">Goals</a>
+                </li>
+            </ul>
+        </li>
         <li>
             {{ user.username | capfirst }}
         </li>
@@ -41,6 +64,7 @@ How Far?
         {% endif %}
         
     </ul>
+</menu>
 {% endblock header %}
 </header>
 <div class="content">
