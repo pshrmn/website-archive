@@ -7,7 +7,7 @@ class GoalForm(ModelForm):
 
     class Meta:
         model = Goal
-        fields = ('distance', 'exercise')
+        fields = ('trip', 'exercise')
 
 
 class WorkoutForm(ModelForm):

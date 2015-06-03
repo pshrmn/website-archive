@@ -1,0 +1,110 @@
+[
+  {
+    "pk": 1,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 40.7127,
+      "name": "New York City",
+      "longitude": -74.0059
+    }
+  },
+  {
+    "pk": 2,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 41.8369,
+      "name": "Chicago",
+      "longitude": -87.6847
+    }
+  },
+  {
+    "pk": 3,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 34.05,
+      "name": "Los Angeles",
+      "longitude": -118.25
+    }
+  },
+  {
+    "pk": 4,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 39.7619,
+      "name": "Denver",
+      "longitude": -104.8811
+    }
+  },
+  {
+    "pk": 5,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 25.7753,
+      "name": "Miami",
+      "longitude": -80.2089
+    }
+  },
+  {
+    "pk": 6,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 29.7805,
+      "name": "Houston",
+      "longitude": -95.3863
+    }
+  },
+  {
+    "pk": 7,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 40.0094,
+      "name": "Philadelphia",
+      "longitude": -75.1333
+    }
+  },
+  {
+    "pk": 8,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 33.5722,
+      "name": "Phoenix",
+      "longitude": -112.088
+    }
+  },
+  {
+    "pk": 9,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 47.6205,
+      "name": "Seattle",
+      "longitude": -122.3509
+    }
+  },
+  {
+    "pk": 10,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 37.7751,
+      "name": "San Francisco",
+      "longitude": -122.4193
+    }
+  },
+  {
+    "pk": 11,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 38.9041,
+      "name": "Washington D.C.",
+      "longitude": -77.0171
+    }
+  },
+  {
+    "pk": 12,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 33.7629,
+      "name": "Atlanta",
+      "longitude": -84.4227
+    }
+  }
+]

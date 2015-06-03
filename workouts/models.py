@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 
-from distances.models import Distance
+from distances.models import Trip
 
 
 class Exercise(models.Model):
@@ -22,8 +22,8 @@ class Workout(models.Model):
 
 
 class Goal(models.Model):
-    distance = models.ForeignKey(Distance)
+    trip = models.ForeignKey(Trip)
     exercise = models.ForeignKey(Exercise, blank=True, null=True)
 
     def __str__(self):
-        return "Goal of: {}".format(self.distance)
+        return "Goal of: {}".format(self.trip)
