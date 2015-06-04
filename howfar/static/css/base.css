@@ -18,6 +18,10 @@ html, body {
     font-family: 'Oswald', sans-serif;
 }
 
+h1, h2, h3, h4 {
+    margin: 0.25em 0;
+}
+
 a {
     color: #3E7350;
 }
@@ -97,8 +101,13 @@ header a, header a:visited {
     text-shadow:  1px 1px #143D5E, 2px 2px #143D5E, 3px 3px #143D5E, 4px 4px #143D5E, 5px 5px #143D5E;
 }
 
+.username {
+    color: #143D5E;
+}
+
 .content {
     padding: 25px 75px 0;
+    color: #143D5E;
 }
 
 .workout {
@@ -125,7 +134,7 @@ header a, header a:visited {
 }
 
 .about {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 span.helptext {

@@ -15,3 +15,11 @@ class WorkoutForm(ModelForm):
     class Meta:
         model = Workout
         fields = ('exercise', 'distance')
+        error_messages = {
+            'exercise': {
+                'required': 'Exercise type is required.'
+            },
+            'distance': {
+                'required': 'Workout distance is required.'
+            }
+        }

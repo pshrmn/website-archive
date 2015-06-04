@@ -2,6 +2,12 @@
 
 {% block content %}
 <h1>
-    You plan to {{ goal.exercise }} {{ goal.distance.length }} miles
+    You plan to
+    {% if goal.exercise %}
+        {{ goal.exercise }}
+    {% else %}
+        workout
+    {% endif %}
+    for {{ goal.trip.length }} miles
 </h1>
 {% endblock content %}
