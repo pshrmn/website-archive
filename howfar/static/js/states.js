@@ -8,8 +8,11 @@ queue()
     var width = 600;
     var height = 400;
     var scale = 700;
+    var fromCity = 0;
+    var toCity = 1;
 
-    var svg = d3.select('.content').append('svg')
+    var holder = d3.select('.content').append('div');
+    var svg = holder.append('svg')
       .attr('width', width)
       .attr('height', height);
 
@@ -41,30 +44,26 @@ queue()
       city.y = coords[1];
     });
 
-    var diamond = d3.svg.symbol()
-      .type('diamond');
-
     // draw the cities
     var cityGroup = svg.append('g')
       .classed({
         'cities': true
       });
 
-    cityGroup.selectAll('path.city')
+    var cityMarkers = cityGroup.selectAll('circle.city')
         .data(cities)
-      .enter().append('path')
+      .enter().append('circle')
         .classed({
-          'city': true
+          'city': true,
+          'active': function(d, i){
+            return i === fromCity || i === toCity;
+          }
         })
-        .attr('d', diamond)
+        .attr('r', 5)
         .attr('transform', function(d){
           return 'translate(' + d.x + ',' + d.y + ')';
         });
 
-    var trips = svg.append('g')
-      .classed({
-        'trips': true
-      });
     var tripText = svg.append('text')
       .classed({
         'trip-text': true
@@ -72,12 +71,57 @@ queue()
       .attr('x', width / 2 )
       .attr('y', height - 25)
 
+    var cityTable = holder.append('table');
+    var cityHead = cityTable.append('tr').selectAll('th')
+        .data(['', 'From', 'To'])
+      .enter().append('td')
+        .text(function(d){ return d; });
+
+    var cityRows = cityTable.selectAll('tr.city')
+        .data(cities)
+      .enter().append('tr')
+        .classed({
+          'city': true
+        });
+      
+    cityRows.append('td')
+      .text(function(d){ return d.city; });
+
+    cityRows.append('td').append('input')
+      .attr('type', 'radio')
+      .attr('value', function(d, i){
+        return i;
+      })
+      .attr('name', 'first-city')
+      .property('checked', function(d, i){
+        return i === fromCity;
+      })
+      .on('change', function(d, i){
+        fromCity = i;
+        drawTrip();
+      })
+
+    cityRows.append('td').append('input')
+      .attr('type', 'radio')
+      .attr('value', function(d, i){
+        return i;
+      })
+      .attr('name', 'second-city')
+      .property('checked', function(d, i){
+        return i === toCity;
+      })
+      .on('change', function(d, i){
+        toCity = i;
+        drawTrip();
+      });
+
     var prettyNums = d3.format(",.02f");
     function drawTrip(){
-      var locs = randomCities();
+      var locs = [cities[fromCity], cities[toCity]];
       var miles = prettyNums(haversine(locs[0], locs[1]));
       tripText.text(locs[0].city + ' to ' + locs[1].city + ' is ' + miles + ' miles.');
-      var trip = trips.append('line')
+      svg.selectAll('line.trip').remove();
+      var trip = svg.append('line')
           .datum(locs)
           .classed({
             'trip': true
@@ -95,6 +139,12 @@ queue()
             return d[0].y;
           });
 
+      cityMarkers.classed({
+        'active': function(d, i){
+          return i === fromCity || i === toCity;
+        }
+      })
+
       // length of transition will vary based on the length of the trip
       var distance = Math.sqrt(Math.pow(locs[1].x - locs[0].x, 2) +
         Math.pow(locs[1].y - locs[0].y, 2));
@@ -107,17 +157,6 @@ queue()
         .attr('y2', function(d){
           return d[1].y;
         })
-    }
-
-    // return two random (and different) cities from the cities array
-    function randomCities(){
-      var count = cities.length;
-      var pos = Math.floor(Math.random()*count);
-      var secondPos = pos
-      while ( secondPos === pos ) {
-        secondPos = Math.floor(Math.random()*count);
-      }
-      return [cities[pos], cities[secondPos]];
     }
 
     drawTrip();

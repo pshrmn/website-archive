@@ -1,6 +1,6 @@
 .state path {
     fill: #9CC8A5;
-    stroke: #9CC8A5;
+    stroke: #EAE7D8;
     stroke-width: 1px;
 }
 
@@ -9,14 +9,15 @@
 }
 
 .city.active {
-    fill: #29608C;
+    fill: #CD0D32;
 }
 
 .trip {
-    stroke: #29608C;
-    stroke-width: 5px;
+    stroke: #CD0D32;
+    stroke-width: 2px;
 }
 
 .trip-text {
     text-anchor: middle;
+    fill: #143D5E;
 }
