@@ -22,9 +22,10 @@
         </li>
     {% empty %}
         <li>
-            You have no saved workouts. <a href="{% url 'add_workout' %}">Add a workout.</a>
+            You have no saved workouts.
         </li>
     {% endfor %}
     </ul>
+    <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
 </div>
 {% endblock content %}

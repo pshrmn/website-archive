@@ -18,7 +18,7 @@ class Goal(models.Model):
     exercise = models.ForeignKey(Exercise, blank=True, null=True)
 
     def __str__(self):
-        return "Goal of: {}".format(self.trip)
+        return "{} from {}".format(self.exercise.name.capitalize(), self.trip)
 
 
 class Workout(models.Model):
