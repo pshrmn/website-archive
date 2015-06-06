@@ -9,11 +9,11 @@
 }
 
 .city.active {
-    fill: #CD0D32;
+    fill: #AB384E;
 }
 
 .trip {
-    stroke: #CD0D32;
+    stroke: #AB384E;
     stroke-width: 2px;
 }
 

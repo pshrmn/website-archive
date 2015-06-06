@@ -19,8 +19,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 
 from users.views import LoginView, LogoutView, SignUpView
-from workouts.views import (AddGoalView, GoalsView, GoalView,
-                            AddWorkoutView, WorkoutsView, WorkoutView)
+from workouts.views import (AddGoalView, GoalsView, GoalView, AddWorkoutView)
 
 admin.autodiscover()
 
@@ -29,8 +28,6 @@ urlpatterns = patterns(
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^about$', TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^add_workout', AddWorkoutView.as_view(), name='add_workout'),
-    url(r'^workouts', WorkoutsView.as_view(), name='workouts'),
-    url(r'^workout/(?P<pk>\d+)', WorkoutView.as_view(), name='workout'),
     url(r'^add_goal', AddGoalView.as_view(), name='add_goal'),
     url(r'^goals', GoalsView.as_view(), name='goals'),
     url(r'^goal/(?P<pk>\d+)', GoalView.as_view(), name='goal'),

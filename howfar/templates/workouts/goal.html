@@ -2,12 +2,29 @@
 
 {% block content %}
 <h1>
-    You plan to
-    {% if goal.exercise %}
-        {{ goal.exercise }}
-    {% else %}
-        workout
-    {% endif %}
-    for {{ goal.trip.length }} miles
+    <span class="exercise">
+        {% if goal.exercise %}
+            {{ goal.exercise | capfirst }}
+        {% else %}
+            Workout
+        {% endif %}
+    </span>
+    |
+    <span class="distance">
+        {{ goal.trip.length }} miles
+    </span>
 </h1>
+<div>
+    <ul>
+    {% for workout in goal.workout_set.all %}
+        <li>
+            {{ workout.exercise }} for {{ workout.distance }} miles.
+        </li>
+    {% empty %}
+        <li>
+            You have no saved workouts. <a href="{% url 'add_workout' %}">Add a workout.</a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock content %}

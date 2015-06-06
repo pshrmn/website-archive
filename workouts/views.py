@@ -51,18 +51,4 @@ class AddWorkoutView(LoginRequiredMixin, CreateView):
         return super(AddWorkoutView, self).form_valid(form)
 
     def get_success_url(self):
-        return 'workout/{}'.format(self.object.id)
-
-
-class WorkoutsView(LoginRequiredMixin, ListView):
-
-    model = Workout
-    template_name = 'workouts/workouts.html'
-    login_url = '/login/'
-
-
-class WorkoutView(LoginRequiredMixin, DetailView):
-
-    model = Workout
-    template_name = 'workouts/workout.html'
-    login_url = '/login'
+        return 'goal/{}'.format(self.object.goal.id)

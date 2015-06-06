@@ -27,17 +27,6 @@ How Far?
         </li>
         {% if user.is_authenticated %}
         <li>
-            <a href="{% url 'workouts' %}">Workouts</a>
-            <ul>
-                <li>
-                    <a href="{% url 'add_workout' %}">Add Workout</a>
-                </li>
-                <li>
-                    <a href="{% url 'workouts' %}">Workouts</a>
-                </li>
-            </ul>
-        </li>
-        <li>
             <a href="{% url 'goals' %}">Goals</a>
             <ul>
                 <li>
