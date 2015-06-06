@@ -15,5 +15,8 @@ class Trip(models.Model):
     end = models.ForeignKey(Location, related_name='end')
     length = models.FloatField()
 
+    class Meta:
+        ordering = ['length']
+
     def __str__(self):
-        return "{} to {} ({} miles)".format(self.start, self.end, self.length)
+        return '{} to {} ({} miles)'.format(self.start, self.end, self.length)

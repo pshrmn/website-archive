@@ -4,7 +4,13 @@
 <ul>
 {% for goal in goal_list %}
     <li>
-        <a href="{% url 'goal' goal.id %}">{{ goal.exercise | capfirst }} from {{ goal.distance }}</a>
+        <a href="{% url 'goal' goal.id %}">
+        {% if goal.exercise %}
+            {{ goal.exercise.name | capfirst }}
+        {% else %}
+            Exercise
+        {% endif %}
+        from {{ goal.trip.start.name }} to {{ goal.trip.end.name }} ({{ goal.trip.length }} miles)</a>
     </li>
 {% empty %}
     <li>

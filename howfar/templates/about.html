@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+About | {{ block.super }}
+{% endblock title %}
+
+
+{% block content %}
+<div class="about">
+    <div>
+        <h3>How are distances measured?</h3>
+        <p>
+            Distances are measured as the crow flies based on the coordinates of each city. The measurements are calculated using the <a href="http://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
+        </p>
+    </div>
+</div>
+{% endblock content %}

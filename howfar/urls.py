@@ -27,6 +27,7 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
+    url(r'^about$', TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^add_workout', AddWorkoutView.as_view(), name='add_workout'),
     url(r'^workouts', WorkoutsView.as_view(), name='workouts'),
     url(r'^workout/(?P<pk>\d+)', WorkoutView.as_view(), name='workout'),

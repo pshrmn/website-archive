@@ -48,6 +48,9 @@ How Far?
                 </li>
             </ul>
         </li>
+        <li>
+            <a href="{% url 'about' %}">About</a>
+        </li>
         <li class="username">
             {{ user.username | capfirst }}
         </li>
@@ -55,6 +58,9 @@ How Far?
             <a href="{% url 'logout' %}?next=/">Logout</a>
         </li>
         {% else %}
+        <li>
+            <a href="{% url 'about' %}"></a>
+        </li>
         <li>
             <a href="{% url 'login' %}">Login</a>
         </li>
