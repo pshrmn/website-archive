@@ -45,7 +45,8 @@
     <ul>
     {% for workout in goal.workout_set.all %}
         <li>
-            {{ workout.exercise }} for {{ workout.distance }} miles.
+            {{ workout.exercise }} for {{ workout.distance }} miles
+            <a href="{% url 'delete_workout' workout.pk %}">&times;</a>
         </li>
     {% empty %}
         <li>

@@ -3,7 +3,8 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 
 from users.views import LoginView, LogoutView, SignUpView
-from workouts.views import (AddGoalView, GoalsView, GoalView, AddWorkoutView)
+from workouts.views import (AddGoalView, GoalsView, GoalView,
+                            AddWorkoutView, DeleteWorkoutView)
 
 admin.autodiscover()
 
@@ -15,6 +16,7 @@ urlpatterns = patterns(
     url(r'^goals', GoalsView.as_view(), name='goals'),
     url(r'^goal/(?P<pk>\d+)$', GoalView.as_view(), name='goal'),
     url(r'^goal/(?P<pk>\d+)/add_workout', AddWorkoutView.as_view(), name='add_workout'),
+    url(r'^delete_workout/(?P<pk>\d+)', DeleteWorkoutView.as_view(), name='delete_workout'),
 )
 
 # user account related views

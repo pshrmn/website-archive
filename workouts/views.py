@@ -97,7 +97,7 @@ class DeleteWorkoutView(LoginRequiredMixin, DeleteView):
     login_url = '/login/'
 
     def get_success_url(self):
-        return 'goal/{}'.format(self.object.goal.id)
+        return '/goal/{}'.format(self.object.goal.id)
 
     def get_object(self):
         workout = super(DeleteWorkoutView, self).get_object()
