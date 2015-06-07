@@ -3,8 +3,11 @@
 
 {% block content %}
 <h1>
-    Add a new workout
+    Add a new workout for the goal:
 </h1>
+<h2>
+    {{ goal }}
+</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

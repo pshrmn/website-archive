@@ -49,10 +49,10 @@ class GoalView(LoginRequiredMixin, DetailView):
     login_url = '/login/'
 
     def get_object(self):
-        obj = get_object_or_404(Goal, pk=self.kwargs.get("pk"))
-        if obj.owner != self.request.user:
+        goal = get_object_or_404(Goal, pk=self.kwargs.get("pk"))
+        if goal.owner != self.request.user:
             raise Http404
-        return obj
+        return goal
 
 
 class AddWorkoutView(LoginRequiredMixin, CreateView):
@@ -62,6 +62,16 @@ class AddWorkoutView(LoginRequiredMixin, CreateView):
     form_class = WorkoutForm
     login_url = '/login/'
 
+    def dispatch(self, request, *args, **kwargs):
+        """
+        check if user has permission to add workout to the current goal
+        before processing request
+        """
+        goal = get_object_or_404(Goal, pk=self.kwargs.get('pk'))
+        if request.user != goal.owner:
+            raise Http404
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         workout = form.save(commit=False)
         workout.goal = get_object_or_404(Goal, pk=self.kwargs.get('pk'))
@@ -69,18 +79,15 @@ class AddWorkoutView(LoginRequiredMixin, CreateView):
             return False
         workout.owner = self.request.user
         workout.save()
-        return super(AddWorkoutView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return '/goal/{}'.format(self.object.goal.id)
 
-    def get_initial(self):
-        goal = get_object_or_404(Goal, pk=self.kwargs.get('pk'))
-        if goal.owner != self.request.user:
-            return {}
-        return {
-            'goal': goal
-        }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['goal'] = get_object_or_404(Goal, pk=self.kwargs.get('pk'))
+        return context
 
 
 class DeleteWorkoutView(LoginRequiredMixin, DeleteView):

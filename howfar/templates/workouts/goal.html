@@ -1,4 +1,30 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+{% block inline-css %}
+#progress-bar {
+    position: relative;
+    width: 400px;
+    height: 20px;
+    padding: 5px 0;
+}
+
+.bar {
+    height: 20px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.total {
+    background: rgba(171, 56, 78, 0.25);
+}
+
+.current {
+    background: #AB384E;
+}
+
+{% endblock inline-css %}
 
 {% block content %}
 <h1>
@@ -14,6 +40,7 @@
         {{ goal.trip.length }} miles
     </span>
 </h1>
+<div class="progress"></div>
 <div>
     <ul>
     {% for workout in goal.workout_set.all %}
@@ -29,3 +56,19 @@
     <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
 </div>
 {% endblock content %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" src="{% static 'js/goal.js' %}"></script>
+{% endblock javascript %}
+
+{% block inline-js %}
+var total = {{ goal.trip.length }};
+var distances = [
+    {% for workout in goal.workout_set.all %}
+    {{ workout.distance }},
+    {% endfor %}
+];
+
+showProgress(total, distances);
+{% endblock inline-js %}
