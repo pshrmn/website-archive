@@ -65,7 +65,6 @@ function drawGoal(startCity, endCity, percent, distance){
       var halfway = d3.interpolateObject(startCity, endCity)(0.5);
       // center the svg between the cities
       var k = d3.max([d3.min([2500/distance, 10]), 1]);
-      console.log(k);
       var x = halfway.x;
       var y = halfway.y;
       if ( k > 2 ) {

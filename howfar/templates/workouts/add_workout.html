@@ -6,7 +6,7 @@
     Add a new workout for the goal:
 </h1>
 <h2>
-    {{ goal }}
+    {{ goal.start }} to {{ goal.end }}
 </h2>
 <form method="post">
     {% csrf_token %}
@@ -14,7 +14,3 @@
     <p class="submit"><button type="submit" name="submit">Save</button></p>
 </form>
 {% endblock content %}
-
-{% block javascript %}
-    <!-- d3 map to select start/end locations -->
-{% endblock javascript %}

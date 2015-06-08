@@ -46,10 +46,6 @@ function drawCities(cities){
 
       drawMap(svg, states, path);
       
-      // do this before the cityGroup is created so that the cities will be drawn
-      // over the trip lines
-      var tripGroup = svg.append('g')
-        .classed('trips', true);
 
       // pre-calculate the locations in the svg
       cities.forEach(function(city){
@@ -73,27 +69,12 @@ function drawCities(cities){
         .enter().append('circle')
           .classed({
             'city': true,
-            'active': function(d, i){
-              return i === fromCity || i === toCity;
-            }
           })
           .attr('r', 5)
           .attr('transform', function(d){
             return 'translate(' + d.x + ',' + d.y + ')';
-          })
-          .on('click', function(d, i){
-            if ( first ) {
-              fromCity = i;
-              clearTrip();
-              previewTrips(i);
-            } else {
-              toCity = i;
-              clearPreviews();
-              drawTrip();
-            }
-            this.classList.add('active');
-            first = !first;
           });
+
       cityMarkers.append('svg:title')
         .text(function(d){
             return d.city;
@@ -106,6 +87,9 @@ function drawCities(cities){
         .attr('x', width / 2 )
         .attr('y', height - 25)
 
+      var tripGroup = svg.append('g')
+        .classed('trips', true);
+
       function clearTrip(){
         tripGroup.selectAll('line.trip').remove();
         tripText.text('');
@@ -113,8 +97,13 @@ function drawCities(cities){
       }
 
       function connectCities(){
+        clearTrip();
+        cityMarkers.classed({
+          'active': function(d, i){
+            return i === fromCity || i === toCity;
+          }
+        })
         if ( fromCity === undefined || toCity === undefined || fromCity === toCity ) {
-          clearTrip();
           return;
         }
         var locs = [cities[fromCity], cities[toCity]];
