@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 
-from distances.models import Trip
+from distances.models import Location
 
 
 class Exercise(models.Model):
@@ -14,11 +14,12 @@ class Exercise(models.Model):
 
 class Goal(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
-    trip = models.ForeignKey(Trip)
-    exercise = models.ForeignKey(Exercise, blank=True, null=True)
+    start = models.ForeignKey(Location, related_name='start')
+    end = models.ForeignKey(Location, related_name='end')
+    length = models.IntegerField()
 
     def __str__(self):
-        return "{} from {}".format(self.exercise.name.capitalize(), self.trip)
+        return "from {} to {}".format(self.start, self.end)
 
 
 class Workout(models.Model):

@@ -8,15 +8,3 @@ class Location(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Trip(models.Model):
-    start = models.ForeignKey(Location, related_name='start')
-    end = models.ForeignKey(Location, related_name='end')
-    length = models.FloatField()
-
-    class Meta:
-        ordering = ['length']
-
-    def __str__(self):
-        return '{} to {} ({} miles)'.format(self.start, self.end, self.length)

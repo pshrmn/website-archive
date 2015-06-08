@@ -111,29 +111,6 @@ header a, header a:visited {
     color: #143D5E;
 }
 
-.workout {
-    font-size: 30px;
-}
-
-.workout select, .workout input {
-    font-size: 30px;
-}
-
-.workout select {
-    border-color: transparent;
-}
-
-.workout input {
-    width: 75px;
-    border-color: transparent;
-    text-align: right;
-}
-
-.workout button {
-    font-size: 24px;
-    border-radius: 10px;
-}
-
 .description {
     font-size: 20px;
 }

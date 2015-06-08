@@ -5,7 +5,7 @@
     <p>
         {{ workout }}
     </p>
-    <form action="{% url 'delete_workout' object.id %}" method="post">
+    <form action="{% url 'delete_goal' object.id %}" method="post">
         {% csrf_token %}
         <p class="submit">
             <button type="submit" name="submit">Confirm Delete</button>

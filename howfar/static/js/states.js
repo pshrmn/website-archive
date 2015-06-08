@@ -1,5 +1,4 @@
 // requires d3, topojson, and queue
-
 queue()
   .defer(d3.json, '/static/data/lower48.json')
   .defer(d3.csv, 'static/data/cities.csv')
@@ -23,18 +22,8 @@ queue()
     var path = d3.geo.path()
       .projection(projection);
 
-    var stateData = topojson.feature(states, states.objects.states).features;
-
-    var states = svg.append('g')
-      .classed('country', true)
-      .selectAll('g.state')
-        .data(stateData)
-      .enter().append('g')
-        .classed('state', true)
-        .append('path')
-            .classed('outline', true)
-            .attr('d', path);
-
+    drawMap(svg, states, path);
+    
     // pre-calculate the locations in the svg
     cities.forEach(function(city){
       city.latitude = parseFloat(city.latitude);
@@ -115,10 +104,9 @@ queue()
         drawTrip();
       });
 
-    var prettyNums = d3.format(",.02f");
     function drawTrip(){
       var locs = [cities[fromCity], cities[toCity]];
-      var miles = prettyNums(haversine(locs[0], locs[1]));
+      var miles = haversine(locs[0], locs[1]);
       tripText.text(locs[0].city + ' to ' + locs[1].city + ' is ' + miles + ' miles.');
       svg.selectAll('line.trip').remove();
       var trip = svg.append('line')
@@ -161,26 +149,3 @@ queue()
 
     drawTrip();
   });
-
-function haversine(start, end){
-  var R = 3963.1676
-  var start_lat = toRads(start.latitude);
-  var start_cos = Math.cos(start_lat);
-
-  var end_lat = toRads(end.latitude);
-  var end_cos = Math.cos(end_lat)
-
-  var lat_delta = toRads(end.latitude - start.latitude);
-  var lat_delta_sin = Math.pow(Math.sin(lat_delta/2), 2)
-
-  var long_delta = toRads(end.longitude - start.longitude);
-  var long_delta_sin = Math.pow(Math.sin(long_delta/2), 2);
-
-  var a = lat_delta_sin + (start_cos * end_cos * long_delta_sin)
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
-  return R*c
-}
-
-function toRads(num){
-  return num * Math.PI / 180;
-}

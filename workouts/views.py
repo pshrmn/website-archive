@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Goal, Workout
 from .forms import GoalForm, WorkoutForm
+from .helpers import haversine
 
 
 class LoginRequiredMixin(object):
@@ -25,11 +26,29 @@ class AddGoalView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         goal = form.save(commit=False)
         goal.owner = self.request.user
+        goal.length = round(haversine(goal.start, goal.end))
+        print(goal.length)
         goal.save()
         return super(AddGoalView, self).form_valid(form)
 
     def get_success_url(self):
         return 'goal/{}'.format(self.object.id)
+
+
+class DeleteGoalView(LoginRequiredMixin, DeleteView):
+
+    model = Goal
+    template_name = 'workouts/delete_goal.html'
+    login_url = '/login/'
+
+    def get_success_url(self):
+        return '/goals/'
+
+    def get_object(self):
+        goal = super().get_object()
+        if goal.owner != self.request.user:
+            raise Http404
+        return goal
 
 
 class GoalsView(LoginRequiredMixin, ListView):
@@ -100,7 +119,7 @@ class DeleteWorkoutView(LoginRequiredMixin, DeleteView):
         return '/goal/{}'.format(self.object.goal.id)
 
     def get_object(self):
-        workout = super(DeleteWorkoutView, self).get_object()
+        workout = super().get_object()
         if workout.owner != self.request.user:
             raise Http404
         return workout

@@ -24,29 +24,29 @@
     background: #AB384E;
 }
 
+.workout form {
+    display: inline-block;
+}
+
 {% endblock inline-css %}
 
 {% block content %}
 <h1>
-    <span class="exercise">
-        {% if goal.exercise %}
-            {{ goal.exercise | capfirst }}
-        {% else %}
-            Workout
-        {% endif %}
-    </span>
-    |
-    <span class="distance">
-        {{ goal.trip.length }} miles
-    </span>
+    From {{ goal.start.name }} to {{ goal.end.name }}
 </h1>
+<h2 class="distance">
+    {{ goal.length }} miles
+</h2>
 <div class="progress"></div>
 <div>
     <ul>
     {% for workout in goal.workout_set.all %}
-        <li>
+        <li class="workout">
             {{ workout.exercise }} for {{ workout.distance }} miles
-            <a href="{% url 'delete_workout' workout.pk %}">&times;</a>
+            <form action="{% url 'delete_workout' workout.pk %}" method="post">
+                {% csrf_token %}
+                <button>&times;</button>
+            </form>
         </li>
     {% empty %}
         <li>
@@ -56,6 +56,9 @@
     </ul>
     <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
 </div>
+<div class="dangerous">
+    <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
+</div>
 {% endblock content %}
 
 {% block javascript %}
@@ -64,12 +67,21 @@
 {% endblock javascript %}
 
 {% block inline-js %}
-var total = {{ goal.trip.length }};
+var total = {{ goal.length }};
 var distances = [
     {% for workout in goal.workout_set.all %}
     {{ workout.distance }},
     {% endfor %}
 ];
-
+var startCity = {
+    name: "{{ goal.start.name }}",
+    latitude: {{ goal.start.latitude }},
+    longitude: {{ goal.start.longitude }}  
+};
+var endCity = {
+    name: "{{ goal.end.name }}",
+    latitude: {{ goal.end.latitude }},
+    longitude: {{ goal.end.longitude }}  
+};
 showProgress(total, distances);
 {% endblock inline-js %}

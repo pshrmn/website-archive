@@ -7,7 +7,18 @@ class GoalForm(ModelForm):
 
     class Meta:
         model = Goal
-        fields = ('trip', 'exercise')
+        fields = ('start', 'end')
+
+    def is_valid(self):
+        valid = super().is_valid()
+        if not valid:
+            return valid
+        start = self.cleaned_data['start']
+        end = self.cleaned_data['end']
+        if start == end:
+            self._errors['end'] = ['Cannot end at starting location']
+            return False
+        return True
 
 
 class WorkoutForm(ModelForm):
