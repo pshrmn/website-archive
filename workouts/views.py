@@ -2,9 +2,9 @@ from django.views.generic import CreateView, ListView, DetailView, DeleteView
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 
 from .models import Goal, Workout
+from distances.models import Location
 from .forms import GoalForm, WorkoutForm
 from .helpers import haversine
 
@@ -34,6 +34,11 @@ class AddGoalView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return 'goal/{}'.format(self.object.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cities'] = Location.objects.all()
+        return context
 
 
 class DeleteGoalView(LoginRequiredMixin, DeleteView):

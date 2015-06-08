@@ -5,15 +5,16 @@
 {% endblock title %}
 
 {% block content %}
+<a href="{% url 'add_goal' %}">Add a goal.</a>
 <ul>
 {% for goal in goal_list %}
     <li>
         <a href="{% url 'goal' goal.id %}">
-            From {{ goal.start.name }} to {{ goal.end.name }} ({{ goal.length }} miles)</a>
+            {{ goal.start.name }} to {{ goal.end.name }} ({{ goal.length }} miles)</a>
     </li>
 {% empty %}
     <li>
-        You have no goals. <a href="{% url 'add_goal' %}">Add a goal.</a>
+        You have no goals.
     </li>
 {% endfor %}
 </ul>
