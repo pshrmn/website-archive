@@ -60,6 +60,8 @@ TEMPLATES = [
     },
 ]
 
+DATABASES = {}
+
 WSGI_APPLICATION = 'howfar.wsgi.application'
 
 
