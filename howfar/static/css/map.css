@@ -12,7 +12,7 @@
     fill: #AB384E;
 }
 
-.trip {
+line.trip {
     stroke: #AB384E;
     stroke-width: 2px;
 }
@@ -22,8 +22,22 @@
     fill: #143D5E;
 }
 
-.preview {
+line.preview {
     stroke: #AB384E;
     opacity: 0.5;
     stroke-width: 2px;
+}
+
+line.progress {
+    stroke: #AB384E;
+    stroke-width: 2px;
+}
+
+line.goal {
+    stroke: #F1F4F7;
+    stroke-width: 2px;
+}
+
+line.progress, line.goal {
+ stroke-linecap: round;   
 }

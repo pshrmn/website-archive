@@ -2,6 +2,7 @@ from django.views.generic import CreateView, ListView, DetailView, DeleteView
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
 from .models import Goal, Workout
 from .forms import GoalForm, WorkoutForm
@@ -93,11 +94,15 @@ class AddWorkoutView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         workout = form.save(commit=False)
-        workout.goal = get_object_or_404(Goal, pk=self.kwargs.get('pk'))
+        goal = get_object_or_404(Goal, pk=self.kwargs.get('pk'))
+        workout.goal = goal
         if workout.goal.owner != self.request.user:
             return False
         workout.owner = self.request.user
         workout.save()
+        if not goal.complete and goal_progress(goal) > goal.length:
+            goal.complete = True
+            goal.save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -116,6 +121,7 @@ class DeleteWorkoutView(LoginRequiredMixin, DeleteView):
     login_url = '/login/'
 
     def get_success_url(self):
+        print('getting success url')
         return '/goal/{}'.format(self.object.goal.id)
 
     def get_object(self):
@@ -123,3 +129,22 @@ class DeleteWorkoutView(LoginRequiredMixin, DeleteView):
         if workout.owner != self.request.user:
             raise Http404
         return workout
+
+    def delete(self, request, *args, **kwargs):
+        """
+        when deleting, update goal's complete value
+        """
+        # need to get the workout's goal before deleting the workout
+        workout = super().get_object()
+        goal = workout.goal
+        # actually delete the workout, then calculate progress so the workout
+        # being deleted isn't included in the sum
+        resp = super().delete(request, *args, **kwargs)
+        if goal.complete and goal_progress(goal) < goal.length:
+            goal.complete = False
+            goal.save()
+        return resp
+
+
+def goal_progress(goal):
+    return sum(w.distance for w in goal.workout_set.all())

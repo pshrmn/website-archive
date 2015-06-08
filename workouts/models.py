@@ -17,6 +17,7 @@ class Goal(models.Model):
     start = models.ForeignKey(Location, related_name='start')
     end = models.ForeignKey(Location, related_name='end')
     length = models.IntegerField()
+    complete = models.BooleanField(default=False)
 
     def __str__(self):
         return "from {} to {}".format(self.start, self.end)

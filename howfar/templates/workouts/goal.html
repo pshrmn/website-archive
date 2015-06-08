@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/map.css' %}">
+{% endblock stylesheets %}
+
 {% block inline-css %}
 #progress-bar {
     position: relative;
@@ -32,12 +38,10 @@
 
 {% block content %}
 <h1>
-    From {{ goal.start.name }} to {{ goal.end.name }}
+    From {{ goal.start.name }} to {{ goal.end.name }} ({{ goal.length }} miles)
 </h1>
-<h2 class="distance">
-    {{ goal.length }} miles
-</h2>
 <div class="progress"></div>
+<div class="map"></div>
 <div>
     <ul>
     {% for workout in goal.workout_set.all %}
@@ -54,7 +58,9 @@
         </li>
     {% endfor %}
     </ul>
-    <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
+    {% if not goal.complete %}
+        <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
+    {% endif %}
 </div>
 <div class="dangerous">
     <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
@@ -63,6 +69,7 @@
 
 {% block javascript %}
 {{ block.super }}
+<script src="{% static 'js/maps.js' %}" type="text/javascript"></script>
 <script type="text/javascript" src="{% static 'js/goal.js' %}"></script>
 {% endblock javascript %}
 
@@ -73,6 +80,12 @@ var distances = [
     {{ workout.distance }},
     {% endfor %}
 ];
+
+var progress = distances.reduce(function(prev, curr){
+    return prev + curr;
+  }, 0);
+var percent = d3.min([(progress / total), 1]);
+
 var startCity = {
     name: "{{ goal.start.name }}",
     latitude: {{ goal.start.latitude }},
@@ -84,4 +97,5 @@ var endCity = {
     longitude: {{ goal.end.longitude }}  
 };
 showProgress(total, distances);
+drawGoal(startCity, endCity, percent, total);
 {% endblock inline-js %}
