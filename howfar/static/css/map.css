@@ -21,3 +21,9 @@
     text-anchor: middle;
     fill: #143D5E;
 }
+
+.preview {
+    stroke: #AB384E;
+    opacity: 0.5;
+    stroke-width: 2px;
+}

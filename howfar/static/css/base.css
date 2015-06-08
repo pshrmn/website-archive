@@ -23,6 +23,10 @@ h1, h2, h3, h4 {
     font-weight: normal;
 }
 
+p {
+    margin: 0;
+}
+
 a {
     color: #3E7350;
 }
@@ -128,4 +132,8 @@ p label {
 form p {
     margin: 2px 0;
     padding: 0;
+}
+
+.note {
+    font-size: 0.8em;
 }

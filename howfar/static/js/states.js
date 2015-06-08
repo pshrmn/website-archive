@@ -10,7 +10,8 @@ queue()
     var fromCity = 0;
     var toCity = 1;
 
-    var holder = d3.select('.content').append('div');
+
+    var holder = d3.select('.map');
     var svg = holder.append('svg')
       .attr('width', width)
       .attr('height', height);
@@ -24,6 +25,11 @@ queue()
 
     drawMap(svg, states, path);
     
+    // do this before the cityGroup is created so that the cities will be drawn
+    // over the trip lines
+    var tripGroup = svg.append('g')
+      .classed('trips', true);
+
     // pre-calculate the locations in the svg
     cities.forEach(function(city){
       city.latitude = parseFloat(city.latitude);
@@ -32,6 +38,8 @@ queue()
       city.x = coords[0];
       city.y = coords[1];
     });
+
+    var first = true;
 
     // draw the cities
     var cityGroup = svg.append('g')
@@ -51,6 +59,23 @@ queue()
         .attr('r', 5)
         .attr('transform', function(d){
           return 'translate(' + d.x + ',' + d.y + ')';
+        })
+        .on('click', function(d, i){
+          if ( first ) {
+            fromCity = i;
+            clearTrip();
+            previewTrips(i);
+          } else {
+            toCity = i;
+            clearPreviews();
+            drawTrip();
+          }
+          this.classList.add('active');
+          first = !first;
+        });
+    cityMarkers.append('svg:title')
+      .text(function(d){
+          return d.city;
         });
 
     var tripText = svg.append('text')
@@ -60,56 +85,52 @@ queue()
       .attr('x', width / 2 )
       .attr('y', height - 25)
 
-    var cityTable = holder.append('table');
-    var cityHead = cityTable.append('tr').selectAll('th')
-        .data(['', 'From', 'To'])
-      .enter().append('td')
-        .text(function(d){ return d; });
+    function clearTrip(){
+      tripGroup.selectAll('line.trip').remove();
+      tripText.text('');
+      d3.selectAll('.city.active').classed('active', false);
+    }
 
-    var cityRows = cityTable.selectAll('tr.city')
-        .data(cities)
-      .enter().append('tr')
-        .classed({
-          'city': true
+    function clearPreviews(){
+      tripGroup.selectAll('line.preview').remove();
+    }
+
+    function previewTrips(index){
+
+      tripText.text(cities[index].city + ' to ________ is ____ miles');
+      var previews = cities.map(function(city){
+          return [cities[index], city]
+        })
+        .filter(function(prev, i){
+          return i !== index;
         });
-      
-    cityRows.append('td')
-      .text(function(d){ return d.city; });
 
-    cityRows.append('td').append('input')
-      .attr('type', 'radio')
-      .attr('value', function(d, i){
-        return i;
-      })
-      .attr('name', 'first-city')
-      .property('checked', function(d, i){
-        return i === fromCity;
-      })
-      .on('change', function(d, i){
-        fromCity = i;
-        drawTrip();
-      })
-
-    cityRows.append('td').append('input')
-      .attr('type', 'radio')
-      .attr('value', function(d, i){
-        return i;
-      })
-      .attr('name', 'second-city')
-      .property('checked', function(d, i){
-        return i === toCity;
-      })
-      .on('change', function(d, i){
-        toCity = i;
-        drawTrip();
-      });
+      tripGroup.selectAll('line.preview')
+          .data(previews)
+        .enter().append('line')
+          .classed({
+            'preview': true
+          })
+          .attr('x1', function(d){
+            return d[0].x;
+          })
+          .attr('x2', function(d){
+            return d[1].x;
+          })
+          .attr('y1', function(d){
+            return d[0].y;
+          })
+          .attr('y2', function(d){
+            return d[1].y;
+          });
+    }
 
     function drawTrip(){
       var locs = [cities[fromCity], cities[toCity]];
       var miles = haversine(locs[0], locs[1]);
       tripText.text(locs[0].city + ' to ' + locs[1].city + ' is ' + miles + ' miles.');
-      svg.selectAll('line.trip').remove();
-      var trip = svg.append('line')
+      
+      var trip = tripGroup.append('line')
           .datum(locs)
           .classed({
             'trip': true
@@ -118,33 +139,14 @@ queue()
             return d[0].x;
           })
           .attr('x2', function(d){
-            return d[0].x;
+            return d[1].x;
           })
           .attr('y1', function(d){
             return d[0].y;
           })
           .attr('y2', function(d){
-            return d[0].y;
+            return d[1].y;
           });
-
-      cityMarkers.classed({
-        'active': function(d, i){
-          return i === fromCity || i === toCity;
-        }
-      })
-
-      // length of transition will vary based on the length of the trip
-      var distance = Math.sqrt(Math.pow(locs[1].x - locs[0].x, 2) +
-        Math.pow(locs[1].y - locs[0].y, 2));
-      trip.transition()
-        .duration(distance*4)
-        .ease('linear')
-        .attr('x2', function(d){
-          return d[1].x;
-        })
-        .attr('y2', function(d){
-          return d[1].y;
-        })
     }
 
     drawTrip();
