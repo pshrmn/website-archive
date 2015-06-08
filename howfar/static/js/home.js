@@ -75,7 +75,7 @@ queue()
         });
     cityMarkers.append('svg:title')
       .text(function(d){
-          return d.city;
+          return d.name;
         });
 
     var tripText = svg.append('text')
@@ -97,7 +97,7 @@ queue()
 
     function previewTrips(index){
 
-      tripText.text(cities[index].city + ' to ________ is ____ miles');
+      tripText.text(cities[index].name + ' to ________ is ____ miles');
       var previews = cities.map(function(city){
           return [cities[index], city]
         })
@@ -125,10 +125,11 @@ queue()
           });
     }
 
+    var thousandsCommas = d3.format(',')
     function drawTrip(){
       var locs = [cities[fromCity], cities[toCity]];
-      var miles = haversine(locs[0], locs[1]);
-      tripText.text(locs[0].city + ' to ' + locs[1].city + ' is ' + miles + ' miles.');
+      var miles = thousandsCommas(haversine(locs[0], locs[1]));
+      tripText.text(locs[0].name + ' to ' + locs[1].name + ' is ' + miles + ' miles.');
       
       var trip = tripGroup.append('line')
           .datum(locs)

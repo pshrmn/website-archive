@@ -62,19 +62,12 @@ function drawGoal(startCity, endCity, percent, distance){
           city.y = coords[1];
       });
       var perc = d3.interpolateObject(startCity, endCity)(percent);
-      var halfway = d3.interpolateObject(startCity, endCity)(0.5);
-      // center the svg between the cities
-      var k = d3.max([d3.min([2500/distance, 10]), 1]);
-      var x = halfway.x;
-      var y = halfway.y;
-      if ( k > 2 ) {
-        g.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-      }
+      
 
       var citiesGroup = g.append('g')
         .classed('cities-group', true);
 
-      citiesGroup.selectAll('circle.city')
+      var cityMarkers = citiesGroup.selectAll('circle.city')
           .data(cities)
         .enter().append('circle')
           .classed({
@@ -106,5 +99,15 @@ function drawGoal(startCity, endCity, percent, distance){
         .attr('y1', startCity.y)
         .attr('x2', perc.x)
         .attr('y2', perc.y);
+
+      var halfway = d3.interpolateObject(startCity, endCity)(0.5);
+      // center the svg between the cities
+      var k = d3.max([d3.min([2500/distance, 5]), 1]);
+      var x = halfway.x;
+      var y = halfway.y;
+      if ( k > 2 ) {
+        g.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+      }
     });
+
 }
