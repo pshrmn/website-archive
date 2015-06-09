@@ -11,11 +11,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Distance',
+            name='Location',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=200)),
-                ('length', models.FloatField()),
+                ('latitude', models.DecimalField(decimal_places=4, max_digits=8)),
+                ('longitude', models.DecimalField(decimal_places=4, max_digits=8)),
             ],
         ),
     ]
