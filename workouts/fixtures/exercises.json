@@ -1,0 +1,30 @@
+[
+  {
+    "pk": 1,
+    "model": "workouts.exercise",
+    "fields": {
+      "name": "run"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "workouts.exercise",
+    "fields": {
+      "name": "walk"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "workouts.exercise",
+    "fields": {
+      "name": "swim"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "workouts.exercise",
+    "fields": {
+      "name": "bike"
+    }
+  }
+]
