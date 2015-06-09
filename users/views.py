@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
 from django.contrib.auth.views import login, logout, password_change
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login as auth_login
 
 User = get_user_model()
 
@@ -21,6 +22,17 @@ class SignUpView(CreateView):
     model = User
     form_class = UserCreationForm
     success_url = '/'
+
+    def form_valid(self, form):
+        valid = super().form_valid(form)
+        if not valid:
+            return valid
+        form.save()
+        username = self.request.POST['username']
+        password = self.request.POST['password1']
+        user = authenticate(username=username, password=password)
+        auth_login(self.request, user)
+        return valid
 
 
 class LoginView(View):
