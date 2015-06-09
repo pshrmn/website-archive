@@ -1,1 +1,1 @@
-web: gunicorn menu.wsgi --log-file -
+web: gunicorn howfar.wsgi --log-file -
