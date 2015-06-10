@@ -13,7 +13,6 @@ function drawCities(cities){
       var setFromCity = true;
 
       var formPs = d3.selectAll('form p');
-      console.log(formPs);
       function setActiveP(){
         var index = setFromCity ? 0 : 1;
         formPs.classed({
@@ -121,6 +120,7 @@ function drawCities(cities){
         d3.selectAll('.city.active').classed('active', false);
       }
 
+      var thousandsCommas = d3.format(',')
       function connectCities(){
         clearTrip();
         setActiveP();
@@ -133,7 +133,7 @@ function drawCities(cities){
           return;
         }
         var locs = getCitiesByPk(fromCity, toCity);
-        var miles = haversine(locs[0], locs[1]);
+        var miles = thousandsCommas(haversine(locs[0], locs[1]));
         tripText.text(locs[0].name + ' to ' + locs[1].name + ' is ' + miles + ' miles.');
         
         var trip = tripGroup.append('line')

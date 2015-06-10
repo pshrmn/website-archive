@@ -142,5 +142,41 @@
       "name": "Minneapolis",
       "longitude": -93.2683
     }
+  },
+  {
+    "pk": 17,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 42.332,
+      "name": "Boston",
+      "longitude": -71.0202
+    }
+  },
+  {
+    "pk": 18,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 36.1718,
+      "name": "Nashville",
+      "longitude": -86.785
+    }
+  },
+  {
+    "pk": 19,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 35.2087,
+      "name": "Charlotte",
+      "longitude": -80.8307
+    }
+  },
+  {
+    "pk": 20,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 39.7767,
+      "name": "Indianapolis",
+      "longitude": -86.1459
+    }
   }
 ]
