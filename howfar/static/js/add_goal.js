@@ -77,7 +77,7 @@ function drawCities(cities){
 
       cityMarkers.append('svg:title')
         .text(function(d){
-            return d.city;
+            return d.name;
           });
 
       var tripText = svg.append('text')

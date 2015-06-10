@@ -26,5 +26,12 @@
     "fields": {
       "name": "bike"
     }
+  },
+  {
+    "pk": 5,
+    "model": "workouts.exercise",
+    "fields": {
+      "name": "row"
+    }
   }
 ]

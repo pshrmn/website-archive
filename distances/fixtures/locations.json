@@ -106,5 +106,41 @@
       "name": "Atlanta",
       "longitude": -84.4227
     }
+  },
+  {
+    "pk": 13,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 38.635,
+      "name": "St. Louis",
+      "longitude": -90.2446
+    }
+  },
+  {
+    "pk": 14,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 30.0686,
+      "name": "New Orleans",
+      "longitude": -89.939
+    }
+  },
+  {
+    "pk": 15,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 36.2277,
+      "name": "Las Vegas",
+      "longitude": -115.264
+    }
+  },
+  {
+    "pk": 16,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 44.9633,
+      "name": "Minneapolis",
+      "longitude": -93.2683
+    }
   }
 ]
