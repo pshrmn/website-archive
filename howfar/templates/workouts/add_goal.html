@@ -28,7 +28,8 @@ var cities = [
     {
         name: "{{ city.name }}",
         latitude: {{ city.latitude }},
-        longitude: {{ city.longitude }}  
+        longitude: {{ city.longitude }},
+        pk: {{ city.pk }}
     },
     {% endfor %}
 ];

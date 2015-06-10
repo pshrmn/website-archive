@@ -10,24 +10,28 @@ function drawCities(cities){
       var scale = 700;
       var fromCity = undefined;
       var toCity = undefined;
+      var setFromCity = true;
 
-
-      d3.select('#id_start')
+      var fromSelect = d3.select('#id_start')
         .on('change', function(d){
           if ( this.value === '' ) {
             fromCity = undefined;
+            setFromCity = true;
           } else {
-            fromCity = parseInt(this.value, 10) - 1;
+            fromCity = parseInt(this.value, 10);
+            setFromCity = false;
           }
           connectCities();
         });
 
-      d3.select('#id_end')
+      var toSelect = d3.select('#id_end')
         .on('change', function(d){
           if ( this.value === '' ) {
             toCity = undefined;
+            setFromCity = false;
           } else {
-            toCity = parseInt(this.value, 10) - 1;
+            toCity = parseInt(this.value, 10);
+            setFromCity = true;
           }
           connectCities();
         });
@@ -46,9 +50,8 @@ function drawCities(cities){
 
       drawMap(svg, states, path);
       
-
       // pre-calculate the locations in the svg
-      cities.forEach(function(city){
+      cities.forEach(function(city, i){
         city.latitude = parseFloat(city.latitude);
         city.longitude = parseFloat(city.longitude);
         var coords = projection([city.longitude, city.latitude]);
@@ -73,7 +76,18 @@ function drawCities(cities){
           .attr('r', 5)
           .attr('transform', function(d){
             return 'translate(' + d.x + ',' + d.y + ')';
-          });
+          })
+          .on('click', function(d, i){
+            if ( setFromCity ) {
+              fromSelect.property('value', d.pk);
+              fromCity = d.pk;
+            } else {
+              toSelect.property('value', d.pk);
+              toCity = d.pk;
+            }
+            setFromCity = !setFromCity;
+            connectCities();
+          })
 
       cityMarkers.append('svg:title')
         .text(function(d){
@@ -99,14 +113,14 @@ function drawCities(cities){
       function connectCities(){
         clearTrip();
         cityMarkers.classed({
-          'active': function(d, i){
-            return i === fromCity || i === toCity;
+          'active': function(d){
+            return d.pk === fromCity || d.pk === toCity;
           }
         })
         if ( fromCity === undefined || toCity === undefined || fromCity === toCity ) {
           return;
         }
-        var locs = [cities[fromCity], cities[toCity]];
+        var locs = getCitiesByPk(fromCity, toCity);
         var miles = haversine(locs[0], locs[1]);
         tripText.text(locs[0].name + ' to ' + locs[1].name + ' is ' + miles + ' miles.');
         
@@ -127,6 +141,20 @@ function drawCities(cities){
             .attr('y2', function(d){
               return d[1].y;
             });
+      }
+
+      function getCitiesByPk(from, to) {
+        var fromCity = undefined;
+        var toCity = undefined;
+        cities.forEach(function(city){
+          if ( city.pk === from ) {
+            fromCity = city;
+          } else if ( city.pk === to ) {
+            toCity = city;
+          }
+        })
+
+        return [fromCity, toCity];
       }
 
       connectCities();
