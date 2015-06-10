@@ -86,6 +86,10 @@ header li:hover ul {
     display: block;
 }
 
+header li ul li {
+  border-top: 1px solid #EAE7D8;
+}
+
 header a, header a:visited {
     color: #EAE7D8;
     text-decoration: none;
@@ -136,4 +140,11 @@ form p {
 
 .note {
     font-size: 0.8em;
+}
+
+.username{
+    color: #143D5E;
+    background: #EAE7D8;
+    border-radius: 5px;
+    padding: 0 5px;
 }

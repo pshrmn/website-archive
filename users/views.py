@@ -42,15 +42,17 @@ class LoginView(View):
     /login page
     """
 
+    template_name = "users/login.html"
+
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated():
             return redirect("home")
         next_page = self.request.GET.get("next", '/')
-        return login(template_name="users/login.html",
+        return login(template_name=self.template_name,
                      extra_context={"next": next_page}, *args, **kwargs)
 
     def post(self, *args, **kwargs):
-        return login(*args, **kwargs)
+        return login(template_name=self.template_name, *args, **kwargs)
 
 
 class LogoutView(View):

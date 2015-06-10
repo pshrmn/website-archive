@@ -1,11 +1,13 @@
 .state path {
-    fill: #9CC8A5;
+    fill: #3DB366;
     stroke: #EAE7D8;
     stroke-width: 1px;
 }
 
 .city {
-    fill: #3E7350;
+    fill: #EAE7D8;
+    stroke-width: 2px;
+    stroke: #143D5E;
 }
 
 .city.active {
