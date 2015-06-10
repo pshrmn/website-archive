@@ -12,6 +12,17 @@ function drawCities(cities){
       var toCity = undefined;
       var setFromCity = true;
 
+      var formPs = d3.selectAll('form p');
+      console.log(formPs);
+      function setActiveP(){
+        var index = setFromCity ? 0 : 1;
+        formPs.classed({
+          'active': function(d, i){
+            return i === index;
+          }
+        })
+      }
+
       var fromSelect = d3.select('#id_start')
         .on('change', function(d){
           if ( this.value === '' ) {
@@ -112,6 +123,7 @@ function drawCities(cities){
 
       function connectCities(){
         clearTrip();
+        setActiveP();
         cityMarkers.classed({
           'active': function(d){
             return d.pk === fromCity || d.pk === toCity;
