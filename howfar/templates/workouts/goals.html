@@ -10,7 +10,7 @@
 {% for goal in goal_list %}
     <li>
         <a href="{% url 'goal' goal.id %}">
-            {{ goal.start.name }} to {{ goal.end.name }} ({{ goal.length }} miles)</a>
+            {{ goal.start.name }} to {{ goal.end.name }} ({{ goal.progress }}/{{ goal.length }} miles)</a>
     </li>
 {% empty %}
     <li>

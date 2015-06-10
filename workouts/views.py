@@ -105,9 +105,10 @@ class AddWorkoutView(LoginRequiredMixin, CreateView):
             return False
         workout.owner = self.request.user
         workout.save()
-        if not goal.complete and goal_progress(goal) > goal.length:
+        goal.progress += workout.distance
+        if not goal.complete and goal.progress > goal.length:
             goal.complete = True
-            goal.save()
+        goal.save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -142,14 +143,8 @@ class DeleteWorkoutView(LoginRequiredMixin, DeleteView):
         # need to get the workout's goal before deleting the workout
         workout = super().get_object()
         goal = workout.goal
-        # actually delete the workout, then calculate progress so the workout
-        # being deleted isn't included in the sum
-        resp = super().delete(request, *args, **kwargs)
-        if goal.complete and goal_progress(goal) < goal.length:
+        goal.progress -= workout.distance
+        if goal.complete and goal.progress < goal.length:
             goal.complete = False
-            goal.save()
-        return resp
-
-
-def goal_progress(goal):
-    return sum(w.distance for w in goal.workout_set.all())
+        goal.save()
+        return super().delete(request, *args, **kwargs)

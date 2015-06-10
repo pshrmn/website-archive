@@ -38,8 +38,11 @@
 
 {% block content %}
 <h1>
-    {{ goal.start.name }} to {{ goal.end.name }} ({{ goal.length }} miles)
+    {{ goal.start.name }} to {{ goal.end.name }}
 </h1>
+<h2>
+    {{ goal.progress }}/{{ goal.length }} miles
+</h2>
 <div class="progress"></div>
 <div class="map"></div>
 <div>
@@ -81,9 +84,7 @@ var distances = [
     {% endfor %}
 ];
 
-var progress = distances.reduce(function(prev, curr){
-    return prev + curr;
-  }, 0);
+var progress = {{ goal.progress }};
 var percent = d3.min([(progress / total), 1]);
 
 var startCity = {
