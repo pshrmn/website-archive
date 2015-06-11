@@ -19,6 +19,9 @@ class Goal(models.Model):
     progress = models.FloatField(default=0)
     complete = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ["-progress"]
+
     def __str__(self):
         return "{} - {} to {}".format(self.pk, self.start, self.end)
 

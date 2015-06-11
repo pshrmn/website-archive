@@ -7,29 +7,6 @@
 {% endblock stylesheets %}
 
 {% block inline-css %}
-#progress-bar {
-    position: relative;
-    width: 400px;
-    height: 20px;
-    padding: 5px 0;
-}
-
-.bar {
-    height: 20px;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.total {
-    background: rgba(171, 56, 78, 0.25);
-}
-
-.current {
-    background: #AB384E;
-}
-
 .workout form {
     display: inline-block;
 }
@@ -46,6 +23,7 @@
 </h1>
 <h2>
     {{ goal.progress }}/{{ goal.length }} miles
+    (<span id="progress-percent"></span>)
 </h2>
 <div class="progress"></div>
 <div class="map"></div>
@@ -82,14 +60,13 @@
 
 {% block inline-js %}
 var total = {{ goal.length }};
-var distances = [
-    {% for workout in goal.workout_set.all %}
-    {{ workout.distance }},
-    {% endfor %}
-];
 
 var progress = {{ goal.progress }};
 var percent = d3.min([(progress / total), 1]);
+
+var percFormat = d3.format('.2%');
+d3.select('#progress-percent')
+    .text(percFormat(percent));
 
 var startCity = {
     name: "{{ goal.start.name }}",
@@ -101,6 +78,5 @@ var endCity = {
     latitude: {{ goal.end.latitude }},
     longitude: {{ goal.end.longitude }}  
 };
-showProgress(total, distances);
 drawGoal(startCity, endCity, percent, total);
 {% endblock inline-js %}
