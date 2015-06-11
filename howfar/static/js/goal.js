@@ -71,7 +71,13 @@ function drawGoal(startCity, endCity, percent, distance){
           .data(cities)
         .enter().append('circle')
           .classed({
-            'city': true
+            'city': true,
+            'start': function(d, i){
+              return i === 0;
+            },
+            'end': function(d, i){
+              return i === 1;
+            }
           })
           .attr('r', 3)
           .attr('transform', function(d){
@@ -102,12 +108,32 @@ function drawGoal(startCity, endCity, percent, distance){
 
       var halfway = d3.interpolateObject(startCity, endCity)(0.5);
       // center the svg between the cities
-      var k = d3.max([d3.min([2500/distance, 5]), 1]);
+      var k = optimalScale(startCity, endCity, width, height);
       var x = halfway.x;
       var y = halfway.y;
       if ( k > 2 ) {
-        g.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        /*
+         * transition is applied right to left
+         * first move the desired center point to (0, 0)
+         * then scale the map by the desired amount
+         * the translate the center point to the center of the svg
+         */
+        g
+          .classed({
+            'zoomed': true
+          })
+          .attr('transform', 'translate(' + (width / 2)+ ',' + (height / 2) + ')' +
+                            'scale(' + k + ')' +
+                            'translate(' + -x + ',' + -y + ')');
       }
-    });
 
+    });
+}
+
+// figure out the max scale in each direction that would allow for the cities
+// to be drawn with some padding and fit within the svg. return the lower scale
+function optimalScale(startCity, endCity, width, height){
+  var widthScale = width / (Math.abs(startCity.x - endCity.x) + 50);
+  var heightScale = height / (Math.abs(startCity.y - endCity.y) + 50);
+  return d3.min([widthScale, heightScale]);
 }

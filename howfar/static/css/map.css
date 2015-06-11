@@ -10,6 +10,18 @@
     stroke: #143D5E;
 }
 
+.city.start {
+    fill: #AB384E;
+}
+
+.city.end {
+    fill: #F1F4F7;
+}
+
+.zoomed .city {
+    stroke-width: 1px;
+}
+
 .city.active {
     fill: #AB384E;
 }
@@ -32,7 +44,7 @@ line.preview {
 
 line.progress {
     stroke: #AB384E;
-    stroke-width: 2px;
+    stroke-width: 3px;
 }
 
 line.goal {
