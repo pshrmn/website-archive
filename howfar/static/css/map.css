@@ -26,6 +26,14 @@
     fill: #AB384E;
 }
 
+.city.inactive {
+    opacity: 0.5;
+}
+
+.city:hover{
+    opacity: 1;
+}
+
 line.trip {
     stroke: #AB384E;
     stroke-width: 2px;

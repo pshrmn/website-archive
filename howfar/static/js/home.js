@@ -25,10 +25,17 @@ queue()
 
     drawMap(svg, states, path);
     
-    // do this before the cityGroup is created so that the cities will be drawn
-    // over the trip lines
+    /*
+     * trips should be drawn over cities, cities should be drawn over previews
+     */
+    var previewGroup = svg.append('g')
+      .classed('trips', true);
     var tripGroup = svg.append('g')
       .classed('trips', true);
+    var cityGroup = svg.append('g')
+      .classed({
+        'cities': true
+      });
 
     // pre-calculate the locations in the svg
     cities.forEach(function(city){
@@ -41,11 +48,6 @@ queue()
 
     var first = true;
 
-    // draw the cities
-    var cityGroup = svg.append('g')
-      .classed({
-        'cities': true
-      });
 
     var cityMarkers = cityGroup.selectAll('circle.city')
         .data(cities)
@@ -89,10 +91,11 @@ queue()
       tripGroup.selectAll('line.trip').remove();
       tripText.text('');
       d3.selectAll('.city.active').classed('active', false);
+      d3.selectAll('.city.inactive').classed('inactive', false);
     }
 
     function clearPreviews(){
-      tripGroup.selectAll('line.preview').remove();
+      previewGroup.selectAll('line.preview').remove();
     }
 
     function previewTrips(index){
@@ -105,7 +108,7 @@ queue()
           return i !== index;
         });
 
-      tripGroup.selectAll('line.preview')
+      previewGroup.selectAll('line.preview')
           .data(previews)
         .enter().append('line')
           .classed({
@@ -130,7 +133,12 @@ queue()
       var locs = [cities[fromCity], cities[toCity]];
       var miles = thousandsCommas(haversine(locs[0], locs[1]));
       tripText.text(locs[0].name + ' to ' + locs[1].name + ' is ' + miles + ' miles.');
-      
+      cityMarkers.classed({
+        'inactive': function(d, i) {
+          return i !== fromCity && i !== toCity;
+        }
+      });
+
       var trip = tripGroup.append('line')
           .datum(locs)
           .classed({
