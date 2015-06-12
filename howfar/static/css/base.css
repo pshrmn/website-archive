@@ -118,6 +118,7 @@ header a, header a:visited {
 .content {
     padding: 25px 75px 0;
     color: #143D5E;
+    max-width: 800px;
 }
 
 .description {
