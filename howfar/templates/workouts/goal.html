@@ -48,6 +48,7 @@
     {% endif %}
 </div>
 <div class="dangerous">
+    <a href="{% url 'update_goal' goal.pk %}">Update Goal</a>
     <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
 </div>
 {% endblock content %}

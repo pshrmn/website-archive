@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 
 from users.views import LoginView, LogoutView, SignUpView
 from workouts.views import (GoalsView, GoalView,
-                            AddGoalView, DeleteGoalView,
+                            AddGoalView, DeleteGoalView, UpdateGoalView,
                             AddWorkoutView, DeleteWorkoutView)
 
 admin.autodiscover()
@@ -14,6 +14,7 @@ urlpatterns = patterns(
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^about$', TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^add_goal', AddGoalView.as_view(), name='add_goal'),
+    url(r'^update_goal/(?P<pk>\d+)', UpdateGoalView.as_view(), name='update_goal'),
     url(r'^delete_goal/(?P<pk>\d+)', DeleteGoalView.as_view(), name='delete_goal'),
     url(r'^goals', GoalsView.as_view(), name='goals'),
     url(r'^goal/(?P<pk>\d+)$', GoalView.as_view(), name='goal'),

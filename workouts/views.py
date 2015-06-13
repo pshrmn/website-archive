@@ -1,4 +1,5 @@
-from django.views.generic import CreateView, ListView, DetailView, DeleteView
+from django.views.generic import (CreateView, ListView, DetailView,
+                                  DeleteView, UpdateView)
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
@@ -28,7 +29,6 @@ class AddGoalView(LoginRequiredMixin, CreateView):
         goal = form.save(commit=False)
         goal.owner = self.request.user
         goal.length = round(haversine(goal.start, goal.end))
-        print(goal.length)
         goal.save()
         return super(AddGoalView, self).form_valid(form)
 
@@ -55,6 +55,36 @@ class DeleteGoalView(LoginRequiredMixin, DeleteView):
         if goal.owner != self.request.user:
             raise Http404
         return goal
+
+
+class UpdateGoalView(LoginRequiredMixin, UpdateView):
+
+    model = Goal
+    template_name = 'workouts/update_goal.html'
+    form_class = GoalForm
+    login_url = '/login'
+
+    def get_object(self):
+        obj = super().get_object()
+        if obj.owner != self.request.user:
+            raise Http404
+        return obj
+
+    def get_success_url(self):
+        return '/goal/{}'.format(self.object.id)
+
+    def form_valid(self, form):
+        goal = form.save(commit=False)
+        # update the length
+        goal.length = round(haversine(goal.start, goal.end))
+        goal.complete = goal.progress >= goal.length
+        goal.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cities'] = Location.objects.all()
+        return context
 
 
 class GoalsView(LoginRequiredMixin, ListView):
