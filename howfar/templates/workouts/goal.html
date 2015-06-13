@@ -22,9 +22,26 @@
     {{ goal.start.name }} to {{ goal.end.name }}
 </h1>
 <h2>
-    {{ goal.progress }}/{{ goal.length }} miles
+    <span class="goal-progress">
+        {{ goal.progress }}
+    </span>
+    /
+    <span class="goal-length">
+        {{ goal.length }}
+    </span>
+    miles
     (<span id="progress-percent"></span>)
 </h2>
+{% if user.is_authenticated and user == goal.owner %}
+<div class="dangerous">
+    <p>
+        <a href="{% url 'update_goal' goal.pk %}">Update Goal</a>
+    </p>
+    <p>
+        <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
+    </p>
+</div>
+{% endif %}
 <div class="progress"></div>
 <div class="map"></div>
 <div>
@@ -39,18 +56,15 @@
         </li>
     {% empty %}
         <li>
-            You have no saved workouts.
+            There are no saved workouts.
         </li>
     {% endfor %}
     </ul>
-    {% if not goal.complete %}
+    {% if user.is_authenticated and user == goal.owner and not goal.complete %}
         <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
     {% endif %}
 </div>
-<div class="dangerous">
-    <a href="{% url 'update_goal' goal.pk %}">Update Goal</a>
-    <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
-</div>
+
 {% endblock content %}
 
 {% block javascript %}

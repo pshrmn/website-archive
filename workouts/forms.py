@@ -7,7 +7,7 @@ class GoalForm(ModelForm):
 
     class Meta:
         model = Goal
-        fields = ('start', 'end')
+        fields = ('start', 'end', 'public')
 
     def is_valid(self):
         valid = super().is_valid()

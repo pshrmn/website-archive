@@ -18,6 +18,7 @@ class Goal(models.Model):
     length = models.IntegerField()
     progress = models.FloatField(default=0)
     complete = models.BooleanField(default=False)
+    public = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-progress"]

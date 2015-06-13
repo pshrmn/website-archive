@@ -97,7 +97,7 @@ class GoalsView(LoginRequiredMixin, ListView):
         return self.request.user.goal_set.all()
 
 
-class GoalView(LoginRequiredMixin, DetailView):
+class GoalView(DetailView):
 
     model = Goal
     template_name = 'workouts/goal.html'
@@ -105,7 +105,7 @@ class GoalView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         goal = get_object_or_404(Goal, pk=self.kwargs.get("pk"))
-        if goal.owner != self.request.user:
+        if not goal.public and goal.owner != self.request.user:
             raise Http404
         return goal
 
