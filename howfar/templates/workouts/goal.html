@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load humanize %}
 
 {% block stylesheets %}
 {{ block.super }}
@@ -27,7 +28,7 @@
     </span>
     /
     <span class="goal-length">
-        {{ goal.length }}
+        {{ goal.length | intcomma }}
     </span>
     miles
     (<span id="progress-percent"></span>)
