@@ -33,7 +33,7 @@
     miles
     (<span id="progress-percent"></span>)
 </h2>
-{% if user.is_authenticated and user == goal.owner %}
+{% if is_owner %}
 <div class="dangerous">
     <p>
         <a href="{% url 'update_goal' goal.pk %}">Update Goal</a>
@@ -61,7 +61,7 @@
         </li>
     {% endfor %}
     </ul>
-    {% if user.is_authenticated and user == goal.owner and not goal.complete %}
+    {% if is_owner %}
         <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
     {% endif %}
 </div>
