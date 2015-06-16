@@ -178,5 +178,41 @@
       "name": "Indianapolis",
       "longitude": -86.1459
     }
+  },
+  {
+    "pk": 21,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 45.537,
+      "name": "Portland",
+      "longitude": -122.65
+    }
+  },
+  {
+    "pk": 22,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 40.7785,
+      "name": "Salt Lake City",
+      "longitude": -111.9314
+    }
+  },
+  {
+    "pk": 23,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 29.7805,
+      "name": "Houston",
+      "longitude": -95.3863
+    }
+  },
+  {
+    "pk": 24,
+    "model": "distances.location",
+    "fields": {
+      "latitude": 32.7757,
+      "name": "Dallas",
+      "longitude": -96.7967
+    }
   }
 ]

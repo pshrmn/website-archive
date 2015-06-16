@@ -111,8 +111,8 @@ class GoalView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_owner'] = (self.request.user and
-                               self.request.user == context['goal'].owner)
+        print(self.request.user)
+        context['is_owner'] = self.request.user == context['goal'].owner
         return context
 
 
