@@ -46,6 +46,11 @@ menu {
     font-size: 1.25em;
 }
 
+header menu, .content {
+    margin: 0 auto;
+    max-width: 900px;
+}
+
 header ul {
     padding: 0;
     margin: 0;
