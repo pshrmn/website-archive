@@ -35,23 +35,27 @@ a:visited {
     color: #3E7350;
 }
 
-header {
+.header-holder {
     background: #3DB366;
     color: #EAE7D8;
 }
 
-menu {
-    padding: 0;
-    margin: 0;
-    font-size: 1.25em;
-}
-
-header menu, .content {
+header, .content {
     margin: 0 auto;
     max-width: 900px;
 }
 
-header ul {
+nav, ul {
+    display: inline;
+}
+
+nav {
+    padding-left: 15px;
+    margin: 0;
+    font-size: 1.25em;
+}
+
+header ul, header li {
     padding: 0;
     margin: 0;
 }
@@ -59,10 +63,9 @@ header ul {
 header li {
     display: inline-block;
     margin-right: 15px;
-
 }
 
-menu > ul > li {
+nav > li {
     position: relative;
 }
 
@@ -116,10 +119,6 @@ header a, header a:visited {
     text-shadow:  1px 1px #143D5E, 2px 2px #143D5E, 3px 3px #143D5E, 4px 4px #143D5E, 5px 5px #143D5E;
 }
 
-.username {
-    color: #143D5E;
-}
-
 .content {
     padding: 25px 75px 0;
     color: #143D5E;
@@ -155,4 +154,33 @@ form p {
     background: #EAE7D8;
     border-radius: 5px;
     padding: 0 5px;
+}
+
+@media (max-width: 550px){
+    nav li {
+        display: block;
+        margin-left: 5px;
+    }
+
+    nav {
+        display: block;
+    }
+
+    nav li ul {
+        display: block;
+        position: relative;
+        margin-left: 15px;
+    }
+
+    nav li a {
+        display: inline;
+    }
+
+    nav li ul li {
+        border: 0;
+    }
+
+    .home {
+        margin-left: 0;
+    }
 }

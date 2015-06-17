@@ -23,50 +23,50 @@ How Far?
 <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 </head>
 <body>
-<header>
-{% block header %}
-<menu>
-    <ul>
-        <li>
-            <a class="home" href="/"><img src="{% static 'img/earth.png' %}">How Far?</a>
-        </li>
-        {% if user.is_authenticated %}
-        <li>
-            <a href="{% url 'goals' %}">Goals</a>
-            <ul>
-                <li>
-                    <a href="{% url 'add_goal' %}">Add Goal</a>
-                </li>
-                <li>
-                    <a href="{% url 'goals' %}">Goals</a>
-                </li>
-            </ul>
-        <li>
-            <a href="{% url 'about' %}">About</a>
-        </li>
-        </li>
-        <li class="username">
-            {{ user.username | capfirst }}
-        </li>
-        <li>
-            <a href="{% url 'logout' %}?next=/">Logout</a>
-        </li>
-        {% else %}
-        <li>
-            <a href="{% url 'about' %}">About</a>
-        </li>
-        <li>
-            <a href="{% url 'login' %}">Login</a>
-        </li>
-        <li>
-            <a href="{% url 'signup' %}">Sign Up</a>
-        </li>
-        {% endif %}
-        
-    </ul>
-</menu>
-{% endblock header %}
-</header>
+<div class="header-holder">
+    <header>
+    {% block header %}
+    <a class="home" href="/"><img src="{% static 'img/earth.png' %}">How Far?</a>
+    <nav>
+        <ul>
+            {% if user.is_authenticated %}
+            <li>
+                <a href="{% url 'goals' %}">Goals</a>
+                <ul>
+                    <li>
+                        <a href="{% url 'add_goal' %}">Add Goal</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'goals' %}">Your Goals</a>
+                    </li>
+                </ul>
+            <li>
+                <a href="{% url 'about' %}">About</a>
+            </li>
+            </li>
+            <li class="username">
+                {{ user.username | capfirst }}
+            </li>
+            <li>
+                <a href="{% url 'logout' %}?next=/">Logout</a>
+            </li>
+            {% else %}
+            <li>
+                <a href="{% url 'about' %}">About</a>
+            </li>
+            <li>
+                <a href="{% url 'login' %}">Login</a>
+            </li>
+            <li>
+                <a href="{% url 'signup' %}">Sign Up</a>
+            </li>
+            {% endif %}
+            
+        </ul>
+    </nav>
+    {% endblock header %}
+    </header>    
+</div>
 <div class="content">
 {% block content %}
 {% endblock content %}
