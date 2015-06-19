@@ -5,25 +5,8 @@
 {% block stylesheets %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'css/map.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
 {% endblock stylesheets %}
-
-{% block inline-css %}
-form p, form label {
-    display: inline-block;
-}
-
-form p {
-    padding: 2px 5px;
-}
-
-select { 
-    font-size: 16px;
-}
-
-p.active {
-    border-bottom: 2px dotted #3DB366;
-}
-{% endblock inline-css %}
 
 {% block content %}
 <form action="{% url 'add_goal' %}" method="post">
@@ -32,7 +15,7 @@ p.active {
     <p class="submit"><button type="submit" name="submit">Save</button></p>
 </form>
 <p class="note">
-    You can click on the city markers in the map to select a start or end city. The input that is underlined is the location that will be set when you click a city.
+    You can click on the city markers in the map to select a start or end city. The input that is highlighted is the location that will be set when you click a city.
 </p>
 <div class="map"></div>
 {% endblock content %}

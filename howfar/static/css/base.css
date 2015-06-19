@@ -38,6 +38,7 @@ a:visited {
 .header-holder {
     background: #3DB366;
     color: #EAE7D8;
+    box-shadow: 0 1px 1px #3E7350;
 }
 
 header, .content {

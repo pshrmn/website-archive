@@ -8,6 +8,7 @@
     fill: #EAE7D8;
     stroke-width: 2px;
     stroke: #143D5E;
+    cursor: pointer;
 }
 
 .city.start {

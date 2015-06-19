@@ -13,9 +13,8 @@
 }
 
 .city {
-    fill: #AB384E
+    cursor: default;
 }
-
 {% endblock inline-css %}
 
 {% block content %}
@@ -46,7 +45,7 @@
 <div class="progress"></div>
 <div class="map"></div>
 <div>
-    <ul>
+    <ol>
     {% for workout in goal.workout_set.all %}
         <li class="workout">
             {{ workout.exercise }} for {{ workout.distance }} miles
@@ -60,7 +59,7 @@
             There are no saved workouts.
         </li>
     {% endfor %}
-    </ul>
+    </ol>
     {% if is_owner %}
         <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
     {% endif %}
@@ -76,7 +75,6 @@
 
 {% block inline-js %}
 var total = {{ goal.length }};
-
 var progress = {{ goal.progress }};
 var percent = d3.min([(progress / total), 1]);
 
