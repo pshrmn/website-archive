@@ -1,60 +1,28 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block title %}
     Your Goals | {{ block.super }}
 {% endblock title %}
 
-{% block inline-css %}
-
-.goal {
-    margin-bottom: 15px;
-}
-
-.goal a {
-  text-decoration: none;
-  font-size: 1.25em;
-}
-
-.bar-holder {
-    width: 300px;
-    height: 20px;
-    position: relative;
-    padding: 5px 0;
-}
-
-.progress-text{
-    position: absolute;
-    right: 5px;
-}
-
-.bar {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.total {
-    background: rgba(61, 179, 102, 0.25);
-    width: 100%;
-}
-
-.current {
-    background: #3DB366;
-}
-
-
-{% endblock inline-css %}
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/goals.css' %}">
+{% endblock stylesheets %}
 
 {% block content %}
 <a href="{% url 'add_goal' %}">Add a goal.</a>
 <ol>
 {% for goal in goal_list %}
     <li class="goal">
-        <a href="{% url 'goal' goal.id %}">
+        <a class="title" href="{% url 'goal' goal.id %}">
             {{ goal.start.name }} to {{ goal.end.name }}
         </a>
+        <div class="progress-bar"></div>
+        <div>
+            <a href="{% url 'update_goal' goal.pk %}">Update Goal</a>
+            <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
+        </div>
     </li>
 {% empty %}
     <li>
@@ -76,13 +44,15 @@ var progress = [
     {% endfor %}
 ];
 
+// attach to the li instead of the bar in case I want to do more
+// with the data in the future
 var goals = d3.selectAll('li.goal')
     .data(progress);
-var bars = goals.append('div')
-    .classed('bar-holder', true)
+
+var bars = goals.select('.progress-bar')
     .attr('title', function(d){
         return d;
-    })
+    });
 
 bars.append('div')
     .classed({
