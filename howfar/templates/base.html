@@ -32,14 +32,10 @@ How Far?
             {% if user.is_authenticated %}
             <li>
                 <a href="{% url 'goals' %}">Goals</a>
-                <ul>
-                    <li>
-                        <a href="{% url 'goals' %}">Your Goals</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'add_goal' %}">Add Goal</a>
-                    </li>
-                </ul>
+            </li>
+            <li>
+                <a href="{% url 'add_goal' %}">Add Goal</a>
+            </li>
             <li>
                 <a href="{% url 'about' %}">About</a>
             </li>

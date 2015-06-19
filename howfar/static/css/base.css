@@ -123,7 +123,6 @@ header a, header a:visited {
 .content {
     padding: 25px 75px 0;
     color: #143D5E;
-    max-width: 800px;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -157,28 +156,23 @@ form p {
     padding: 0 5px;
 }
 
-@media (max-width: 550px){
+@media (max-width: 650px){
     nav li {
         display: block;
         margin-left: 5px;
+        text-align: center;
     }
 
     nav {
         display: block;
     }
 
-    nav li ul {
-        display: block;
-        position: relative;
-        margin-left: 15px;
-    }
-
     nav li a {
-        display: inline;
+        display: block;
     }
 
-    nav li ul li {
-        border: 0;
+    nav li a:hover {
+        background: #3E7350;
     }
 
     .home {
