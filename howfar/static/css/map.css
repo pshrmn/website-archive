@@ -1,12 +1,12 @@
-.map {
+.responsive-map-holder {
     display: inline-block;
     position: relative;
     width: 100%;
-    padding-bottom: 100%; /* aspect ratio */
+    padding-bottom: 67%; /* aspect ratio */
     vertical-align: top;
     overflow: hidden;
 }
-.responseive-map {
+.responsive-map {
     display: inline-block;
     position: absolute;
     top: 10px;
