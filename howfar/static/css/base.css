@@ -178,4 +178,8 @@ form p {
     .home {
         margin-left: 0;
     }
+
+    .content {
+        padding: 25px 5px 0;
+    }
 }

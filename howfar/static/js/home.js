@@ -10,12 +10,14 @@ queue()
     var fromCity = 0;
     var toCity = 1;
 
-
     var holder = d3.select('.map');
     var svg = holder.append('svg')
-      .attr('width', width)
-      .attr('height', height);
-
+      .classed({
+        'responsive-map': true
+      })
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", "0 0 600 400");
+      
     var projection = d3.geo.albersUsa()
       .scale(scale)
       .translate([width / 2, height / 2]);

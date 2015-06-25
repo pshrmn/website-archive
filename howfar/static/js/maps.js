@@ -1,16 +1,16 @@
-function drawMap(svg, states, path){
-
-  var features = topojson.feature(states, states.objects.states).features;
-
-  var states = svg.append('g')
-    .classed('country', true)
-    .selectAll('g.state')
-      .data(features)
-    .enter().append('g')
-      .classed('state', true)
-      .append('path')
-          .classed('outline', true)
-          .attr('d', path);
+function drawMap(svg, states, path) {
+    var features = topojson.feature(states, states.objects.states).features;
+    svg.append('g')
+      .classed({
+        'country': true
+      })
+      .selectAll('g.state')
+          .data(features)
+        .enter().append('g')
+          .classed('state', true)
+          .append('path')
+              .classed('outline', true)
+              .attr('d', path);
 }
 
 function haversine(start, end){

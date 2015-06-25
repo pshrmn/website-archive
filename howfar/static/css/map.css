@@ -1,3 +1,18 @@
+.map {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.responseive-map {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
 .state path {
     fill: #3DB366;
     stroke: #EAE7D8;
