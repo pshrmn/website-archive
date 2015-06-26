@@ -32,6 +32,7 @@ class Workout(models.Model):
     exercise = models.ForeignKey(Exercise)
     distance = models.FloatField()
     goal = models.ForeignKey(Goal)
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return '{} miles'.format(self.distance)

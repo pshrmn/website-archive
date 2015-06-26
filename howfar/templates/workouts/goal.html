@@ -48,7 +48,7 @@
     <ol>
     {% for workout in goal.workout_set.all %}
         <li class="workout">
-            {{ workout.exercise }} for {{ workout.distance }} miles
+            {{ workout.exercise | capfirst }} for {{ workout.distance }} miles on {{ workout.date }}
             <form action="{% url 'delete_workout' workout.pk %}" method="post">
                 {% csrf_token %}
                 <button>&times;</button>
