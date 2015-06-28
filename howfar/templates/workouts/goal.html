@@ -17,6 +17,12 @@
 }
 {% endblock inline-css %}
 
+{% block info-bar %}
+    {% if is_owner %}
+        <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
+    {% endif %}
+{% endblock info-bar %}
+
 {% block content %}
 <h1>
     {{ goal.start.name }} to {{ goal.end.name }}
@@ -34,12 +40,8 @@
 </h2>
 {% if is_owner %}
 <div class="dangerous">
-    <p>
-        <a href="{% url 'update_goal' goal.pk %}">Update Goal</a>
-    </p>
-    <p>
-        <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
-    </p>
+    <a href="{% url 'update_goal' goal.pk %}">Update Goal</a>
+    <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
 </div>
 {% endif %}
 <div class="progress"></div>
@@ -60,9 +62,6 @@
         </li>
     {% endfor %}
     </ol>
-    {% if is_owner %}
-        <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
-    {% endif %}
 </div>
 
 {% endblock content %}

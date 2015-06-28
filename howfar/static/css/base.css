@@ -120,6 +120,27 @@ header a, header a:visited {
     text-shadow:  1px 1px #143D5E, 2px 2px #143D5E, 3px 3px #143D5E, 4px 4px #143D5E, 5px 5px #143D5E;
 }
 
+.info-bar {
+    background: #3E7350;
+    color: #EAE7D8;
+    padding: 0 25px;
+}
+
+.info-bar > div {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.info-bar a {
+    color: #EAE7D8;
+    padding: 5px 0;
+    display: inline-block;
+}
+
+.info-bar a:visited {
+    color: #EAE7D8;
+}
+
 .content {
     padding: 25px 75px 0;
     color: #143D5E;
@@ -154,6 +175,23 @@ form p {
     background: #EAE7D8;
     border-radius: 5px;
     padding: 0 5px;
+}
+
+.dangerous {
+    margin: 5px 0;
+}
+
+.dangerous a {
+    border: 1px solid #3E7350;
+    border-radius: 3px;
+    padding: 2px 3px;
+    text-decoration: none;
+    margin: 2px;
+}
+
+.dangerous a:hover {
+    background: #3E7350;
+    color: #EAE7D8;
 }
 
 @media (max-width: 650px){
