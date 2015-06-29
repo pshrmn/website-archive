@@ -1,0 +1,22 @@
+{
+  "name": "howfar",
+  "version": "0.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/psherman/howfar.git"
+  },
+  "author": "Paul Sherman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/psherman/howfar/issues"
+  },
+  "homepage": "https://github.com/psherman/howfar",
+  "devDependencies": {
+    "gulp-sass": "^2.0.3"
+  }
+}

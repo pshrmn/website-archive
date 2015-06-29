@@ -1,81 +1,67 @@
 .responsive-map-holder {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 67%; /* aspect ratio */
-    vertical-align: top;
-    overflow: hidden;
-}
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 67%;
+  /* aspect ratio */
+  vertical-align: top;
+  overflow: hidden; }
+
 .responsive-map {
-    display: inline-block;
-    position: absolute;
-    top: 10px;
-    left: 0;
-}
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0; }
 
 .state path {
-    fill: #3DB366;
-    stroke: #EAE7D8;
-    stroke-width: 1px;
-}
+  fill: #3DB366;
+  stroke: #EAE7D8;
+  stroke-width: 1px; }
 
 .city {
-    fill: #EAE7D8;
-    stroke-width: 2px;
-    stroke: #143D5E;
-    cursor: pointer;
-}
+  fill: #EAE7D8;
+  stroke-width: 2px;
+  stroke: #143D5E;
+  cursor: pointer; }
 
 .city.start {
-    fill: #AB384E;
-}
+  fill: #AB384E; }
 
 .city.end {
-    fill: #F1F4F7;
-}
+  fill: #F1F4F7; }
 
 .zoomed .city {
-    stroke-width: 1px;
-}
+  stroke-width: 1px; }
 
 .city.active {
-    fill: #AB384E;
-}
+  fill: #AB384E; }
 
 .city.inactive {
-    opacity: 0.5;
-}
+  opacity: 0.5; }
 
-.city:hover{
-    opacity: 1;
-}
+.city:hover {
+  opacity: 1; }
 
 line.trip {
-    stroke: #AB384E;
-    stroke-width: 2px;
-}
+  stroke: #AB384E;
+  stroke-width: 2px; }
 
 .trip-text {
-    text-anchor: middle;
-    fill: #143D5E;
-}
+  text-anchor: middle;
+  fill: #143D5E; }
 
 line.preview {
-    stroke: #AB384E;
-    opacity: 0.5;
-    stroke-width: 2px;
-}
+  stroke: #AB384E;
+  opacity: 0.5;
+  stroke-width: 2px; }
 
 line.progress {
-    stroke: #AB384E;
-    stroke-width: 3px;
-}
+  stroke: #AB384E;
+  stroke-width: 3px; }
 
 line.goal {
-    stroke: #F1F4F7;
-    stroke-width: 2px;
-}
+  stroke: #F1F4F7;
+  stroke-width: 2px; }
 
 line.progress, line.goal {
- stroke-linecap: round;   
-}
+  stroke-linecap: round; }
