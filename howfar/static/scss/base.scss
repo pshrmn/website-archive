@@ -1,0 +1,220 @@
+$red: #AB384E;
+$gray: #F1F4F7;
+$blue: #29608C;
+$dark-blue: #143D5E;
+$light-green: #9CC8A5;
+$green: #3DB366;
+$dark-green: #3E7350;
+$light-brown: #EAE7D8;
+$brown: #696243;
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: $light-brown;
+    font-family: 'Oswald', sans-serif;
+}
+
+h1, h2, h3, h4 {
+    margin: 0.25em 0;
+    font-weight: normal;
+}
+
+p {
+    margin: 0;
+}
+
+a {
+    color: $dark-green;
+}
+
+a:visited {
+    color: $dark-green;
+}
+
+.header-holder {
+    background: $green;
+    color: $light-brown;
+    box-shadow: 0 1px 1px $dark-green;
+}
+
+header, .content {
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+nav, ul {
+    display: inline;
+}
+
+nav {
+    padding-left: 15px;
+    margin: 0;
+    font-size: 1.25em;
+}
+
+header ul, header li {
+    padding: 0;
+    margin: 0;
+}
+
+header li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+nav > li {
+    position: relative;
+}
+
+header li ul {
+    display: none;
+    position: absolute;
+    background: $green;
+    width: 125px;
+}
+
+header li li {
+    display: block;
+    color: $green;
+    padding: 0 3px;
+    margin: 0;
+}
+
+header li li:hover {
+    background: $dark-green;
+}
+
+header li a {
+    display: block;
+}
+
+header li:hover ul {
+    display: block;
+}
+
+header li ul li {
+  border-top: 1px solid $light-brown;
+}
+
+header a, header a:visited {
+    color: $light-brown;
+    text-decoration: none;
+}
+
+.home {
+    font-family: 'Oswald', sans-serif;
+    margin-left: 50px;
+    font-size: 32px;
+}
+
+.home img {
+    height: 30px;
+    padding-right: 10px;
+}
+
+.home{
+    text-shadow:  1px 1px $dark-blue, 2px 2px $dark-blue, 3px 3px $dark-blue, 4px 4px $dark-blue, 5px 5px $dark-blue;
+}
+
+.info-bar {
+    background: $dark-green;
+    color: $light-brown;
+    padding: 0 25px;
+}
+
+.info-bar > div {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.info-bar a {
+    color: $light-brown;
+    padding: 5px 0;
+    display: inline-block;
+}
+
+.info-bar a:visited {
+    color: $light-brown;
+}
+
+.content {
+    padding: 25px 75px 0;
+    color: $dark-blue;
+    font-family: 'Roboto', sans-serif;
+}
+
+.description {
+    font-size: 20px;
+}
+
+span.helptext {
+  display: block;
+  font-size: 0.8em;
+  color: $blue;
+}
+
+p label {
+    display: block;
+}
+
+form p {
+    margin: 2px 0;
+    padding: 0;
+}
+
+.note {
+    font-size: 0.8em;
+}
+
+.username{
+    color: $dark-blue;
+    background: $light-brown;
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+.dangerous {
+    margin: 5px 0;
+}
+
+.dangerous a {
+    border: 1px solid $dark-green;
+    border-radius: 3px;
+    padding: 2px 3px;
+    text-decoration: none;
+    margin: 2px;
+}
+
+.dangerous a:hover {
+    background: $dark-green;
+    color: $light-brown;
+}
+
+@media (max-width: 650px){
+    nav li {
+        display: block;
+        margin-left: 5px;
+        text-align: center;
+    }
+
+    nav {
+        display: block;
+    }
+
+    nav li a {
+        display: block;
+    }
+
+    nav li a:hover {
+        background: $dark-green;
+    }
+
+    .home {
+        margin-left: 0;
+    }
+
+    .content {
+        padding: 25px 5px 0;
+    }
+}

@@ -1,0 +1,91 @@
+$red: #AB384E;
+$gray: #F1F4F7;
+$blue: #29608C;
+$dark-blue: #143D5E;
+$light-green: #9CC8A5;
+$green: #3DB366;
+$dark-green: #3E7350;
+$light-brown: #EAE7D8;
+$brown: #696243;
+
+.responsive-map-holder {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 67%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.responsive-map {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
+.state path {
+    fill: $green;
+    stroke: $light-brown;
+    stroke-width: 1px;
+}
+
+.city {
+    fill: $light-brown;
+    stroke-width: 2px;
+    stroke: $dark-blue;
+    cursor: pointer;
+}
+
+.city.start {
+    fill: $red;
+}
+
+.city.end {
+    fill: $gray;
+}
+
+.zoomed .city {
+    stroke-width: 1px;
+}
+
+.city.active {
+    fill: $red;
+}
+
+.city.inactive {
+    opacity: 0.5;
+}
+
+.city:hover{
+    opacity: 1;
+}
+
+line.trip {
+    stroke: $red;
+    stroke-width: 2px;
+}
+
+.trip-text {
+    text-anchor: middle;
+    fill: $dark-blue;
+}
+
+line.preview {
+    stroke: $red;
+    opacity: 0.5;
+    stroke-width: 2px;
+}
+
+line.progress {
+    stroke: $red;
+    stroke-width: 3px;
+}
+
+line.goal {
+    stroke: $gray;
+    stroke-width: 2px;
+}
+
+line.progress, line.goal {
+ stroke-linecap: round;   
+}
