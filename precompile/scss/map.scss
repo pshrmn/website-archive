@@ -44,6 +44,10 @@ $brown: #696243;
     fill: $gray;
 }
 
+.city.reached {
+    fill: $red;
+}
+
 .zoomed .city {
     stroke-width: 1px;
 }

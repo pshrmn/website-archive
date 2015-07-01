@@ -19,7 +19,11 @@
 
 {% block info-bar %}
     {% if is_owner %}
-        <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
+        {% if goal.complete %}
+            Congratulations on finishing your goal!
+        {% else %}
+            <a href="{% url 'add_workout' goal.pk %}">Add a workout.</a>
+        {% endif %}
     {% endif %}
 {% endblock info-bar %}
 
@@ -43,6 +47,21 @@
     <a href="{% url 'update_goal' goal.pk %}">Update Goal</a>
     <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
 </div>
+<p>
+    {% if goal.public %}
+        This goal is public. You can share the url with other people so they can see how well you're doing. If you no longer want this goal to be public, you can make it private by
+        <a href="{% url 'update_goal' goal.pk %}">
+            updating
+        </a>
+        the goal.
+    {% else %}
+        This goal is private. No one else can view it. If you would like to allow other people to track your progress, you can make this goal public by
+        <a href="{% url 'update_goal' goal.pk %}">
+            updating
+        </a>
+        the goal.
+    {% endif %}
+</p>
 {% endif %}
 <div class="progress"></div>
 <div class="map"></div>

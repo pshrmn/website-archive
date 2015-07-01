@@ -30,6 +30,9 @@
 .city.end {
   fill: #F1F4F7; }
 
+.city.reached {
+  fill: #AB384E; }
+
 .zoomed .city {
   stroke-width: 1px; }
 

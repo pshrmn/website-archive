@@ -41,6 +41,9 @@ function drawGoal(startCity, endCity, percent, distance){
             },
             'end': function(d, i){
               return i === 1;
+            },
+            'reached': function(d, i){
+              return percent >= i;
             }
           })
           .attr('r', 3)
