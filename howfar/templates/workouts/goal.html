@@ -70,10 +70,12 @@
     {% for workout in goal.workout_set.all %}
         <li class="workout">
             {{ workout.exercise | capfirst }} for {{ workout.distance }} miles on {{ workout.date }}
+            {% if is_owner %}
             <form action="{% url 'delete_workout' workout.pk %}" method="post">
                 {% csrf_token %}
                 <button>&times;</button>
             </form>
+            {% endif %}
         </li>
     {% empty %}
         <li>
