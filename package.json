@@ -1,0 +1,23 @@
+{
+  "name": "weplay",
+  "version": "0.0.0",
+  "description": "Plays games with other people",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/psherman/weplay.git"
+  },
+  "author": "Paul Sherman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/psherman/weplay/issues"
+  },
+  "homepage": "https://github.com/psherman/weplay",
+  "dependencies": {
+    "express": "^4.10.2",
+    "socket.io": "^1.3.6"
+  }
+}
