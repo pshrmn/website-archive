@@ -1,56 +1,17 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>We Play!</title>
     <link rel="stylesheet" type="text/css" href="static/css/index.css">
     <style>
       
     </style>
   </head>
   <body>
-    
-    <form>
-      <label>Room: <input type="text" id="name" /></label>
-      <label>Password: <input type="password" id="password" /></label>
-      <button id="make-room">Make Room</button>
-      <button id="join-room">Join Room</button>
-    </form>
+    <div id="content"></div>
 
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script>
-      var socket = io();
-
-      /*
-       * Form
-       */
-      var nameInput = document.getElementById("name");
-      var passwordInput = document.getElementById("password");
-      var make = document.getElementById("make-room");
-      make.addEventListener("click", function(event) {
-        event.preventDefault();
-        socket.emit("create room", roomValues());
-      });
-
-      var join = document.getElementById("join-room");
-      join.addEventListener("click", function(event){
-        event.preventDefault();
-        socket.emit("join room", roomValues());
-      }, false);
-
-      socket.on('room joined', function(msg){
-        console.log(msg);
-      });
-
-      socket.on('room created', function(msg){
-        console.log(msg);
-      });
-
-      function roomValues(){
-        return {
-          name: nameInput.value,
-          password: passwordInput.value
-        };
-      }
-    </script>
+    <script src="https://fb.me/react-0.13.3.min.js"></script>
+    <script src="static/js/app.js"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-var UI = React.createClass({
+var UI = React.createClass({displayName: "UI",
   getInitialState: function() {
     return {
       room: undefined
@@ -8,9 +8,10 @@ var UI = React.createClass({
     this.socket = io();
     var _this = this;
     this.socket.on("room joined", function(info) {
+      console.log(info);
       if ( !info.error ) {
         _this.setState({
-          room: info.name
+          room: info.room
         })
       }
     });
@@ -22,27 +23,25 @@ var UI = React.createClass({
   },
   render: function() {
     var room;
-    // when not connected to a room, show the join room form
-    // otherwise show the room ui
     if ( this.state.room === undefined ) {
      room = (
-      <RoomForm socket={this.socket}
-                setRoom={this.setRoom} />
+      React.createElement(RoomForm, {socket: this.socket, 
+                setRoom: this.setRoom})
       );
     } else {
       room = (
-        <div>{this.state.room}</div>
+        React.createElement("div", null, this.state.room)
       )
     }
     return (
-      <div className="ui">
-        { room }   
-      </div>
+      React.createElement("div", {className: "ui"}, 
+         room 
+      )
     );
   }
 });
 
-var RoomForm = React.createClass({
+var RoomForm = React.createClass({displayName: "RoomForm",
   makeRoom: function(event) {
     event.preventDefault();
     var info = this._roomInfo();
@@ -80,17 +79,17 @@ var RoomForm = React.createClass({
   },
   render: function() {
     return (
-      <form>
-        <label>Room: <input type="text" ref="name" /></label>
-        <label>Password: <input type="password" ref="password" /></label>
-        <button onClick={this.makeRoom}>Make Room</button>
-        <button onClick={this.joinRoom}>Join Room</button>
-      </form>
+      React.createElement("form", null, 
+        React.createElement("label", null, "Room: ", React.createElement("input", {type: "text", ref: "name"})), 
+        React.createElement("label", null, "Password: ", React.createElement("input", {type: "password", ref: "password"})), 
+        React.createElement("button", {onClick: this.makeRoom}, "Make Room"), 
+        React.createElement("button", {onClick: this.joinRoom}, "Join Room")
+      )
     );
   }
 });
 
 React.render(
-  <UI />,
+  React.createElement(UI, null),
   document.getElementById("content")
 )

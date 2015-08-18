@@ -2,6 +2,7 @@ module.exports = function(io) {
   var rooms = {};
   io.on('connection', function(socket){
     socket.on('create room', function(room){
+      console.log(room);
       var name = room.name;
       var error = false;
       var reason = "";
@@ -12,9 +13,10 @@ module.exports = function(io) {
         rooms[name] = room.password;
         socket.join(name);
       }
-      socket.emit('room created', {
+      socket.emit("room joined", {
         error: error,
-        reason: reason
+        reason: reason,
+        name: name
       });
     });
 
@@ -30,7 +32,6 @@ module.exports = function(io) {
         reason = "incorrect password"
       } else {
         socket.join(name);
-        console.log(io.sockets.adapter.rooms[name]);
       }
       socket.emit("room joined", {
           error: error,
