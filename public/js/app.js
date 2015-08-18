@@ -8,9 +8,7 @@ var UI = React.createClass({displayName: "UI",
     this.socket = io();
     var _this = this;
     this.socket.on("room joined", function(info) {
-      console.log(info);
       if ( !info.error ) {
-        console.log("setting room");
         _this.setState({
           room: info.name
         })
@@ -24,7 +22,8 @@ var UI = React.createClass({displayName: "UI",
   },
   render: function() {
     var room;
-    console.log(this.state);
+    // when not connected to a room, show the join room form
+    // otherwise show the room ui
     if ( this.state.room === undefined ) {
      room = (
       React.createElement(RoomForm, {socket: this.socket, 
