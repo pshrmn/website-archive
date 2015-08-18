@@ -1,6 +1,12 @@
 module.exports = {
     index: function(req, res) {
-        console.log(req.query);
-        res.sendFile(__dirname + "/templates/index.html");
+        res.sendFile(__dirname + "/views/index.html");
+    },
+    room: function(req, res) {
+        var code = req.params.code;
+        console.log(code);
+        res.render("room", {
+            code: code
+        });
     }
 };
