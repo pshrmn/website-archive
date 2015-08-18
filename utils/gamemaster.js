@@ -2,41 +2,53 @@ module.exports = function(io) {
   var rooms = {};
   io.on('connection', function(socket){
     socket.on('create room', function(room){
-      console.log(room);
       var name = room.name;
-      var error = false;
-      var reason = "";
+      var resp = {
+        error: false,
+        reason: ""
+      };
       if ( rooms[name] ) {
-        error = true;
-        reason = "A room with that name already exists"
+        resp.error = true;
+        resp.reason = "A room with that name already exists"
       } else {
-        rooms[name] = room.password;
-        socket.join(name);
+        rooms[name] = {
+          password: room.password,
+          people: [room.nickname]
+        };
+        socket.join(name, function() {
+          // don't emit until we know the socket has been joined
+          io.to(name).emit("room", {
+            name: name,
+            people: rooms[name].people
+          });
+        });
       }
-      socket.emit("room joined", {
-        error: error,
-        reason: reason,
-        name: name
-      });
+      socket.emit("room joined", resp);
     });
 
     socket.on('join room', function(room){
       var name = room.name;
-      var error = false;
-      var reason = "";
+      var resp = {
+        error: false,
+        reason: ""
+      };
       if ( rooms[name] === undefined ) {
-        error = true;
-        reason = "room " + name + " does not exist";
-      } else if ( rooms[name] !== room.password  ) {
-        error = true,
-        reason = "incorrect password"
+        resp.error = true;
+        resp.reason = "room " + name + " does not exist";
+      } else if ( rooms[name].password !== room.password  ) {
+        resp.error = true,
+        resp.reason = "incorrect password"
       } else {
-        socket.join(name);
-      }
-      socket.emit("room joined", {
-          error: error,
-          reason: reason
+        rooms[name].people.push(room.nickname);
+        socket.join(name, function() {
+          // don't emit until we know the socket has been joined
+          io.to(name).emit("room", {
+            name: name,
+            people: rooms[name].people
+          });
         });
+      }
+      socket.emit("room joined", resp);
     });
 
     /*
