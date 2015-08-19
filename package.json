@@ -19,7 +19,7 @@
   "homepage": "https://github.com/psherman/weplay",
   "dependencies": {
     "express": "^4.10.2",
-    "express-handlebars": "^2.0.1",
+    "nunjucks": "^1.3.4",
     "react": "^0.13.3",
     "socket.io": "^1.3.6",
     "socket.io-client": "^1.3.6"

@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+        {% block title %}
+            We Play
+        {% endblock %}
+        </title>
+
+        {% block css %}
+        <link rel="stylesheet" type="text/css" href="static/css/index.css">
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <a href="/index.html">We Play</a>
+        </header>
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>

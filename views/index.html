@@ -1,17 +1,12 @@
-<!doctype html>
-<html>
-  <head>
-    <title>We Play!</title>
-    <link rel="stylesheet" type="text/css" href="static/css/index.css">
-    <style>
-      
-    </style>
-  </head>
-  <body>
-    <div id="content"></div>
+{% extends "base.html" %}
 
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://fb.me/react-0.13.3.min.js"></script>
-    <script src="static/js/app.js"></script>
-  </body>
-</html>
+{% block title %}
+  Index | {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="https://fb.me/react-0.13.3.min.js"></script>
+  <script src="static/js/app.js"></script>
+{% endblock %}
