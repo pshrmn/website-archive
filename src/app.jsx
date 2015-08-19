@@ -35,63 +35,104 @@ var UI = React.createClass({
 });
 
 var RoomForm = React.createClass({
+  getInitialState: function() {
+    return {
+      nickname: "",
+      room: "",
+      password: "",
+      game: ""
+    }
+  },
   makeRoom: function(event) {
     event.preventDefault();
-    var info = this._roomInfo();
-    if ( !info.error ) {
-      this.props.socket.emit("create room", info.info);
+    if ( this._formComplete(true) ) {
+      this.props.socket.emit("create room", this.state);
+      this.setState({
+        nickname: "",
+        room: "",
+        password: "",
+        game: ""
+      });
     }
   },
   joinRoom: function(event) {
     event.preventDefault();
-    var info = this._roomInfo();
-    if ( !info.error ) {
-      this.props.socket.emit("join room", info.info);
+    if ( this._formComplete(false) ) {
+      this.props.socket.emit("join room", this.state);
+
     }
   },
-  _roomInfo: function() {
-    var nickname = React.findDOMNode(this.refs.nickname);
-    var name = React.findDOMNode(this.refs.name);
-    var password = React.findDOMNode(this.refs.password);
-
-    var nicknameVal = nickname.value;
-    var nameVal = name.value;
-    var passVal = password.value;
-    if ( nameVal === "" || passVal === "" ) {
-      return {
-        error: true,
-        info: {}
-      };
-    }
-    name.value = "";
-    password.value = "";
-    return {
-      error: false,
-      info: {
-        nickname: nicknameVal,
-        name: nameVal,
-        password: passVal
-      }
-    };
+  _formComplete: function(needGame) {
+    var personComplete = (this.state.nickname !== "" &&
+        this.state.room !== "" && this.state.password !== "");
+    var gameComplete = needGame ? this.state.game !== "" : true;
+    return personComplete && gameComplete;
+  },
+  setGame: function(event) {
+    this.setState({
+      game: event.target.value
+    })
+  },
+  setNickname: function(event) {
+    this.setState({
+      nickname: event.target.value
+    })
+  },
+  setRoom: function(event) {
+    this.setState({
+      room: event.target.value
+    })
+  },
+  setPassword: function(event) {
+    this.setState({
+      password: event.target.value
+    })
   },
   render: function() {
+    var gamesList = ["four"];
+    var games = gamesList.map(function(game, index){
+      return (
+        <label key={index}>
+          {game}
+          <input type="radio" name="game"
+                 value={game}
+                 onChange={this.setGame} />
+        </label>
+      )
+    }, this);
     return (
       <div>
         <form id="login-form">
           <p>
             <label for="nickname">Nickname</label>
-            <input type="text" ref="nickname" id="nickname" />
+            <input type="text" id="nickname"
+                   value={this.state.nickname}
+                   onChange={this.setNickname} />
           </p>
           <p>
-            <label for="name">Room</label>
-            <input type="text" ref="name" id="name" />
+            <label for="room">Room</label>
+            <input type="text" id="room"
+                   value={this.state.room}
+                   onChange={this.setRoom} />
           </p>
           <p>
             <label for="password">Password</label>
-            <input type="password" ref="password" id="password" />
+            <input type="password" id="password"
+                   value={this.state.password}
+                   onChange={this.setPassword} />
           </p>
-          <button onClick={this.makeRoom}>Make Room</button>
-          <button onClick={this.joinRoom}>Join Room</button>
+          <p>
+            <button onClick={this.joinRoom}>Join Room</button>
+          </p>
+          <p>
+            Which game do you want to play? (Only the person creating the room needs to select this)
+          </p>
+          <p>
+            {games}
+          </p>
+          <p>
+            <button onClick={this.makeRoom}>Make Room</button>
+          </p>
         </form>
       </div>
     );
@@ -112,10 +153,11 @@ var Room = React.createClass({
     );
   },
   render: function() {
+    console.log(this.props);
     var people = this._peopleHTML();
     return (
       <div className="room">
-        <h2>{this.props.name}</h2>
+        <h2>{this.props.room}</h2>
         {people}
       </div>
     )

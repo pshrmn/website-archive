@@ -35,63 +35,104 @@ var UI = React.createClass({displayName: "UI",
 });
 
 var RoomForm = React.createClass({displayName: "RoomForm",
+  getInitialState: function() {
+    return {
+      nickname: "",
+      room: "",
+      password: "",
+      game: ""
+    }
+  },
   makeRoom: function(event) {
     event.preventDefault();
-    var info = this._roomInfo();
-    if ( !info.error ) {
-      this.props.socket.emit("create room", info.info);
+    if ( this._formComplete(true) ) {
+      this.props.socket.emit("create room", this.state);
+      this.setState({
+        nickname: "",
+        room: "",
+        password: "",
+        game: ""
+      });
     }
   },
   joinRoom: function(event) {
     event.preventDefault();
-    var info = this._roomInfo();
-    if ( !info.error ) {
-      this.props.socket.emit("join room", info.info);
+    if ( this._formComplete(false) ) {
+      this.props.socket.emit("join room", this.state);
+
     }
   },
-  _roomInfo: function() {
-    var nickname = React.findDOMNode(this.refs.nickname);
-    var name = React.findDOMNode(this.refs.name);
-    var password = React.findDOMNode(this.refs.password);
-
-    var nicknameVal = nickname.value;
-    var nameVal = name.value;
-    var passVal = password.value;
-    if ( nameVal === "" || passVal === "" ) {
-      return {
-        error: true,
-        info: {}
-      };
-    }
-    name.value = "";
-    password.value = "";
-    return {
-      error: false,
-      info: {
-        nickname: nicknameVal,
-        name: nameVal,
-        password: passVal
-      }
-    };
+  _formComplete: function(needGame) {
+    var personComplete = (this.state.nickname !== "" &&
+        this.state.room !== "" && this.state.password !== "");
+    var gameComplete = needGame ? this.state.game !== "" : true;
+    return personComplete && gameComplete;
+  },
+  setGame: function(event) {
+    this.setState({
+      game: event.target.value
+    })
+  },
+  setNickname: function(event) {
+    this.setState({
+      nickname: event.target.value
+    })
+  },
+  setRoom: function(event) {
+    this.setState({
+      room: event.target.value
+    })
+  },
+  setPassword: function(event) {
+    this.setState({
+      password: event.target.value
+    })
   },
   render: function() {
+    var gamesList = ["four"];
+    var games = gamesList.map(function(game, index){
+      return (
+        React.createElement("label", {key: index}, 
+          game, 
+          React.createElement("input", {type: "radio", name: "game", 
+                 value: game, 
+                 onChange: this.setGame})
+        )
+      )
+    }, this);
     return (
       React.createElement("div", null, 
         React.createElement("form", {id: "login-form"}, 
           React.createElement("p", null, 
-            React.createElement("label", {for: "nickname"}, "Nickname:"), 
-            React.createElement("input", {type: "text", ref: "nickname", id: "nickname"})
+            React.createElement("label", {for: "nickname"}, "Nickname"), 
+            React.createElement("input", {type: "text", id: "nickname", 
+                   value: this.state.nickname, 
+                   onChange: this.setNickname})
           ), 
           React.createElement("p", null, 
-            React.createElement("label", {for: "name"}, "Room:"), 
-            React.createElement("input", {type: "text", ref: "name", id: "name"})
+            React.createElement("label", {for: "room"}, "Room"), 
+            React.createElement("input", {type: "text", id: "room", 
+                   value: this.state.room, 
+                   onChange: this.setRoom})
           ), 
           React.createElement("p", null, 
-            React.createElement("label", {for: "password"}, "Password:"), 
-            React.createElement("input", {type: "password", ref: "password", id: "password"})
+            React.createElement("label", {for: "password"}, "Password"), 
+            React.createElement("input", {type: "password", id: "password", 
+                   value: this.state.password, 
+                   onChange: this.setPassword})
           ), 
-          React.createElement("button", {onClick: this.makeRoom}, "Make Room"), 
-          React.createElement("button", {onClick: this.joinRoom}, "Join Room")
+          React.createElement("p", null, 
+            React.createElement("button", {onClick: this.joinRoom}, "Join Room")
+          ), 
+          React.createElement("p", null, 
+            "Which game do you want to play? (Only the person creating the room needs to select this)"
+          ), 
+          React.createElement("p", null, 
+            games
+          ), 
+          React.createElement("p", null, 
+            React.createElement("button", {onClick: this.makeRoom}, "Make Room")
+          )
         )
       )
     );
@@ -112,10 +153,11 @@ var Room = React.createClass({displayName: "Room",
     );
   },
   render: function() {
+    console.log(this.props);
     var people = this._peopleHTML();
     return (
       React.createElement("div", {className: "room"}, 
-        React.createElement("h2", null, this.props.name), 
+        React.createElement("h2", null, this.props.room), 
         people
       )
     )

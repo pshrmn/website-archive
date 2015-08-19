@@ -2,7 +2,8 @@ module.exports = function(io) {
   var rooms = {};
   io.on('connection', function(socket){
     socket.on('create room', function(room){
-      var name = room.name;
+      console.log(room);
+      var name = room.room;
       var resp = {
         error: false,
         reason: ""
@@ -15,10 +16,11 @@ module.exports = function(io) {
           password: room.password,
           people: [room.nickname]
         };
-        socket.join(name, function() {
+        socket.join(room, function() {
           // don't emit until we know the socket has been joined
-          io.to(name).emit("room", {
-            name: name,
+          console.log(rooms);
+          io.to(room).emit("room", {
+            room: name,
             people: rooms[name].people
           });
         });
@@ -27,7 +29,7 @@ module.exports = function(io) {
     });
 
     socket.on('join room', function(room){
-      var name = room.name;
+      var name = room.room;
       var resp = {
         error: false,
         reason: ""
@@ -43,7 +45,7 @@ module.exports = function(io) {
         socket.join(name, function() {
           // don't emit until we know the socket has been joined
           io.to(name).emit("room", {
-            name: name,
+            room: name,
             people: rooms[name].people
           });
         });
