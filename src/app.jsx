@@ -76,13 +76,24 @@ var RoomForm = React.createClass({
   },
   render: function() {
     return (
-      <form>
-        <label>Nickname: <input type="text" ref="nickname" /></label>
-        <label>Room: <input type="text" ref="name" /></label>
-        <label>Password: <input type="password" ref="password" /></label>
-        <button onClick={this.makeRoom}>Make Room</button>
-        <button onClick={this.joinRoom}>Join Room</button>
-      </form>
+      <div>
+        <form id="login-form">
+          <p>
+            <label for="nickname">Nickname</label>
+            <input type="text" ref="nickname" id="nickname" />
+          </p>
+          <p>
+            <label for="name">Room</label>
+            <input type="text" ref="name" id="name" />
+          </p>
+          <p>
+            <label for="password">Password</label>
+            <input type="password" ref="password" id="password" />
+          </p>
+          <button onClick={this.makeRoom}>Make Room</button>
+          <button onClick={this.joinRoom}>Join Room</button>
+        </form>
+      </div>
     );
   }
 });

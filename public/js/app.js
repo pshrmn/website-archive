@@ -8,7 +8,6 @@ var UI = React.createClass({displayName: "UI",
     this.socket = io();
     var _this = this;
     this.socket.on("room", function(room){
-      console.log("received a room");
       _this.setState({
         room: room
       });
@@ -77,12 +76,23 @@ var RoomForm = React.createClass({displayName: "RoomForm",
   },
   render: function() {
     return (
-      React.createElement("form", null, 
-        React.createElement("label", null, "Nickname: ", React.createElement("input", {type: "text", ref: "nickname"})), 
-        React.createElement("label", null, "Room: ", React.createElement("input", {type: "text", ref: "name"})), 
-        React.createElement("label", null, "Password: ", React.createElement("input", {type: "password", ref: "password"})), 
-        React.createElement("button", {onClick: this.makeRoom}, "Make Room"), 
-        React.createElement("button", {onClick: this.joinRoom}, "Join Room")
+      React.createElement("div", null, 
+        React.createElement("form", {id: "login-form"}, 
+          React.createElement("p", null, 
+            React.createElement("label", {for: "nickname"}, "Nickname:"), 
+            React.createElement("input", {type: "text", ref: "nickname", id: "nickname"})
+          ), 
+          React.createElement("p", null, 
+            React.createElement("label", {for: "name"}, "Room:"), 
+            React.createElement("input", {type: "text", ref: "name", id: "name"})
+          ), 
+          React.createElement("p", null, 
+            React.createElement("label", {for: "password"}, "Password:"), 
+            React.createElement("input", {type: "password", ref: "password", id: "password"})
+          ), 
+          React.createElement("button", {onClick: this.makeRoom}, "Make Room"), 
+          React.createElement("button", {onClick: this.joinRoom}, "Join Room")
+        )
       )
     );
   }
