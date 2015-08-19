@@ -1,8 +1,10 @@
+var Player = require("../games/player");
+var TicTacToe = require("../games/tictactoe");
+
 module.exports = function(io) {
   var rooms = {};
   io.on('connection', function(socket){
     socket.on('create room', function(room){
-      console.log(room);
       var name = room.room;
       var resp = {
         error: false,
@@ -12,18 +14,16 @@ module.exports = function(io) {
         resp.error = true;
         resp.reason = "A room with that name already exists"
       } else {
-        rooms[name] = {
-          password: room.password,
-          people: [room.nickname]
-        };
-        socket.join(room, function() {
-          // don't emit until we know the socket has been joined
-          console.log(rooms);
-          io.to(room).emit("room", {
-            room: name,
-            people: rooms[name].people
-          });
-        });
+        var player = new Player(room.nickname, socket);
+        // join so that the room exists
+        socket.join(name);
+        switch (room.game) {
+        case "tic-tac-toe":
+          rooms[name] = new TicTacToe(io.to(room), player, name, room.password);
+          var info = rooms[name].info();
+          io.to(name).emit("info", info)
+          break;
+        }
       }
       socket.emit("room joined", resp);
     });
@@ -41,14 +41,15 @@ module.exports = function(io) {
         resp.error = true,
         resp.reason = "incorrect password"
       } else {
-        rooms[name].people.push(room.nickname);
-        socket.join(name, function() {
-          // don't emit until we know the socket has been joined
-          io.to(name).emit("room", {
-            room: name,
-            people: rooms[name].people
-          });
-        });
+        var player = new Player(room.nickname, socket);
+        var added = rooms[name].addPlayer(player);
+        if ( !added ) {
+          resp.error = true;
+          resp.reason = "too many players in the room";
+        } else {
+          var info = rooms[name].info();
+          io.to(name).emit("info", info)
+        }
       }
       socket.emit("room joined", resp);
     });

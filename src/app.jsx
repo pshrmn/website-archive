@@ -7,11 +7,15 @@ var UI = React.createClass({
   componentWillMount: function() {
     this.socket = io();
     var _this = this;
-    this.socket.on("room", function(room){
+    this.socket.on("info", function(room){
       _this.setState({
         room: room
       });
-    })
+    });
+
+    this.socket.on("room joined", function(resp){
+      console.log(resp);
+    });
   },
   render: function() {
     var room;
@@ -23,7 +27,7 @@ var UI = React.createClass({
       );
     } else {
       room = (
-        <Room {...this.state.room} />
+        <RoomInfo {...this.state.room} />
       );
     }
     return (
@@ -34,6 +38,7 @@ var UI = React.createClass({
   }
 });
 
+
 var RoomForm = React.createClass({
   getInitialState: function() {
     return {
@@ -42,6 +47,18 @@ var RoomForm = React.createClass({
       password: "",
       game: ""
     }
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return (nextState.nickname !== this.state.nickname ||
+      nextState.room !== this.state.room ||
+      nextState.password !== this.state.password ||
+      nextState.game !== this.state.game);
+  },
+  _formComplete: function(needGame) {
+    var personComplete = (this.state.nickname !== "" &&
+        this.state.room !== "" && this.state.password !== "");
+    var gameComplete = needGame ? this.state.game !== "" : true;
+    return personComplete && gameComplete;
   },
   makeRoom: function(event) {
     event.preventDefault();
@@ -61,12 +78,6 @@ var RoomForm = React.createClass({
       this.props.socket.emit("join room", this.state);
 
     }
-  },
-  _formComplete: function(needGame) {
-    var personComplete = (this.state.nickname !== "" &&
-        this.state.room !== "" && this.state.password !== "");
-    var gameComplete = needGame ? this.state.game !== "" : true;
-    return personComplete && gameComplete;
   },
   setGame: function(event) {
     this.setState({
@@ -89,7 +100,7 @@ var RoomForm = React.createClass({
     })
   },
   render: function() {
-    var gamesList = ["four"];
+    var gamesList = ["tic-tac-toe"];
     var games = gamesList.map(function(game, index){
       return (
         <label key={index}>
@@ -139,9 +150,9 @@ var RoomForm = React.createClass({
   }
 });
 
-var Room = React.createClass({
+var RoomInfo = React.createClass({
   _peopleHTML: function() {
-    var people = this.props.people.map(function(person, index){
+    var people = this.props.players.map(function(person, index){
       return (
         <li key={index}>{person}</li>
       );
@@ -153,11 +164,11 @@ var Room = React.createClass({
     );
   },
   render: function() {
-    console.log(this.props);
     var people = this._peopleHTML();
     return (
       <div className="room">
         <h2>{this.props.room}</h2>
+        <h3>Player {this.props.game}</h3>
         {people}
       </div>
     )

@@ -7,11 +7,15 @@ var UI = React.createClass({displayName: "UI",
   componentWillMount: function() {
     this.socket = io();
     var _this = this;
-    this.socket.on("room", function(room){
+    this.socket.on("info", function(room){
       _this.setState({
         room: room
       });
-    })
+    });
+
+    this.socket.on("room joined", function(resp){
+      console.log(resp);
+    });
   },
   render: function() {
     var room;
@@ -23,7 +27,7 @@ var UI = React.createClass({displayName: "UI",
       );
     } else {
       room = (
-        React.createElement(Room, React.__spread({},  this.state.room))
+        React.createElement(RoomInfo, React.__spread({},  this.state.room))
       );
     }
     return (
@@ -34,6 +38,7 @@ var UI = React.createClass({displayName: "UI",
   }
 });
 
+
 var RoomForm = React.createClass({displayName: "RoomForm",
   getInitialState: function() {
     return {
@@ -42,6 +47,18 @@ var RoomForm = React.createClass({displayName: "RoomForm",
       password: "",
       game: ""
     }
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return (nextState.nickname !== this.state.nickname ||
+      nextState.room !== this.state.room ||
+      nextState.password !== this.state.password ||
+      nextState.game !== this.state.game);
+  },
+  _formComplete: function(needGame) {
+    var personComplete = (this.state.nickname !== "" &&
+        this.state.room !== "" && this.state.password !== "");
+    var gameComplete = needGame ? this.state.game !== "" : true;
+    return personComplete && gameComplete;
   },
   makeRoom: function(event) {
     event.preventDefault();
@@ -61,12 +78,6 @@ var RoomForm = React.createClass({displayName: "RoomForm",
       this.props.socket.emit("join room", this.state);
 
     }
-  },
-  _formComplete: function(needGame) {
-    var personComplete = (this.state.nickname !== "" &&
-        this.state.room !== "" && this.state.password !== "");
-    var gameComplete = needGame ? this.state.game !== "" : true;
-    return personComplete && gameComplete;
   },
   setGame: function(event) {
     this.setState({
@@ -89,7 +100,7 @@ var RoomForm = React.createClass({displayName: "RoomForm",
     })
   },
   render: function() {
-    var gamesList = ["four"];
+    var gamesList = ["tic-tac-toe"];
     var games = gamesList.map(function(game, index){
       return (
         React.createElement("label", {key: index}, 
@@ -139,9 +150,9 @@ var RoomForm = React.createClass({displayName: "RoomForm",
   }
 });
 
-var Room = React.createClass({displayName: "Room",
+var RoomInfo = React.createClass({displayName: "RoomInfo",
   _peopleHTML: function() {
-    var people = this.props.people.map(function(person, index){
+    var people = this.props.players.map(function(person, index){
       return (
         React.createElement("li", {key: index}, person)
       );
@@ -153,11 +164,11 @@ var Room = React.createClass({displayName: "Room",
     );
   },
   render: function() {
-    console.log(this.props);
     var people = this._peopleHTML();
     return (
       React.createElement("div", {className: "room"}, 
         React.createElement("h2", null, this.props.room), 
+        React.createElement("h3", null, "Player ", this.props.game), 
         people
       )
     )
