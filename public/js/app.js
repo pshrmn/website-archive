@@ -13,9 +13,15 @@ var UI = React.createClass({displayName: "UI",
       });
     });
 
-    this.socket.on("room joined", function(resp){
+    this.socket.on("join", function(resp){
+      _this.setState({
+        formErrors: resp.reason
+      });
       console.log(resp);
     });
+  },
+  sendMessage: function(type, msg) {
+    this.socket.emit(type, msg);
   },
   render: function() {
     var room;
@@ -23,7 +29,8 @@ var UI = React.createClass({displayName: "UI",
     // otherwise show the room ui
     if ( this.state.room === undefined ) {
       room = (
-        React.createElement(RoomForm, {socket: this.socket})
+        React.createElement(RoomForm, {onMsg: this.sendMessage, 
+                  errors: this.state.formErrors})
       );
     } else {
       room = (
@@ -45,44 +52,30 @@ var RoomForm = React.createClass({displayName: "RoomForm",
       nickname: "",
       room: "",
       password: "",
-      game: ""
     }
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     return (nextState.nickname !== this.state.nickname ||
       nextState.room !== this.state.room ||
       nextState.password !== this.state.password ||
-      nextState.game !== this.state.game);
+      nextProps.errors !== this.props.errors );
   },
-  _formComplete: function(needGame) {
-    var personComplete = (this.state.nickname !== "" &&
-        this.state.room !== "" && this.state.password !== "");
-    var gameComplete = needGame ? this.state.game !== "" : true;
-    return personComplete && gameComplete;
+  _formComplete: function() {
+    return (this.state.nickname !== "" && this.state.room !== "" &&
+      this.state.password !== "");
   },
-  makeRoom: function(event) {
-    event.preventDefault();
-    if ( this._formComplete(true) ) {
-      this.props.socket.emit("create room", this.state);
-      this.setState({
-        nickname: "",
-        room: "",
-        password: "",
-        game: ""
-      });
-    }
+  _resetForm: function() {
+    this.setState({
+      nickname: "",
+      room: "",
+      password: ""
+    });
   },
   joinRoom: function(event) {
     event.preventDefault();
-    if ( this._formComplete(false) ) {
-      this.props.socket.emit("join room", this.state);
-
+    if ( this._formComplete() ) {
+      this.props.onMsg("join room", this.state);
     }
-  },
-  setGame: function(event) {
-    this.setState({
-      game: event.target.value
-    })
   },
   setNickname: function(event) {
     this.setState({
@@ -100,20 +93,12 @@ var RoomForm = React.createClass({displayName: "RoomForm",
     })
   },
   render: function() {
-    var gamesList = ["tic-tac-toe"];
-    var games = gamesList.map(function(game, index){
-      return (
-        React.createElement("label", {key: index}, 
-          game, 
-          React.createElement("input", {type: "radio", name: "game", 
-                 value: game, 
-                 onChange: this.setGame})
-        )
-      )
-    }, this);
+    var hasErrors = (this.props.errors !== undefined && this.props.errors !== "");
+    var errors = hasErrors ? (React.createElement("p", {className: "error"}, "Error: ", this.props.errors)) : "";
     return (
       React.createElement("div", null, 
         React.createElement("form", {id: "login-form"}, 
+          errors, 
           React.createElement("p", null, 
             React.createElement("label", {for: "nickname"}, "Nickname"), 
             React.createElement("input", {type: "text", id: "nickname", 
@@ -134,15 +119,6 @@ var RoomForm = React.createClass({displayName: "RoomForm",
           ), 
           React.createElement("p", null, 
             React.createElement("button", {onClick: this.joinRoom}, "Join Room")
-          ), 
-          React.createElement("p", null, 
-            "Which game do you want to play? (Only the person creating the room needs to select this)"
-          ), 
-          React.createElement("p", null, 
-            games
-          ), 
-          React.createElement("p", null, 
-            React.createElement("button", {onClick: this.makeRoom}, "Make Room")
           )
         )
       )
@@ -167,8 +143,7 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
     var people = this._peopleHTML();
     return (
       React.createElement("div", {className: "room"}, 
-        React.createElement("h2", null, this.props.room), 
-        React.createElement("h3", null, "Player ", this.props.game), 
+        React.createElement("h2", null, this.props.name), 
         people
       )
     )

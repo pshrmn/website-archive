@@ -13,9 +13,15 @@ var UI = React.createClass({
       });
     });
 
-    this.socket.on("room joined", function(resp){
+    this.socket.on("join", function(resp){
+      _this.setState({
+        formErrors: resp.reason
+      });
       console.log(resp);
     });
+  },
+  sendMessage: function(type, msg) {
+    this.socket.emit(type, msg);
   },
   render: function() {
     var room;
@@ -23,7 +29,8 @@ var UI = React.createClass({
     // otherwise show the room ui
     if ( this.state.room === undefined ) {
       room = (
-        <RoomForm socket={this.socket} />
+        <RoomForm onMsg={this.sendMessage}
+                  errors={this.state.formErrors} />
       );
     } else {
       room = (
@@ -45,44 +52,30 @@ var RoomForm = React.createClass({
       nickname: "",
       room: "",
       password: "",
-      game: ""
     }
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     return (nextState.nickname !== this.state.nickname ||
       nextState.room !== this.state.room ||
       nextState.password !== this.state.password ||
-      nextState.game !== this.state.game);
+      nextProps.errors !== this.props.errors );
   },
-  _formComplete: function(needGame) {
-    var personComplete = (this.state.nickname !== "" &&
-        this.state.room !== "" && this.state.password !== "");
-    var gameComplete = needGame ? this.state.game !== "" : true;
-    return personComplete && gameComplete;
+  _formComplete: function() {
+    return (this.state.nickname !== "" && this.state.room !== "" &&
+      this.state.password !== "");
   },
-  makeRoom: function(event) {
-    event.preventDefault();
-    if ( this._formComplete(true) ) {
-      this.props.socket.emit("create room", this.state);
-      this.setState({
-        nickname: "",
-        room: "",
-        password: "",
-        game: ""
-      });
-    }
+  _resetForm: function() {
+    this.setState({
+      nickname: "",
+      room: "",
+      password: ""
+    });
   },
   joinRoom: function(event) {
     event.preventDefault();
-    if ( this._formComplete(false) ) {
-      this.props.socket.emit("join room", this.state);
-
+    if ( this._formComplete() ) {
+      this.props.onMsg("enter room", this.state);
     }
-  },
-  setGame: function(event) {
-    this.setState({
-      game: event.target.value
-    })
   },
   setNickname: function(event) {
     this.setState({
@@ -100,20 +93,12 @@ var RoomForm = React.createClass({
     })
   },
   render: function() {
-    var gamesList = ["tic-tac-toe"];
-    var games = gamesList.map(function(game, index){
-      return (
-        <label key={index}>
-          {game}
-          <input type="radio" name="game"
-                 value={game}
-                 onChange={this.setGame} />
-        </label>
-      )
-    }, this);
+    var hasErrors = (this.props.errors !== undefined && this.props.errors !== "");
+    var errors = hasErrors ? (<p className="error" >Error: {this.props.errors}</p>) : "";
     return (
       <div>
         <form id="login-form">
+          {errors}
           <p>
             <label for="nickname">Nickname</label>
             <input type="text" id="nickname"
@@ -134,15 +119,6 @@ var RoomForm = React.createClass({
           </p>
           <p>
             <button onClick={this.joinRoom}>Join Room</button>
-          </p>
-          <p>
-            Which game do you want to play? (Only the person creating the room needs to select this)
-          </p>
-          <p>
-            {games}
-          </p>
-          <p>
-            <button onClick={this.makeRoom}>Make Room</button>
           </p>
         </form>
       </div>
@@ -167,8 +143,7 @@ var RoomInfo = React.createClass({
     var people = this._peopleHTML();
     return (
       <div className="room">
-        <h2>{this.props.room}</h2>
-        <h3>Player {this.props.game}</h3>
+        <h2>{this.props.name}</h2>
         {people}
       </div>
     )

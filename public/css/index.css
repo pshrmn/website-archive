@@ -11,6 +11,7 @@ body {
 header {
     background: #222233;
     padding: 15px 25px;
+    font-family: "Fugaz One";
 }
 
 header a {
@@ -41,4 +42,8 @@ label {
 
 button {
     margin-right: 10px;
+}
+
+.error {
+    color: red;
 }
