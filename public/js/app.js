@@ -17,7 +17,13 @@ var UI = React.createClass({displayName: "UI",
       _this.setState({
         formErrors: resp.reason
       });
-      console.log(resp);
+    });
+
+    this.socket.on("left", function(msg) {
+      _this.setState({
+        room: undefined
+      });
+      console.log("got it");
     });
   },
   sendMessage: function(type, msg) {
@@ -34,7 +40,8 @@ var UI = React.createClass({displayName: "UI",
       );
     } else {
       room = (
-        React.createElement(RoomInfo, React.__spread({},  this.state.room))
+        React.createElement(RoomInfo, React.__spread({onMsg: this.sendMessage}, 
+                  this.state.room))
       );
     }
     return (
@@ -74,7 +81,7 @@ var RoomForm = React.createClass({displayName: "RoomForm",
   joinRoom: function(event) {
     event.preventDefault();
     if ( this._formComplete() ) {
-      this.props.onMsg("join room", this.state);
+      this.props.onMsg("enter", this.state);
     }
   },
   setNickname: function(event) {
@@ -139,11 +146,19 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
       )
     );
   },
+  leaveRoom: function(event){ 
+    this.props.onMsg("leave", {
+      room: this.props.name
+    });
+  },
   render: function() {
     var people = this._peopleHTML();
     return (
       React.createElement("div", {className: "room"}, 
         React.createElement("h2", null, this.props.name), 
+        React.createElement("div", {className: "controls"}, 
+          React.createElement("button", {onClick: this.leaveRoom}, "Leave Room")
+        ), 
         people
       )
     )
