@@ -156,6 +156,7 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
     return (
       React.createElement("div", {className: "room"}, 
         React.createElement("h2", null, this.props.name), 
+        React.createElement("h3", null, "Run By: ", this.props.owner), 
         React.createElement("div", {className: "controls"}, 
           React.createElement("button", {onClick: this.leaveRoom}, "Leave Room")
         ), 

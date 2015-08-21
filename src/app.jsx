@@ -156,6 +156,7 @@ var RoomInfo = React.createClass({
     return (
       <div className="room">
         <h2>{this.props.name}</h2>
+        <h3>Run By: {this.props.owner}</h3>
         <div className="controls">
           <button onClick={this.leaveRoom}>Leave Room</button>
         </div>

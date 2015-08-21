@@ -9,19 +9,36 @@ module.exports = function(io) {
       var room = rooms[name];
       var player = new Player(msg.nickname, socket);
 
-      // if room already exists, check if password matches
-      // if room doesn't exist, create the room
+      /*
+       * Try to join if room already exists
+       * if it doesn't exist, create the room
+       */ 
       if ( room !== undefined ) {
         room.addPlayer(player, msg.password);
       } else {  
-        // join so that the room exists
         socket.join(name);
         rooms[name] = new Room(io.to(name), player, name, msg.password);
       }
     });
 
     socket.on("leave", function(msg){
-      rooms[msg.room].removePlayer(socket.id);
+      var room = rooms[msg.room];
+      if ( !room ) {
+        return;
+      }
+      room.removePlayer(socket.id);
+      if ( room.shouldDelete() ) {
+        delete rooms[msg.room];
+      }
+    });
+
+    socket.on("gameState", function(msg){
+      var name = msg.room;
+      var room = rooms[name];
+      if ( !room ) {
+        return;
+      }
+      
     });
 
     /*

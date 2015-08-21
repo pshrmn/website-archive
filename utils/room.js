@@ -1,5 +1,5 @@
 /*
- *
+ * A room is used for 2+ people to play a game.
  */
 function Room(socket, owner, name, password) {
   this.socket = socket;
@@ -14,12 +14,19 @@ function Room(socket, owner, name, password) {
   this.info();
 }
 
+/*
+ * Check if a user with the given name already exists in the room
+ */
 Room.prototype.hasPlayer = function(name) {
   return this.players.some(function(p){
     return p.nickname === name;
   });
 }
 
+/*
+ * Add a new player if the room is under capacity and the correct password
+ * is given.
+ */
 Room.prototype.addPlayer = function(player, password) {
   if ( password !== this.password ) {
     player.socket.emit("join", {
@@ -47,9 +54,13 @@ Room.prototype.addPlayer = function(player, password) {
   }
 };
 
+/*
+ * Remove a player from the room using the player's socket id
+ */
 Room.prototype.removePlayer = function(playerID) {
   var leavingPlayer;
   var connected = Object.keys(this.socket.connected);
+  // filter out the player being removed
   this.players = this.players.filter(function(player){
     var id = player.socket.id;
     if ( playerID === id ) {
@@ -57,15 +68,25 @@ Room.prototype.removePlayer = function(playerID) {
     }
     return playerID !== id;
   });
+  // remove the player from the socket.io room
   if ( leavingPlayer ) {
-    var _this = this;
+    // if the owner has left, the person who has been in the room the next
+    // longest is made the new owner. not a perfect system, but good enough
+    // of course, if the owner is the only person in the room, the room should
+    // be destructed
+    if ( this.owner.nickname === leavingPlayer.nickname && this.players.length ) {
+      this.owner = this.players[0];
+    }
     leavingPlayer.socket.leave(this.name, function() {
       leavingPlayer.socket.emit("left", "left room");
     });
     this.info();
   }
-}
+};
 
+/*
+ * Check to see if all of the players are still in the room.
+ */
 Room.prototype.checkPlayers = function() {
   var connected = Object.keys(this.socket.connected);
   if ( connected.length !== this.players.length ) {
@@ -80,12 +101,20 @@ Room.prototype.checkPlayers = function() {
   }
 };
 
+Room.prototype.shouldDelete = function() {
+  return this.players.length === 0;
+};
+
+/*
+ * Send information about the room to everyone in it.
+ */
 Room.prototype.info = function() {
   var players = this.players.map(function(p){
     return p.nickname;
   });
   this.socket.to(this.name).emit("info", {
     name: this.name,
+    owner: this.owner.nickname,
     players: players
   });
 };
