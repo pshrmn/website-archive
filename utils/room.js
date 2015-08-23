@@ -29,17 +29,17 @@ Room.prototype.hasPlayer = function(name) {
  */
 Room.prototype.addPlayer = function(player, password) {
   if ( password !== this.password ) {
-    player.socket.emit("join", {
+    player.socket.emit("joined", {
       error: true,
       reason: "Room " + this.name + " exists, but you entered the incorrect password"
     });
   } else if ( this.players.length >= this.maxPlayers ) {
-    player.socket.emit("join", {
+    player.socket.emit("joined", {
       error: true,
       reason: "Too many players already in the room"
     });
   } else if ( this.hasPlayer(player.nickname) ) {
-    player.socket.emit("join", {
+    player.socket.emit("joined", {
       error: true,
       reason: "There is already a player with this nickname in the room"
     });
@@ -47,7 +47,7 @@ Room.prototype.addPlayer = function(player, password) {
     this.players.push(player);
     player.socket.join(this.name);
     this.info();
-    player.socket.emit("join", {
+    player.socket.emit("joined", {
       error: false,
       reason: ""
     });
@@ -110,13 +110,43 @@ Room.prototype.shouldDelete = function() {
  */
 Room.prototype.info = function() {
   var players = this.players.map(function(p){
-    return p.nickname;
+    return {
+      name: p.nickname,
+      ready: p.ready
+    };
   });
   this.socket.to(this.name).emit("info", {
     name: this.name,
     owner: this.owner.nickname,
-    players: players
+    players: players,
+    canPlay: this.players.length >= this.minPlayers
   });
 };
+
+Room.prototype.addReady = function(socketID) {
+  this.players.some(function(p) {
+    if ( p.socket.id === socketID ) {
+      p.ready = true;
+      return true;
+    }
+    return false;
+  });
+  var allReady = this.players.every(function(p){
+    return p.ready;
+  })
+  if ( allReady && this.players.length >= this.minPlayers ) {
+    this.socket.to(this.name).emit("start game", "the game is starting");
+  }
+  this.info();
+};
+
+Room.prototype.endGame = function() {
+  this.players.forEach(function(p){
+    p.ready = false;
+  });
+  this.info();
+}
+
+
 
 module.exports = Room;

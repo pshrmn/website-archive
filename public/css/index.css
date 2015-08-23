@@ -47,3 +47,15 @@ button {
 .error {
     color: red;
 }
+
+.ready {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background: #ccc;
+}
+
+.ready.green {
+    background: green;
+}

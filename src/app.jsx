@@ -13,7 +13,7 @@ var UI = React.createClass({
       });
     });
 
-    this.socket.on("join", function(resp){
+    this.socket.on("joined", function(resp){
       _this.setState({
         formErrors: resp.reason
       });
@@ -24,6 +24,10 @@ var UI = React.createClass({
         room: undefined
       });
       console.log("got it");
+    });
+
+    this.socket.on("start game", function(msg){
+      console.log(msg);
     });
   },
   sendMessage: function(type, msg) {
@@ -81,7 +85,7 @@ var RoomForm = React.createClass({
   joinRoom: function(event) {
     event.preventDefault();
     if ( this._formComplete() ) {
-      this.props.onMsg("enter", this.state);
+      this.props.onMsg("join", this.state);
     }
   },
   setNickname: function(event) {
@@ -136,8 +140,12 @@ var RoomForm = React.createClass({
 var RoomInfo = React.createClass({
   _peopleHTML: function() {
     var people = this.props.players.map(function(person, index){
+      var readyClass = person.ready ? "ready green" : "ready gray";
       return (
-        <li key={index}>{person}</li>
+        <li key={index}>
+          <div className={readyClass}></div>
+          {person.name}
+        </li>
       );
     });
     return (
@@ -151,6 +159,11 @@ var RoomInfo = React.createClass({
       room: this.props.name
     });
   },
+  signalReady: function(event){
+    this.props.onMsg("ready", {
+      room: this.props.name
+    });
+  },
   render: function() {
     var people = this._peopleHTML();
     return (
@@ -158,6 +171,7 @@ var RoomInfo = React.createClass({
         <h2>{this.props.name}</h2>
         <h3>Run By: {this.props.owner}</h3>
         <div className="controls">
+          <button onClick={this.signalReady}>Ready!</button>
           <button onClick={this.leaveRoom}>Leave Room</button>
         </div>
         {people}

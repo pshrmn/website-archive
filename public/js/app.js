@@ -13,7 +13,7 @@ var UI = React.createClass({displayName: "UI",
       });
     });
 
-    this.socket.on("join", function(resp){
+    this.socket.on("joined", function(resp){
       _this.setState({
         formErrors: resp.reason
       });
@@ -24,6 +24,10 @@ var UI = React.createClass({displayName: "UI",
         room: undefined
       });
       console.log("got it");
+    });
+
+    this.socket.on("start game", function(msg){
+      console.log(msg);
     });
   },
   sendMessage: function(type, msg) {
@@ -81,7 +85,7 @@ var RoomForm = React.createClass({displayName: "RoomForm",
   joinRoom: function(event) {
     event.preventDefault();
     if ( this._formComplete() ) {
-      this.props.onMsg("enter", this.state);
+      this.props.onMsg("join", this.state);
     }
   },
   setNickname: function(event) {
@@ -136,8 +140,12 @@ var RoomForm = React.createClass({displayName: "RoomForm",
 var RoomInfo = React.createClass({displayName: "RoomInfo",
   _peopleHTML: function() {
     var people = this.props.players.map(function(person, index){
+      var readyClass = person.ready ? "ready green" : "ready gray";
       return (
-        React.createElement("li", {key: index}, person)
+        React.createElement("li", {key: index}, 
+          React.createElement("div", {className: readyClass}), 
+          person.name
+        )
       );
     });
     return (
@@ -151,6 +159,11 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
       room: this.props.name
     });
   },
+  signalReady: function(event){
+    this.props.onMsg("ready", {
+      room: this.props.name
+    });
+  },
   render: function() {
     var people = this._peopleHTML();
     return (
@@ -158,6 +171,7 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
         React.createElement("h2", null, this.props.name), 
         React.createElement("h3", null, "Run By: ", this.props.owner), 
         React.createElement("div", {className: "controls"}, 
+          React.createElement("button", {onClick: this.signalReady}, "Ready!"), 
           React.createElement("button", {onClick: this.leaveRoom}, "Leave Room")
         ), 
         people

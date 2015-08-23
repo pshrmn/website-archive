@@ -4,7 +4,7 @@ var Room = require("./room");
 module.exports = function(io) {
   var rooms = {};
   io.on("connection", function(socket){
-    socket.on("enter", function(msg){
+    socket.on("join", function(msg){
       var name = msg.room;
       var room = rooms[name];
       var player = new Player(msg.nickname, socket);
@@ -38,7 +38,15 @@ module.exports = function(io) {
       if ( !room ) {
         return;
       }
-      
+
+    });
+
+    socket.on("ready", function(msg){
+      var room = rooms[msg.room];
+      if ( !room ) {
+        return;
+      }
+      room.addReady(socket.id);
     });
 
     /*
