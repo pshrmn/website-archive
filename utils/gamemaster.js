@@ -46,7 +46,7 @@ module.exports = function(io) {
       if ( !room ) {
         return;
       }
-      room.addReady(socket.id);
+      room.toggleReady(socket.id);
     });
 
     /*

@@ -32,7 +32,15 @@ var UI = React.createClass({
       })
     });
   },
+  /*
+   * takes a message and sends it to the server
+   * appends the name of the room for room specific commands
+   * because of that, msg has to be an object
+   */
   sendMessage: function(type, msg) {
+    if ( this.state.room ) {
+      msg.room = this.state.room.name
+    };
     this.socket.emit(type, msg);
   },
   render: function() {
@@ -52,7 +60,8 @@ var UI = React.createClass({
     }
 
     var player = this.state.player === undefined ? "" : (
-      <PlayerInfo {...this.state.player} />
+      <PlayerInfo onMsg={this.sendMessage}
+                  {...this.state.player} />
     );
 
     var game = this.state.game === undefined ? "" : (
@@ -184,11 +193,6 @@ var RoomInfo = React.createClass({
       room: this.props.name
     });
   },
-  signalReady: function(event){
-    this.props.onMsg("ready", {
-      room: this.props.name
-    });
-  },
   render: function() {
     var people = this._peopleHTML();
     return (
@@ -196,7 +200,6 @@ var RoomInfo = React.createClass({
         <h2>{this.props.name}</h2>
         <h3>Run By: {this.props.owner}</h3>
         <div className="controls">
-          <button onClick={this.signalReady}>Ready!</button>
           <button onClick={this.leaveRoom}>Leave Room</button>
         </div>
         {people}
@@ -206,10 +209,20 @@ var RoomInfo = React.createClass({
 })
 
 var PlayerInfo = React.createClass({
+  signalReady: function(event){
+    this.props.onMsg("ready", {});
+  },
   render: function() {
+    var readyText = this.props.ready ? "Not Ready" : "Ready";
+    var readyClass = this.props.ready ? "ready green" : "ready gray";
+    var readyButton = this.props.playing ? "" : (
+      <button onClick={this.signalReady}>{readyText}</button>
+    );
     return (
       <div>
+        <div className={readyClass}></div>
         {this.props.name}
+        {readyButton}
       </div>
     );
   }

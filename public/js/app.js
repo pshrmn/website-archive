@@ -32,7 +32,15 @@ var UI = React.createClass({displayName: "UI",
       })
     });
   },
+  /*
+   * takes a message and sends it to the server
+   * appends the name of the room for room specific commands
+   * because of that, msg has to be an object
+   */
   sendMessage: function(type, msg) {
+    if ( this.state.room ) {
+      msg.room = this.state.room.name
+    };
     this.socket.emit(type, msg);
   },
   render: function() {
@@ -52,7 +60,8 @@ var UI = React.createClass({displayName: "UI",
     }
 
     var player = this.state.player === undefined ? "" : (
-      React.createElement(PlayerInfo, React.__spread({},  this.state.player))
+      React.createElement(PlayerInfo, React.__spread({onMsg: this.sendMessage}, 
+                  this.state.player))
     );
 
     var game = this.state.game === undefined ? "" : (
@@ -184,11 +193,6 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
       room: this.props.name
     });
   },
-  signalReady: function(event){
-    this.props.onMsg("ready", {
-      room: this.props.name
-    });
-  },
   render: function() {
     var people = this._peopleHTML();
     return (
@@ -196,7 +200,6 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
         React.createElement("h2", null, this.props.name), 
         React.createElement("h3", null, "Run By: ", this.props.owner), 
         React.createElement("div", {className: "controls"}, 
-          React.createElement("button", {onClick: this.signalReady}, "Ready!"), 
           React.createElement("button", {onClick: this.leaveRoom}, "Leave Room")
         ), 
         people
@@ -206,10 +209,20 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
 })
 
 var PlayerInfo = React.createClass({displayName: "PlayerInfo",
+  signalReady: function(event){
+    this.props.onMsg("ready", {});
+  },
   render: function() {
+    var readyText = this.props.ready ? "Not Ready" : "Ready";
+    var readyClass = this.props.ready ? "ready green" : "ready gray";
+    var readyButton = this.props.playing ? "" : (
+      React.createElement("button", {onClick: this.signalReady}, readyText)
+    );
     return (
       React.createElement("div", null, 
-        this.props.name
+        React.createElement("div", {className: readyClass}), 
+        this.props.name, 
+        readyButton
       )
     );
   }
