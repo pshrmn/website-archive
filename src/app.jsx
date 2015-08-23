@@ -7,9 +7,10 @@ var UI = React.createClass({
   componentWillMount: function() {
     this.socket = io();
     var _this = this;
-    this.socket.on("info", function(room){
+    this.socket.on("info", function(info){
       _this.setState({
-        room: room
+        room: info.room,
+        player: info.player
       });
     });
 
@@ -23,11 +24,12 @@ var UI = React.createClass({
       _this.setState({
         room: undefined
       });
-      console.log("got it");
     });
 
-    this.socket.on("start game", function(msg){
-      console.log(msg);
+    this.socket.on("gameState", function(game){
+      _this.setState({
+        game: game
+      })
     });
   },
   sendMessage: function(type, msg) {
@@ -48,14 +50,37 @@ var UI = React.createClass({
                   {...this.state.room} />
       );
     }
+
+    var player = this.state.player === undefined ? "" : (
+      <PlayerInfo {...this.state.player} />
+    );
+
+    var game = this.state.game === undefined ? "" : (
+      <Game {...this.state.game} />
+    );
     return (
       <div className="ui">
-        { room }   
+        { player }
+        { room }
+        { game }
       </div>
     );
   }
 });
 
+
+var Game = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <p>{this.props.name}</p>
+        <p>
+          This is the game. You're playing this game. Isn't it fun?
+        </p>
+      </div>
+    );
+  }
+});
 
 var RoomForm = React.createClass({
   getInitialState: function() {
@@ -177,6 +202,16 @@ var RoomInfo = React.createClass({
         {people}
       </div>
     )
+  }
+})
+
+var PlayerInfo = React.createClass({
+  render: function() {
+    return (
+      <div>
+        {this.props.name}
+      </div>
+    );
   }
 })
 

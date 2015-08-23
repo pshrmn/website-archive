@@ -115,12 +115,27 @@ Room.prototype.info = function() {
       ready: p.ready
     };
   });
+  // send out to each player so they can see their own information
+  this.players.forEach(function(p){
+    p.socket.emit("info", {
+      room: {
+        name: this.name,
+        owner: this.owner.nickname,
+        players: players
+      },
+      player: {
+        name: p.nickname,
+        ready: p.ready
+      }
+    });
+  }, this);
+  /*
   this.socket.to(this.name).emit("info", {
     name: this.name,
     owner: this.owner.nickname,
-    players: players,
-    canPlay: this.players.length >= this.minPlayers
+    players: players
   });
+*/
 };
 
 Room.prototype.addReady = function(socketID) {
@@ -135,7 +150,9 @@ Room.prototype.addReady = function(socketID) {
     return p.ready;
   })
   if ( allReady && this.players.length >= this.minPlayers ) {
-    this.socket.to(this.name).emit("start game", "the game is starting");
+    this.socket.to(this.name).emit("gameState", {
+      name: "Super Fun Game! Hooray!"
+    });
   }
   this.info();
 };

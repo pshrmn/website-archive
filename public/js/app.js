@@ -7,9 +7,10 @@ var UI = React.createClass({displayName: "UI",
   componentWillMount: function() {
     this.socket = io();
     var _this = this;
-    this.socket.on("info", function(room){
+    this.socket.on("info", function(info){
       _this.setState({
-        room: room
+        room: info.room,
+        player: info.player
       });
     });
 
@@ -23,11 +24,12 @@ var UI = React.createClass({displayName: "UI",
       _this.setState({
         room: undefined
       });
-      console.log("got it");
     });
 
-    this.socket.on("start game", function(msg){
-      console.log(msg);
+    this.socket.on("gameState", function(game){
+      _this.setState({
+        game: game
+      })
     });
   },
   sendMessage: function(type, msg) {
@@ -48,14 +50,37 @@ var UI = React.createClass({displayName: "UI",
                   this.state.room))
       );
     }
+
+    var player = this.state.player === undefined ? "" : (
+      React.createElement(PlayerInfo, React.__spread({},  this.state.player))
+    );
+
+    var game = this.state.game === undefined ? "" : (
+      React.createElement(Game, React.__spread({},  this.state.game))
+    );
     return (
       React.createElement("div", {className: "ui"}, 
-         room 
+         player, 
+         room, 
+         game 
       )
     );
   }
 });
 
+
+var Game = React.createClass({displayName: "Game",
+  render: function() {
+    return (
+      React.createElement("div", null, 
+        React.createElement("p", null, this.props.name), 
+        React.createElement("p", null, 
+          "This is the game. You're playing this game. Isn't it fun?"
+        )
+      )
+    );
+  }
+});
 
 var RoomForm = React.createClass({displayName: "RoomForm",
   getInitialState: function() {
@@ -177,6 +202,16 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
         people
       )
     )
+  }
+})
+
+var PlayerInfo = React.createClass({displayName: "PlayerInfo",
+  render: function() {
+    return (
+      React.createElement("div", null, 
+        this.props.name
+      )
+    );
   }
 })
 
