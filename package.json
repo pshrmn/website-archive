@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha specs --require specs/helpers/chai.js",
-    "jsx": "jsx --extension jsx src/ public/js/"
+    "jsx": "jsx --extension jsx src/ public/js/",
+    "preversion": "npm test"
   },
   "repository": {
     "type": "git",

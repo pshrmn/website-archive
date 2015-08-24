@@ -70,32 +70,33 @@ Room.prototype.addPlayer = function(player, password) {
  * Remove a player from the room using the player's socket id
  */
 Room.prototype.removePlayer = function(playerID) {
-  var leavingPlayer;
-  var connected = this.socketIDs();
+  var found = false;
+  var wasOwner = false;
+  var spliceIndex;
   // filter out the player being removed
-  this.players = this.players.filter(function(player){
-    var is = player.is(playerID);
-    if ( is ) {
-      leavingPlayer = player;
+  this.players.forEach(function(player, index){
+    if ( player.is(playerID) ) {
+      if ( this.owner.name === player.name ) {
+        wasOwner = true;
+      }
+      player.leave(this.name, function() {
+        player.send("left", "left room");
+      });
+      found = true;
+      spliceIndex = index;
     }
-    return !is
-  });
-  // remove the player from the socket.io room
-  if ( leavingPlayer ) {
+  }, this);
+
+  if ( found ) {
+    this.players.splice(spliceIndex, 1);
     // if the owner has left, the person who has been in the room the next
-    // longest is made the new owner. not a perfect system, but good enough
-    // of course, if the owner is the only person in the room, the room should
-    // be destructed
-    if ( this.owner.name === leavingPlayer.name && this.players.length ) {
+    // longest is made the new owner. not a perfect system, but good enough.
+    if ( wasOwner && this.players.length ) {
       this.owner = this.players[0];
     }
-    leavingPlayer.leave(this.name, function() {
-      leavingPlayer.send("left", "left room");
-    });
     this.info();
-    return true;
   }
-  return false;
+  return found;
 };
 
 /*
@@ -103,13 +104,22 @@ Room.prototype.removePlayer = function(playerID) {
  */
 Room.prototype.checkPlayers = function() {
   var connected = this.socketIDs();
+  var setNewOwner = false;
   if ( connected.length !== this.players.length ) {
     // filter down players to only ones still in the room
     this.players = this.players.filter(function(player){
-      return connected.some(function(socketID){
+      var isOwner = this.owner.name === player.name;
+      var stillConnected = connected.some(function(socketID){
         return player.is(socketID);
       });
-    });
+      if ( isOwner && !stillConnected ) {
+        setNewOwner = true;
+      }
+      return stillConnected;
+    }, this);
+    if ( setNewOwner && this.players.length ) {
+      this.owner = this.players[0];
+    }
     this.info();
   }
 };

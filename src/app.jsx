@@ -22,7 +22,8 @@ var UI = React.createClass({
 
     this.socket.on("left", function(msg) {
       _this.setState({
-        room: undefined
+        room: undefined,
+        player: undefined
       });
     });
 
