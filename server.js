@@ -9,6 +9,8 @@ var app = express();
 var server = http.Server(app);
 var io = socket(server);
 
+app.set('port', (process.env.PORT || 3000))
+
 nunjucks.configure('views', {
     autoescape: true,
     express: app
@@ -18,7 +20,6 @@ app.get('/', routes.index);
 app.use('/static', express.static(__dirname + "/public/"));
 gamemaster(io);
 
-var port = process.env.port || 3000
-server.listen(port, function(){
-  console.log('listening on *:' + port);
+server.listen(app.get('port'), function(){
+  console.log('listening on *:', app.get('port'));
 });
