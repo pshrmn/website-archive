@@ -4,7 +4,7 @@
   "description": "Plays games with other people",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha specs --require specs/helpers/chai.js",
     "jsx": "jsx --extension jsx src/ public/js/"
   },
   "repository": {
@@ -25,7 +25,10 @@
     "socket.io-client": "^1.3.6"
   },
   "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5",
     "react-tools": "^0.13.3",
+    "sinon": "^1.16.1",
     "uglify-js": "^2.4.24"
   }
 }
