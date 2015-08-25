@@ -23,7 +23,8 @@ var UI = React.createClass({
     this.socket.on("left", function(msg) {
       _this.setState({
         room: undefined,
-        player: undefined
+        player: undefined,
+        game: undefined
       });
     });
 
@@ -74,20 +75,6 @@ var UI = React.createClass({
         { player }
         { room }
         { game }
-      </div>
-    );
-  }
-});
-
-
-var Game = React.createClass({
-  render: function() {
-    return (
-      <div>
-        <p>{this.props.name}</p>
-        <p>
-          This is the game. You're playing this game. Isn't it fun?
-        </p>
       </div>
     );
   }
@@ -144,7 +131,7 @@ var RoomForm = React.createClass({
     var errors = hasErrors ? (<p className="error" >Error: {this.props.errors}</p>) : "";
     return (
       <div>
-        <form id="login-form">
+        <form>
           {errors}
           <p>
             <label for="nickname">Nickname</label>
@@ -176,18 +163,22 @@ var RoomForm = React.createClass({
 var RoomInfo = React.createClass({
   _peopleHTML: function() {
     var people = this.props.players.map(function(person, index){
-      var readyClass = person.ready ? "ready green" : "ready gray";
+      var owner = person.name === this.props.owner;
       return (
         <li key={index}>
-          <div className={readyClass}></div>
-          {person.name}
+          <Person name={person.name}
+                  ready={person.ready}
+                  owner={owner} />
         </li>
       );
-    });
+    }, this);
     return (
-      <ul>
-        {people}
-      </ul>
+      <div className="players">
+        <p>Players</p>
+        <ul>
+          {people}
+        </ul>
+      </div>
     );
   },
   leaveRoom: function(event){ 
@@ -200,7 +191,6 @@ var RoomInfo = React.createClass({
     return (
       <div className="room">
         <h2>{this.props.name}</h2>
-        <h3>Run By: {this.props.owner}</h3>
         <div className="controls">
           <button onClick={this.leaveRoom}>Leave Room</button>
         </div>
@@ -216,15 +206,42 @@ var PlayerInfo = React.createClass({
   },
   render: function() {
     var readyText = this.props.ready ? "Not Ready" : "Ready";
-    var readyClass = this.props.ready ? "ready green" : "ready gray";
     var readyButton = this.props.playing ? "" : (
       <button onClick={this.signalReady}>{readyText}</button>
     );
     return (
       <div>
+        <Person name={this.props.name}
+                ready={this.props.ready} />
+        {readyButton}
+      </div>
+    );
+  }
+})
+
+var Person = React.createClass({
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return (nextProps.name !== this.props.name ||
+      nextProps.owner !== this.props.owner || nextProps.ready !== this.props.ready);
+  },
+  markOwner: function() {
+    // a bit convoluted, but I didn't want to actually have the crown symbol
+    // in the source code
+    function crown() {
+      return {__html: "&#9818"};
+    }
+    return this.props.owner ? (
+      <div className="owner" dangerouslySetInnerHTML={crown()} />
+    ) : "";
+  },
+  render: function() {
+    var readyClass = this.props.ready ? "ready green" : "ready gray";
+    var owner = this.markOwner();
+    return (
+      <div className="person">
         <div className={readyClass}></div>
         {this.props.name}
-        {readyButton}
+        {owner}
       </div>
     );
   }

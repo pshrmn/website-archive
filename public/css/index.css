@@ -10,7 +10,7 @@ body {
 
 header {
     background: #222233;
-    padding: 15px 25px;
+    padding: 5px 25px;
     font-family: "Fugaz One";
 }
 
@@ -27,35 +27,76 @@ header a {
     margin: 25px 50px 0;
 }
 
-#login-form {
+/* form */
+form {
     padding: 15px;
 }
 
-#login-form p {
-    padding: 3px 0;
+form label {
+    display: block;
 }
 
-label {
-    display: inline-block;
-    width: 90px;
-}
-
-button {
+form button {
     margin-right: 10px;
 }
 
-.error {
+form .error {
     color: red;
 }
+
+/* form */
 
 .ready {
     display: inline-block;
     width: 10px;
     height: 10px;
     border-radius: 5px;
-    background: #ccc;
+    background: #DE2525;
+    margin-right: 3px;
 }
 
 .ready.green {
     background: green;
+}
+
+.players ul{
+    list-style: none;
+    padding: 0;
+}
+
+.ui {
+    font-size: 20px;
+    font-family: "Oxygen", sans-serif;
+}
+
+.ui h2 {
+    margin: 0.25em 0;
+}
+
+.ui button {
+    font-family: "Oxygen", sans-serif;
+    font-size: 0.8em;
+    background: #ddd;
+    color: #222233;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+
+.ui p {
+    margin: 0.2em 0;
+}
+
+.ui ul, .ui ol {
+    margin: 0;
+}
+
+.person {
+    margin-right: 15px;
+    display: inline-block;
+}
+
+.person .owner {
+    display: inline-block;
 }

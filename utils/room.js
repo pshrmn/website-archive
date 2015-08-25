@@ -90,6 +90,9 @@ Room.prototype.removePlayer = function(playerID) {
     if ( wasOwner && this.players.length ) {
       this.owner = this.players[0];
     }
+    if ( this.playing ) {
+      this.endGame();
+    }
     this.info();
   }
   return found;

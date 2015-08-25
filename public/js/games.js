@@ -9,14 +9,14 @@ var PlayableGames = [
  * Tic Tac Toe
  */
 var TicTacToe = React.createClass({displayName: "TicTacToe",
-  sendState: function(row, column) {
+  sendPosition: function(row, column) {
     this.props.onMsg("gameState", {
       row: row,
       column: column
     });
   },
   render: function() {
-    var sendState = this.sendState;
+    var sendPosition = this.sendPosition;
     var active = this.props.active;
     var rows = this.props.board.map(function(row, rowIndex){
       var cells = row.map(function(cell, colIndex){
@@ -27,7 +27,7 @@ var TicTacToe = React.createClass({displayName: "TicTacToe",
                 value: cell, 
                 row: rowIndex, 
                 column: colIndex, 
-                mark: sendState})
+                mark: sendPosition})
         );
       });
 
@@ -56,7 +56,7 @@ var Cell = React.createClass({displayName: "Cell",
   shouldComponentUpdate: function(nextProps, nextState) {
     return nextProps.value !== this.props.value;
   },
-  sendState: function(event){
+  onClick: function(event){
     // don't send to server when the cell is already marked
     if ( this.props.value !== "" || !this.props.active ) {
       return;
@@ -65,7 +65,7 @@ var Cell = React.createClass({displayName: "Cell",
   },
   render: function() {
     return (
-      React.createElement("td", {onClick: this.sendState}, 
+      React.createElement("td", {onClick: this.onClick}, 
         this.props.value
       )
     );

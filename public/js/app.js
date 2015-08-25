@@ -23,7 +23,8 @@ var UI = React.createClass({displayName: "UI",
     this.socket.on("left", function(msg) {
       _this.setState({
         room: undefined,
-        player: undefined
+        player: undefined,
+        game: undefined
       });
     });
 
@@ -74,20 +75,6 @@ var UI = React.createClass({displayName: "UI",
          player, 
          room, 
          game 
-      )
-    );
-  }
-});
-
-
-var Game = React.createClass({displayName: "Game",
-  render: function() {
-    return (
-      React.createElement("div", null, 
-        React.createElement("p", null, this.props.name), 
-        React.createElement("p", null, 
-          "This is the game. You're playing this game. Isn't it fun?"
-        )
       )
     );
   }
@@ -144,7 +131,7 @@ var RoomForm = React.createClass({displayName: "RoomForm",
     var errors = hasErrors ? (React.createElement("p", {className: "error"}, "Error: ", this.props.errors)) : "";
     return (
       React.createElement("div", null, 
-        React.createElement("form", {id: "login-form"}, 
+        React.createElement("form", null, 
           errors, 
           React.createElement("p", null, 
             React.createElement("label", {for: "nickname"}, "Nickname"), 
@@ -176,17 +163,21 @@ var RoomForm = React.createClass({displayName: "RoomForm",
 var RoomInfo = React.createClass({displayName: "RoomInfo",
   _peopleHTML: function() {
     var people = this.props.players.map(function(person, index){
-      var readyClass = person.ready ? "ready green" : "ready gray";
+      var owner = person.name === this.props.owner;
       return (
         React.createElement("li", {key: index}, 
-          React.createElement("div", {className: readyClass}), 
-          person.name
+          React.createElement(Person, {name: person.name, 
+                  ready: person.ready, 
+                  owner: owner})
         )
       );
-    });
+    }, this);
     return (
-      React.createElement("ul", null, 
-        people
+      React.createElement("div", {className: "players"}, 
+        React.createElement("p", null, "Players"), 
+        React.createElement("ul", null, 
+          people
+        )
       )
     );
   },
@@ -200,7 +191,6 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
     return (
       React.createElement("div", {className: "room"}, 
         React.createElement("h2", null, this.props.name), 
-        React.createElement("h3", null, "Run By: ", this.props.owner), 
         React.createElement("div", {className: "controls"}, 
           React.createElement("button", {onClick: this.leaveRoom}, "Leave Room")
         ), 
@@ -216,15 +206,42 @@ var PlayerInfo = React.createClass({displayName: "PlayerInfo",
   },
   render: function() {
     var readyText = this.props.ready ? "Not Ready" : "Ready";
-    var readyClass = this.props.ready ? "ready green" : "ready gray";
     var readyButton = this.props.playing ? "" : (
       React.createElement("button", {onClick: this.signalReady}, readyText)
     );
     return (
       React.createElement("div", null, 
+        React.createElement(Person, {name: this.props.name, 
+                ready: this.props.ready}), 
+        readyButton
+      )
+    );
+  }
+})
+
+var Person = React.createClass({displayName: "Person",
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return (nextProps.name !== this.props.name ||
+      nextProps.owner !== this.props.owner || nextProps.ready !== this.props.ready);
+  },
+  markOwner: function() {
+    // a bit convoluted, but I didn't want to actually have the crown symbol
+    // in the source code
+    function crown() {
+      return {__html: "&#9818"};
+    }
+    return this.props.owner ? (
+      React.createElement("div", {className: "owner", dangerouslySetInnerHTML: crown()})
+    ) : "";
+  },
+  render: function() {
+    var readyClass = this.props.ready ? "ready green" : "ready gray";
+    var owner = this.markOwner();
+    return (
+      React.createElement("div", {className: "person"}, 
         React.createElement("div", {className: readyClass}), 
         this.props.name, 
-        readyButton
+        owner
       )
     );
   }
