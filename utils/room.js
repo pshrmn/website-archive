@@ -1,3 +1,5 @@
+var TicTacToe = require("../games/tictactoe");
+
 /*
  * A room is used for 2+ people to play a game.
  */
@@ -11,6 +13,7 @@ function Room(socket, owner, name, password) {
   this.minPlayers = 2;
   this.maxPlayers = 2;
   this.playing = false;
+  this.game = undefined;
 
   this.info();
 }
@@ -36,34 +39,27 @@ Room.prototype.socketIDs = function() {
  * is given.
  */
 Room.prototype.addPlayer = function(player, password) {
+  var error = false;
+  var reason = "";
   if ( password !== this.password ) {
-    player.send("joined", {
-      error: true,
-      reason: "Room " + this.name + " exists, but you entered the incorrect password"
-    });
-    return false;
+    error = true;
+    reason = "Room " + this.name + " exists, but you entered the incorrect password";
   } else if ( this.players.length >= this.maxPlayers ) {
-    player.send("joined", {
-      error: true,
-      reason: "The room is full"
-    });
-    return false;
+    error = true;
+    reason = "The room is full";
   } else if ( this.hasPlayer(player.name) ) {
-    player.send("joined", {
-      error: true,
-      reason: "There is already a player with this nickname in the room"
-    });
-    return false;
+    error = true;
+    reason = "There is already a player with this nickname in the room";
   } else {
     this.players.push(player);
     player.join(this.name);
     this.info();
-    player.send("joined", {
-      error: false,
-      reason: ""
-    });
-    return true;
   }
+  player.send("joined", {
+    error: error,
+    reason: reason
+  });
+  return !error;
 };
 
 /*
@@ -171,11 +167,15 @@ Room.prototype.toggleReady = function(socketID) {
   })
   if ( allReady && this.players.length >= this.minPlayers ) {
     this.playing = true;
+    try {
+      this.game = new TicTacToe(this.players, this);
+    } catch (e) {
+      // just fail for now
+      return;
+    }
     this.players.forEach(function(p){
-      p.send("gameState", {
-        name: "Super Fun Game! Hooray!"
-      });
-    });
+      p.send("gameState", this.game.state());
+    }, this);
   }
   this.info();
 };
@@ -187,5 +187,12 @@ Room.prototype.endGame = function() {
   this.playing = false;
   this.info();
 }
+
+Room.prototype.updateGame = function(state, socketID) {
+  if ( !this.playing ) {
+    return;
+  }
+  this.game.update(state, socketID);
+};
 
 module.exports = Room;

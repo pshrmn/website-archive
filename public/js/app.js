@@ -66,7 +66,8 @@ var UI = React.createClass({displayName: "UI",
     );
 
     var game = this.state.game === undefined ? "" : (
-      React.createElement(Game, React.__spread({},  this.state.game))
+      React.createElement(TicTacToe, React.__spread({onMsg: this.sendMessage}, 
+                 this.state.game))
     );
     return (
       React.createElement("div", {className: "ui"}, 

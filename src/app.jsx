@@ -66,7 +66,8 @@ var UI = React.createClass({
     );
 
     var game = this.state.game === undefined ? "" : (
-      <Game {...this.state.game} />
+      <TicTacToe onMsg={this.sendMessage}
+                 {...this.state.game} />
     );
     return (
       <div className="ui">

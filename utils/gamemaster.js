@@ -42,7 +42,10 @@ module.exports = function(io) {
       if ( !room ) {
         return;
       }
-
+      room.updateGame({
+        row: msg.row,
+        column: msg.column
+      }, socket.id);
     });
 
     socket.on("ready", function(msg){
