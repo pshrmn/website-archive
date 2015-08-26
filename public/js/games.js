@@ -5,6 +5,50 @@ var PlayableGames = [
   }
 ];
 
+var GameBoard = React.createClass({displayName: "GameBoard",
+  getInitialState: function() {
+    return {
+      choices: this.props.choices
+    };
+  },
+  _gameSetup: function() {
+    return this.props.playing ? "" : (
+      React.createElement("div", {className: "gameSetup"}
+      )
+    );
+  },
+  _gameComponent: function() {
+    if ( this.props.game ) {
+      switch ( this.props.game.name ) {
+      case "Tic Tac Toe":
+        return (
+          React.createElement(TicTacToe, React.__spread({onMsg: this.props.onMsg}, 
+                     this.props.game))
+        );
+      default:
+        return "";
+      }
+    } else {
+      return "";
+    }
+  },
+  render: function() {
+    /*
+    game
+    playing
+    choices
+    */
+    var setup = this.props.playing ? "" : this._gameSetup();
+    var game = this._gameComponent();
+    return (
+      React.createElement("div", {className: "gameBoard"}, 
+        setup, 
+        game
+      )
+    );
+  }
+});
+
 /*
  * Tic Tac Toe
  */

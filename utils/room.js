@@ -140,12 +140,9 @@ Room.prototype.info = function() {
       room: {
         name: this.name,
         owner: this.owner.name,
-        players: players
-      },
-      player: {
-        name: p.name,
-        ready: p.ready,
-        playing: this.playing
+        players: players,
+        playing: this.playing,
+        you: p.name
       }
     });
   }, this);

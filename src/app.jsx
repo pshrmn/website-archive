@@ -5,6 +5,9 @@ var UI = React.createClass({
     };
   },
   componentWillMount: function() {
+    /*
+    create the socket and set any events to listen for
+    */
     this.socket = io();
     var _this = this;
     this.socket.on("info", function(info){
@@ -46,35 +49,20 @@ var UI = React.createClass({
     this.socket.emit(type, msg);
   },
   render: function() {
-    var room;
     // when not connected to a room, show the join room form
     // otherwise show the room ui
-    if ( this.state.room === undefined ) {
-      room = (
+    var room = ( this.state.room === undefined ) ? (
         <RoomForm onMsg={this.sendMessage}
                   errors={this.state.formErrors} />
+      ) : (
+        <Room onMsg={this.sendMessage}
+              game={this.state.game}
+              choices={this.props.choices}
+              {...this.state.room} />
       );
-    } else {
-      room = (
-        <RoomInfo onMsg={this.sendMessage}
-                  {...this.state.room} />
-      );
-    }
-
-    var player = this.state.player === undefined ? "" : (
-      <PlayerInfo onMsg={this.sendMessage}
-                  {...this.state.player} />
-    );
-
-    var game = this.state.game === undefined ? "" : (
-      <TicTacToe onMsg={this.sendMessage}
-                 {...this.state.game} />
-    );
     return (
       <div className="ui">
-        { player }
         { room }
-        { game }
       </div>
     );
   }
@@ -134,19 +122,19 @@ var RoomForm = React.createClass({
         <form>
           {errors}
           <p>
-            <label for="nickname">Nickname</label>
+            <label htmlFor="nickname">Nickname</label>
             <input type="text" id="nickname"
                    value={this.state.nickname}
                    onChange={this.setNickname} />
           </p>
           <p>
-            <label for="room">Room</label>
+            <label htmlFor="room">Room</label>
             <input type="text" id="room"
                    value={this.state.room}
                    onChange={this.setRoom} />
           </p>
           <p>
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
             <input type="password" id="password"
                    value={this.state.password}
                    onChange={this.setPassword} />
@@ -160,15 +148,54 @@ var RoomForm = React.createClass({
   }
 });
 
-var RoomInfo = React.createClass({
-  _peopleHTML: function() {
+var Room = React.createClass({
+  leaveRoom: function(event){ 
+    this.props.onMsg("leave", {
+      room: this.props.name
+    });
+  },
+  signalReady: function(event){
+    this.props.onMsg("ready", {});
+  },
+  render: function() {
+    /*
+    props: 
+    name, owner, players, playing, you, game, choices
+    */
+    return (
+      <div className="room">
+        <div className="room-info">
+          <h2>{this.props.name}</h2>
+          <div className="controls">
+            <button onClick={this.leaveRoom}>Leave Room</button>
+            <button onClick={this.signalReady}>
+              {this.props.ready ? "Not Ready" : "Ready"}
+            </button>
+          </div>
+          <ScoreBoard players={this.props.players}
+                      owner={this.props.owner}
+                      you={this.props.you} />
+        </div>
+        <GameBoard onMsg={this.props.onMsg}
+                   game={this.props.game}
+                   playing={this.props.playing}
+                   choices={this.props.choices} />
+      </div>
+    )
+  }
+});
+
+var ScoreBoard = React.createClass({
+    _peopleHTML: function() {
     var people = this.props.players.map(function(person, index){
       var owner = person.name === this.props.owner;
+      var you = person.name === this.props.you;
       return (
         <li key={index}>
           <Person name={person.name}
                   ready={person.ready}
-                  owner={owner} />
+                  owner={owner}
+                  you={you} />
         </li>
       );
     }, this);
@@ -181,48 +208,21 @@ var RoomInfo = React.createClass({
       </div>
     );
   },
-  leaveRoom: function(event){ 
-    this.props.onMsg("leave", {
-      room: this.props.name
-    });
-  },
   render: function() {
     var people = this._peopleHTML();
     return (
-      <div className="room">
-        <h2>{this.props.name}</h2>
-        <div className="controls">
-          <button onClick={this.leaveRoom}>Leave Room</button>
-        </div>
+      <div className="scoreboard">
         {people}
       </div>
     )
   }
-})
-
-var PlayerInfo = React.createClass({
-  signalReady: function(event){
-    this.props.onMsg("ready", {});
-  },
-  render: function() {
-    var readyText = this.props.ready ? "Not Ready" : "Ready";
-    var readyButton = this.props.playing ? "" : (
-      <button onClick={this.signalReady}>{readyText}</button>
-    );
-    return (
-      <div>
-        <Person name={this.props.name}
-                ready={this.props.ready} />
-        {readyButton}
-      </div>
-    );
-  }
-})
+});
 
 var Person = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     return (nextProps.name !== this.props.name ||
-      nextProps.owner !== this.props.owner || nextProps.ready !== this.props.ready);
+      nextProps.owner !== this.props.owner ||
+      nextProps.ready !== this.props.ready );
   },
   markOwner: function() {
     // a bit convoluted, but I didn't want to actually have the crown symbol
@@ -240,14 +240,15 @@ var Person = React.createClass({
     return (
       <div className="person">
         <div className={readyClass}></div>
-        {this.props.name}
         {owner}
+        {this.props.name}
+        {this.props.you ? "(you)" : ""}
       </div>
     );
   }
 })
 
 React.render(
-  <UI />,
+  <UI choices={PlayableGames} />,
   document.getElementById("content")
 )

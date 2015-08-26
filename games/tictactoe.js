@@ -1,6 +1,8 @@
 var exceptions = require("./exceptions");
 
 function TicTacToe(players, room){
+  this.name = "Tic Tac Toe";
+
   // players should only be of length 2
   this.players = players;
   if ( this.players.length !== 2 ) {
@@ -46,6 +48,7 @@ TicTacToe.prototype.update = function(state, socketID) {
 
 TicTacToe.prototype.state = function() {
   return {
+    name: this.name,
     active: this.active,
     msg: this.message,
     nextPlayer: this.current.name,

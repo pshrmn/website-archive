@@ -100,3 +100,14 @@ form .error {
 .person .owner {
     display: inline-block;
 }
+
+.room-info {
+    display: inline-block;
+    margin-right: 25px;
+    vertical-align: top;
+}
+
+.gameBoard {
+    display: inline-block;
+    vertical-align: top;
+}

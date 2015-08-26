@@ -5,6 +5,9 @@ var UI = React.createClass({displayName: "UI",
     };
   },
   componentWillMount: function() {
+    /*
+    create the socket and set any events to listen for
+    */
     this.socket = io();
     var _this = this;
     this.socket.on("info", function(info){
@@ -46,35 +49,20 @@ var UI = React.createClass({displayName: "UI",
     this.socket.emit(type, msg);
   },
   render: function() {
-    var room;
     // when not connected to a room, show the join room form
     // otherwise show the room ui
-    if ( this.state.room === undefined ) {
-      room = (
+    var room = ( this.state.room === undefined ) ? (
         React.createElement(RoomForm, {onMsg: this.sendMessage, 
                   errors: this.state.formErrors})
+      ) : (
+        React.createElement(Room, React.__spread({onMsg: this.sendMessage, 
+              game: this.state.game, 
+              choices: this.props.choices}, 
+              this.state.room))
       );
-    } else {
-      room = (
-        React.createElement(RoomInfo, React.__spread({onMsg: this.sendMessage}, 
-                  this.state.room))
-      );
-    }
-
-    var player = this.state.player === undefined ? "" : (
-      React.createElement(PlayerInfo, React.__spread({onMsg: this.sendMessage}, 
-                  this.state.player))
-    );
-
-    var game = this.state.game === undefined ? "" : (
-      React.createElement(TicTacToe, React.__spread({onMsg: this.sendMessage}, 
-                 this.state.game))
-    );
     return (
       React.createElement("div", {className: "ui"}, 
-         player, 
-         room, 
-         game 
+         room 
       )
     );
   }
@@ -134,19 +122,19 @@ var RoomForm = React.createClass({displayName: "RoomForm",
         React.createElement("form", null, 
           errors, 
           React.createElement("p", null, 
-            React.createElement("label", {for: "nickname"}, "Nickname"), 
+            React.createElement("label", {htmlFor: "nickname"}, "Nickname"), 
             React.createElement("input", {type: "text", id: "nickname", 
                    value: this.state.nickname, 
                    onChange: this.setNickname})
           ), 
           React.createElement("p", null, 
-            React.createElement("label", {for: "room"}, "Room"), 
+            React.createElement("label", {htmlFor: "room"}, "Room"), 
             React.createElement("input", {type: "text", id: "room", 
                    value: this.state.room, 
                    onChange: this.setRoom})
           ), 
           React.createElement("p", null, 
-            React.createElement("label", {for: "password"}, "Password"), 
+            React.createElement("label", {htmlFor: "password"}, "Password"), 
             React.createElement("input", {type: "password", id: "password", 
                    value: this.state.password, 
                    onChange: this.setPassword})
@@ -160,15 +148,54 @@ var RoomForm = React.createClass({displayName: "RoomForm",
   }
 });
 
-var RoomInfo = React.createClass({displayName: "RoomInfo",
-  _peopleHTML: function() {
+var Room = React.createClass({displayName: "Room",
+  leaveRoom: function(event){ 
+    this.props.onMsg("leave", {
+      room: this.props.name
+    });
+  },
+  signalReady: function(event){
+    this.props.onMsg("ready", {});
+  },
+  render: function() {
+    /*
+    props: 
+    name, owner, players, playing, you, game, choices
+    */
+    return (
+      React.createElement("div", {className: "room"}, 
+        React.createElement("div", {className: "room-info"}, 
+          React.createElement("h2", null, this.props.name), 
+          React.createElement("div", {className: "controls"}, 
+            React.createElement("button", {onClick: this.leaveRoom}, "Leave Room"), 
+            React.createElement("button", {onClick: this.signalReady}, 
+              this.props.ready ? "Not Ready" : "Ready"
+            )
+          ), 
+          React.createElement(ScoreBoard, {players: this.props.players, 
+                      owner: this.props.owner, 
+                      you: this.props.you})
+        ), 
+        React.createElement(GameBoard, {onMsg: this.props.onMsg, 
+                   game: this.props.game, 
+                   playing: this.props.playing, 
+                   choices: this.props.choices})
+      )
+    )
+  }
+});
+
+var ScoreBoard = React.createClass({displayName: "ScoreBoard",
+    _peopleHTML: function() {
     var people = this.props.players.map(function(person, index){
       var owner = person.name === this.props.owner;
+      var you = person.name === this.props.you;
       return (
         React.createElement("li", {key: index}, 
           React.createElement(Person, {name: person.name, 
                   ready: person.ready, 
-                  owner: owner})
+                  owner: owner, 
+                  you: you})
         )
       );
     }, this);
@@ -181,48 +208,21 @@ var RoomInfo = React.createClass({displayName: "RoomInfo",
       )
     );
   },
-  leaveRoom: function(event){ 
-    this.props.onMsg("leave", {
-      room: this.props.name
-    });
-  },
   render: function() {
     var people = this._peopleHTML();
     return (
-      React.createElement("div", {className: "room"}, 
-        React.createElement("h2", null, this.props.name), 
-        React.createElement("div", {className: "controls"}, 
-          React.createElement("button", {onClick: this.leaveRoom}, "Leave Room")
-        ), 
+      React.createElement("div", {className: "scoreboard"}, 
         people
       )
     )
   }
-})
-
-var PlayerInfo = React.createClass({displayName: "PlayerInfo",
-  signalReady: function(event){
-    this.props.onMsg("ready", {});
-  },
-  render: function() {
-    var readyText = this.props.ready ? "Not Ready" : "Ready";
-    var readyButton = this.props.playing ? "" : (
-      React.createElement("button", {onClick: this.signalReady}, readyText)
-    );
-    return (
-      React.createElement("div", null, 
-        React.createElement(Person, {name: this.props.name, 
-                ready: this.props.ready}), 
-        readyButton
-      )
-    );
-  }
-})
+});
 
 var Person = React.createClass({displayName: "Person",
   shouldComponentUpdate: function(nextProps, nextState) {
     return (nextProps.name !== this.props.name ||
-      nextProps.owner !== this.props.owner || nextProps.ready !== this.props.ready);
+      nextProps.owner !== this.props.owner ||
+      nextProps.ready !== this.props.ready );
   },
   markOwner: function() {
     // a bit convoluted, but I didn't want to actually have the crown symbol
@@ -240,14 +240,15 @@ var Person = React.createClass({displayName: "Person",
     return (
       React.createElement("div", {className: "person"}, 
         React.createElement("div", {className: readyClass}), 
+        owner, 
         this.props.name, 
-        owner
+        this.props.you ? "(you)" : ""
       )
     );
   }
 })
 
 React.render(
-  React.createElement(UI, null),
+  React.createElement(UI, {choices: PlayableGames}),
   document.getElementById("content")
 )
