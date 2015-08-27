@@ -34,7 +34,7 @@ var UI = React.createClass({displayName: "UI",
     this.socket.on("gameState", function(game){
       _this.setState({
         game: game
-      })
+      });
     });
   },
   /*
@@ -44,8 +44,8 @@ var UI = React.createClass({displayName: "UI",
    */
   sendMessage: function(type, msg) {
     if ( this.state.room ) {
-      msg.room = this.state.room.name
-    };
+      msg.room = this.state.room.name;
+    }
     this.socket.emit(type, msg);
   },
   render: function() {
@@ -74,7 +74,7 @@ var RoomForm = React.createClass({displayName: "RoomForm",
       nickname: "",
       room: "",
       password: "",
-    }
+    };
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     return (nextState.nickname !== this.state.nickname ||
@@ -102,17 +102,17 @@ var RoomForm = React.createClass({displayName: "RoomForm",
   setNickname: function(event) {
     this.setState({
       nickname: event.target.value
-    })
+    });
   },
   setRoom: function(event) {
     this.setState({
       room: event.target.value
-    })
+    });
   },
   setPassword: function(event) {
     this.setState({
       password: event.target.value
-    })
+    });
   },
   render: function() {
     var hasErrors = (this.props.errors !== undefined && this.props.errors !== "");
@@ -185,7 +185,7 @@ var Room = React.createClass({displayName: "Room",
                    playing: this.props.playing, 
                    choices: this.props.choices})
       )
-    )
+    );
   }
 });
 
@@ -218,7 +218,7 @@ var ScoreBoard = React.createClass({displayName: "ScoreBoard",
       React.createElement("div", {className: "scoreboard"}, 
         people
       )
-    )
+    );
   }
 });
 
@@ -250,9 +250,9 @@ var Person = React.createClass({displayName: "Person",
       )
     );
   }
-})
+});
 
 React.render(
   React.createElement(UI, {choices: PlayableGames}),
   document.getElementById("content")
-)
+);

@@ -9,10 +9,6 @@ describe("TicTacToe", function() {
         var two = new Player("two", {id:2});
         var game = new TicTacToe([one, two]);
 
-        it("sets the first player to be the current player", function() {
-            expect(game.current).to.equal(one);
-        })
-
         it("throws an error if players.length is not 2", function() {
             assert.throws(function(){
                 var game = new TicTacToe([one]);
