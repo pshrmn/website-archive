@@ -162,6 +162,10 @@ var Room = React.createClass({displayName: "Room",
     props: 
     name, owner, players, playing, you, game, choices
     */
+    var readyText = "Ready";
+    if ( this.props.you && this.props.you.ready ) {
+      readyText = "Not Ready";
+    }
     return (
       React.createElement("div", {className: "room"}, 
         React.createElement("div", {className: "room-info"}, 
@@ -169,7 +173,7 @@ var Room = React.createClass({displayName: "Room",
           React.createElement("div", {className: "controls"}, 
             React.createElement("button", {onClick: this.leaveRoom}, "Leave Room"), 
             React.createElement("button", {onClick: this.signalReady}, 
-              this.props.ready ? "Not Ready" : "Ready"
+              readyText
             )
           ), 
           React.createElement(ScoreBoard, {players: this.props.players, 

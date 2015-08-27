@@ -162,6 +162,10 @@ var Room = React.createClass({
     props: 
     name, owner, players, playing, you, game, choices
     */
+    var readyText = "Ready";
+    if ( this.props.you && this.props.you.ready ) {
+      readyText = "Not Ready";
+    }
     return (
       <div className="room">
         <div className="room-info">
@@ -169,7 +173,7 @@ var Room = React.createClass({
           <div className="controls">
             <button onClick={this.leaveRoom}>Leave Room</button>
             <button onClick={this.signalReady}>
-              {this.props.ready ? "Not Ready" : "Ready"}
+              {readyText}
             </button>
           </div>
           <ScoreBoard players={this.props.players}

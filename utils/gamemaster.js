@@ -56,6 +56,14 @@ module.exports = function(io) {
       room.toggleReady(socket.id);
     });
 
+    socket.on("set game", function(game){
+      var room = rooms[msg.room];
+      if ( !room ) {
+        return;
+      }
+      room.setGame(game, socket.id);
+    });
+
     /*
      * when a user disconnects from a room and no other users are in it, the
      * room is removed. I haven't seen a way to detect that a socket room no

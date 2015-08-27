@@ -1,79 +1,57 @@
 body, head {
-    margin: 0;
-    font-family: sans-serif;
-    font-size: 16px;
-}
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 16px; }
 
 body {
-    background: #efefef;
-}
+  background: #efefef; }
 
 header {
-    background: #222233;
-    padding: 5px 25px;
-    font-family: "Fugaz One";
-}
+  background: #222233;
+  padding: 5px 25px;
+  font-family: "Fugaz One"; }
 
 header a {
-    text-decoration: none;
-    color: #fff;
-}
+  text-decoration: none;
+  color: #fff; }
 
 #home {
-    font-size: 2em;
-}
+  font-size: 2em; }
 
 #content {
-    margin: 25px 50px 0;
-}
+  margin: 25px 50px 0; }
 
 /* form */
 form {
-    padding: 15px;
-}
-
-form label {
-    display: block;
-}
-
-form button {
-    margin-right: 10px;
-}
-
-form .error {
-    color: red;
-}
+  padding: 15px; }
+  form label {
+    display: block; }
+  form button {
+    margin-right: 10px; }
+  form .error {
+    color: red; }
 
 /* form */
-
 .ready {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 5px;
-    background: #DE2525;
-    margin-right: 3px;
-}
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background: #DE2525;
+  margin-right: 3px; }
+  .ready.green {
+    background: green; }
 
-.ready.green {
-    background: green;
-}
-
-.players ul{
-    list-style: none;
-    padding: 0;
-}
+.players ul {
+  list-style: none;
+  padding: 0; }
 
 .ui {
-    font-size: 20px;
-    font-family: "Oxygen", sans-serif;
-}
-
-.ui h2 {
-    margin: 0.25em 0;
-}
-
-.ui button {
+  font-size: 20px;
+  font-family: "Oxygen", sans-serif; }
+  .ui h2 {
+    margin: 0.25em 0; }
+  .ui button {
     font-family: "Oxygen", sans-serif;
     font-size: 0.8em;
     background: #ddd;
@@ -81,33 +59,23 @@ form .error {
     font-weight: bold;
     border-radius: 5px;
     padding: 2px 5px;
-    cursor: pointer;
-}
-
-.ui p {
-    margin: 0.2em 0;
-}
-
-.ui ul, .ui ol {
-    margin: 0;
-}
+    cursor: pointer; }
+  .ui p {
+    margin: 0.2em 0; }
+  .ui ul, .ui ol {
+    margin: 0; }
 
 .person {
-    margin-right: 15px;
-    display: inline-block;
-}
-
-.person .owner {
-    display: inline-block;
-}
+  margin-right: 15px;
+  display: inline-block; }
+  .person .owner {
+    display: inline-block; }
 
 .room-info {
-    display: inline-block;
-    margin-right: 25px;
-    vertical-align: top;
-}
+  display: inline-block;
+  margin-right: 25px;
+  vertical-align: top; }
 
 .gameBoard {
-    display: inline-block;
-    vertical-align: top;
-}
+  display: inline-block;
+  vertical-align: top; }

@@ -142,7 +142,7 @@ Room.prototype.info = function() {
         owner: this.owner.name,
         players: players,
         playing: this.playing,
-        you: p.name
+        you: p.description()
       }
     });
   }, this);
@@ -179,6 +179,13 @@ Room.prototype.toggleReady = function(socketID) {
   }
   this.info();
 };
+
+Room.prototype.setGame = function(game, socketID) {
+  // only the owner can set the game type
+  if ( !this.owner.is(socketID) ) {
+    return;
+  }
+}
 
 Room.prototype.endGame = function() {
   this.players.forEach(function(p){

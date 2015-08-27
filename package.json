@@ -1,11 +1,11 @@
 {
   "name": "weplay",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Plays games with other people",
   "main": "server.js",
   "scripts": {
     "test": "mocha specs --require specs/helpers/chai.js",
-    "jsx": "jsx --extension jsx src/ public/js/",
+    "jsx": "jsx --extension jsx dev/jsx/ public/js/",
     "preversion": "npm test"
   },
   "repository": {
@@ -27,6 +27,8 @@
   },
   "devDependencies": {
     "chai": "^3.2.0",
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.0.4",
     "mocha": "^2.2.5",
     "react-tools": "^0.13.3",
     "sinon": "^1.16.1",
