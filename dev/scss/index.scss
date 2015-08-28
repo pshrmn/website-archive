@@ -113,3 +113,10 @@ form {
     display: inline-block;
     vertical-align: top;
 }
+
+.controls {
+    button {
+        display: block;
+        margin: 0.5em 0;
+    }
+}

@@ -1,4 +1,5 @@
 var TicTacToe = require("../games/tictactoe");
+var Games = require("../games/games");
 
 /*
  * A room is used for 2+ people to play a game.
@@ -13,6 +14,11 @@ function Room(socket, owner, name, password) {
   this.minPlayers = 2;
   this.maxPlayers = 2;
   this.playing = false;
+
+  // default to the first game in the list
+  this.games = Games;
+  this.gameOptions = Object.keys(this.games)
+  this.gameName = this.gameOptions[0];
   this.game = undefined;
 
   this.info();
@@ -139,10 +145,16 @@ Room.prototype.info = function() {
     p.send("info", {
       room: {
         name: this.name,
-        owner: this.owner.name,
-        players: players,
-        playing: this.playing,
-        you: p.description()
+        people: {
+          owner: this.owner.name,
+          players: players,
+          you: p.description()
+        },
+        gameInfo: {
+          playing: this.playing,
+          gameChoices: this.gameOptions,
+          currentGame: this.gameName
+        }
       }
     });
   }, this);
@@ -166,25 +178,34 @@ Room.prototype.toggleReady = function(socketID) {
     return p.ready;
   })
   if ( allReady && this.players.length >= this.minPlayers ) {
-    this.playing = true;
-    try {
-      this.game = new TicTacToe(this.players, this);
-    } catch (e) {
-      // just fail for now
-      return;
-    }
-    this.players.forEach(function(p){
-      p.send("gameState", this.game.state());
-    }, this);
+    this.startGame();  
   }
   this.info();
 };
 
-Room.prototype.setGame = function(game, socketID) {
+Room.prototype.setGame = function(gameName, socketID) {
   // only the owner can set the game type
   if ( !this.owner.is(socketID) ) {
     return;
   }
+  if ( this.games[gameName] ) {
+    this.gameName = gameName;
+    this.info();
+  }
+}
+
+Room.prototype.startGame = function() {
+  this.playing = true;
+  try {
+    var gameFn = this.games[this.gameName];
+    this.game = new gameFn(this.players, this);
+  } catch (e) {
+    // will fail if the incorrect number of players is provided
+    return;
+  }
+  this.players.forEach(function(p){
+    p.send("gameState", this.game.state());
+  }, this);
 }
 
 Room.prototype.endGame = function() {

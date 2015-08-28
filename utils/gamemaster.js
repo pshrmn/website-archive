@@ -56,12 +56,12 @@ module.exports = function(io) {
       room.toggleReady(socket.id);
     });
 
-    socket.on("set game", function(game){
+    socket.on("set game", function(msg){
       var room = rooms[msg.room];
       if ( !room ) {
         return;
       }
-      room.setGame(game, socket.id);
+      room.setGame(msg.game, socket.id);
     });
 
     /*

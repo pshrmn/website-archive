@@ -22,3 +22,7 @@ Takes an argument with an updated `state` based on user input. Returns the game'
             ...
         }
     }
+
+####`Game.state()`
+
+Returns an object representing the game's current state.

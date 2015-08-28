@@ -57,7 +57,7 @@ var UI = React.createClass({
       ) : (
         <Room onMsg={this.sendMessage}
               game={this.state.game}
-              choices={this.props.choices}
+              gameInfo={this.props.gameInfo}
               {...this.state.room} />
       );
     return (
@@ -160,12 +160,15 @@ var Room = React.createClass({
   render: function() {
     /*
     props: 
-    name, owner, players, playing, you, game, choices
+    name
+    people
+      owner, players, you
+    game
+      playing, gameChoices, currentGame
     */
-    var readyText = "Ready";
-    if ( this.props.you && this.props.you.ready ) {
-      readyText = "Not Ready";
-    }
+    var you = this.props.people.you;
+    var readyText = (you && you.ready) ? "Not Ready" : "Ready";
+    var isOwner = you && (you.name === this.props.people.owner);
     return (
       <div className="room">
         <div className="room-info">
@@ -176,14 +179,12 @@ var Room = React.createClass({
               {readyText}
             </button>
           </div>
-          <ScoreBoard players={this.props.players}
-                      owner={this.props.owner}
-                      you={this.props.you} />
+          <ScoreBoard {...this.props.people} />
         </div>
         <GameBoard onMsg={this.props.onMsg}
                    game={this.props.game}
-                   playing={this.props.playing}
-                   choices={this.props.choices} />
+                   isOwner={isOwner}
+                   {...this.props.gameInfo} />
       </div>
     );
   }
@@ -253,6 +254,6 @@ var Person = React.createClass({
 });
 
 React.render(
-  <UI choices={PlayableGames} />,
+  <UI />,
   document.getElementById("content")
 );

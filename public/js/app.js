@@ -57,7 +57,7 @@ var UI = React.createClass({displayName: "UI",
       ) : (
         React.createElement(Room, React.__spread({onMsg: this.sendMessage, 
               game: this.state.game, 
-              choices: this.props.choices}, 
+              gameInfo: this.props.gameInfo}, 
               this.state.room))
       );
     return (
@@ -160,12 +160,15 @@ var Room = React.createClass({displayName: "Room",
   render: function() {
     /*
     props: 
-    name, owner, players, playing, you, game, choices
+    name
+    people
+      owner, players, you
+    game
+      playing, gameChoices, currentGame
     */
-    var readyText = "Ready";
-    if ( this.props.you && this.props.you.ready ) {
-      readyText = "Not Ready";
-    }
+    var you = this.props.people.you;
+    var readyText = (you && you.ready) ? "Not Ready" : "Ready";
+    var isOwner = you && (you.name === this.props.people.owner);
     return (
       React.createElement("div", {className: "room"}, 
         React.createElement("div", {className: "room-info"}, 
@@ -176,14 +179,12 @@ var Room = React.createClass({displayName: "Room",
               readyText
             )
           ), 
-          React.createElement(ScoreBoard, {players: this.props.players, 
-                      owner: this.props.owner, 
-                      you: this.props.you})
+          React.createElement(ScoreBoard, React.__spread({},  this.props.people))
         ), 
-        React.createElement(GameBoard, {onMsg: this.props.onMsg, 
+        React.createElement(GameBoard, React.__spread({onMsg: this.props.onMsg, 
                    game: this.props.game, 
-                   playing: this.props.playing, 
-                   choices: this.props.choices})
+                   isOwner: isOwner}, 
+                   this.props.gameInfo))
       )
     );
   }
@@ -253,6 +254,6 @@ var Person = React.createClass({displayName: "Person",
 });
 
 React.render(
-  React.createElement(UI, {choices: PlayableGames}),
+  React.createElement(UI, null),
   document.getElementById("content")
 );

@@ -29,5 +29,6 @@ gulp.task("lint", ["jsx"], function() {
         .pipe(jshint.reporter('default'));
 });
 
+gulp.task("js", ["jsx", "lint", "test"]);
 
-gulp.task("default", ["jsx", "lint", "test", "sass"])
+gulp.task("default", ["js", "sass"]);

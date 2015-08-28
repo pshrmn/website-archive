@@ -1,36 +1,39 @@
-var PlayableGames = [
-  "Tic Tac Toe"
-];
-
 var GameBoard = React.createClass({displayName: "GameBoard",
-  getInitialState: function() {
-    return {
-      choices: this.props.choices,
-      gameName: this.props.choices[0]
-    };
-  },
   sendGame: function(event){
     var game = event.target.value;
-    this.props.onMsg("set game", game);
+    this.props.onMsg("set game", {
+      game: game
+    });
   },
   _gameSetup: function() {
-    var gameName = this.state.gameName;
-    var choices = this.state.choices.map(function(choice, index){
-      return (
-        React.createElement("label", {key: index}, 
-          choice, 
-          React.createElement("input", {type: "radio", 
-                 name: "game", 
-                 checked: choice === gameName, 
-                 value: choice, 
-                 onChange: this.sendGmae})
+    var gameName = this.props.currentGame;
+    var html;
+    if ( this.props.isOwner ) {
+      var choices = this.props.gameChoices.map(function(choice, index){
+        return (
+          React.createElement("label", {key: index}, 
+            choice, 
+            React.createElement("input", {type: "radio", 
+                   name: "game", 
+                   checked: choice === gameName, 
+                   value: choice, 
+                   onChange: this.sendGame})
+          )
+        );
+      }, this);
+
+      html = (
+        React.createElement("div", null, 
+          React.createElement("p", null, "Select the game to play:"), 
+          choices
         )
       );
-    });
-
+    } else {
+      html = "Playing: " + gameName;
+    }
     return this.props.playing ? "" : (
       React.createElement("div", {className: "gameSetup"}, 
-        choices
+        html
       )
     );
   },

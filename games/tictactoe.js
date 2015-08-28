@@ -25,19 +25,19 @@ function TicTacToe(players, room){
  * intends to mark
  */
 TicTacToe.prototype.update = function(state, socketID) {
-  if ( !this.canPlay(socketID) ) {
+  if ( !this._canPlay(socketID) ) {
     return;
   }
   var row = state.row;
   var column = state.column;
-  if ( !this.emptySpace(row, column) ) {
+  if ( !this._emptySpace(row, column) ) {
     // send a message to the current player???
     return;
   }
   this.board[row][column] = this.pieces[this.index];
-  var over = this.checkForGameOver();
+  var over = this._checkForGameOver();
   if ( !over ) {
-    this.setNextPlayer();
+    this._setNextPlayer();
   }
 
   var gameState = this.state();
@@ -56,15 +56,15 @@ TicTacToe.prototype.state = function() {
   };
 };
 
-TicTacToe.prototype.canPlay = function(socketID) {
+TicTacToe.prototype._canPlay = function(socketID) {
   return this.current.is(socketID);
 }
 
-TicTacToe.prototype.emptySpace = function(row, column) {
+TicTacToe.prototype._emptySpace = function(row, column) {
   return this.board[row][column] === "";
 };
 
-TicTacToe.prototype.setNextPlayer = function() {
+TicTacToe.prototype._setNextPlayer = function() {
   this.index = (this.index+1) % this.players.length;
   this.current = this.players[this.index];
 };
@@ -72,13 +72,13 @@ TicTacToe.prototype.setNextPlayer = function() {
 /*
  * 
  */
-TicTacToe.prototype.checkForGameOver = function() {
-  if ( this.checkForWin() ) {
+TicTacToe.prototype._checkForGameOver = function() {
+  if ( this._checkForWin() ) {
     this.active = false;
     this.message = this.current.name + " wins";
     this.room.endGame();    
     return true;
-  } else if ( this.checkForTie() ) {
+  } else if ( this._checkForTie() ) {
     this.active = false;
     this.message = "It's a draw";
     this.room.endGame();
@@ -89,7 +89,7 @@ TicTacToe.prototype.checkForGameOver = function() {
   }
 };
 
-TicTacToe.prototype.checkForWin = function() {
+TicTacToe.prototype._checkForWin = function() {
   // brute force, check every possibility (only 8)
   var combos = [
     [[0,0],[0,1],[0,2]],
@@ -114,7 +114,7 @@ TicTacToe.prototype.checkForWin = function() {
  * check if every cell is filled (called after checkForWin since a win can occur
  * on the turn that fills the board)
  */
-TicTacToe.prototype.checkForTie = function() {
+TicTacToe.prototype._checkForTie = function() {
   return this.board.every(function(row){
     return row.every(function(cell){
       return cell !== "";

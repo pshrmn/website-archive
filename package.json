@@ -1,6 +1,6 @@
 {
   "name": "weplay",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Plays games with other people",
   "main": "server.js",
   "scripts": {
@@ -34,7 +34,6 @@
     "gulp-sass": "^2.0.4",
     "mocha": "^2.2.5",
     "react-tools": "^0.13.3",
-    "sinon": "^1.16.1",
-    "uglify-js": "^2.4.24"
+    "sinon": "^1.16.1"
   }
 }

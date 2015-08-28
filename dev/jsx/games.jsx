@@ -1,36 +1,39 @@
-var PlayableGames = [
-  "Tic Tac Toe"
-];
-
 var GameBoard = React.createClass({
-  getInitialState: function() {
-    return {
-      choices: this.props.choices,
-      gameName: this.props.choices[0]
-    };
-  },
   sendGame: function(event){
     var game = event.target.value;
-    this.props.onMsg("set game", game);
+    this.props.onMsg("set game", {
+      game: game
+    });
   },
   _gameSetup: function() {
-    var gameName = this.state.gameName;
-    var choices = this.state.choices.map(function(choice, index){
-      return (
-        <label key={index}>
-          {choice}
-          <input type="radio"
-                 name="game"
-                 checked={choice === gameName}
-                 value={choice}
-                 onChange={this.sendGmae} />
-        </label>
-      );
-    });
+    var gameName = this.props.currentGame;
+    var html;
+    if ( this.props.isOwner ) {
+      var choices = this.props.gameChoices.map(function(choice, index){
+        return (
+          <label key={index}>
+            {choice}
+            <input type="radio"
+                   name="game"
+                   checked={choice === gameName}
+                   value={choice}
+                   onChange={this.sendGame} />
+          </label>
+        );
+      }, this);
 
+      html = (
+        <div>
+          <p>Select the game to play:</p>
+          {choices}
+        </div>
+      );
+    } else {
+      html = "Playing: " + gameName;
+    }
     return this.props.playing ? "" : (
       <div className="gameSetup">
-        {choices}
+        {html}
       </div>
     );
   },
