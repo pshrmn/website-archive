@@ -148,7 +148,8 @@ Room.prototype.info = function() {
         people: {
           owner: this.owner.name,
           players: players,
-          you: p.description()
+          you: p.description(),
+          max: this.maxPlayers
         },
         gameInfo: {
           playing: this.playing,

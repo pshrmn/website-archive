@@ -206,7 +206,7 @@ var ScoreBoard = React.createClass({
     }, this);
     return (
       <div className="players">
-        <p>Players</p>
+        <p>Players ({this.props.players.length}/{this.props.max})</p>
         <ul>
           {people}
         </ul>

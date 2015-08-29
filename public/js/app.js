@@ -206,7 +206,7 @@ var ScoreBoard = React.createClass({displayName: "ScoreBoard",
     }, this);
     return (
       React.createElement("div", {className: "players"}, 
-        React.createElement("p", null, "Players"), 
+        React.createElement("p", null, "Players (", this.props.players.length, "/", this.props.max, ")"), 
         React.createElement("ul", null, 
           people
         )
