@@ -39,11 +39,17 @@ var GameBoard = React.createClass({displayName: "GameBoard",
   },
   _gameComponent: function() {
     if ( this.props.game ) {
+      console.log(this.props.game);
       switch ( this.props.game.name ) {
       case "Tic Tac Toe":
         return (
           React.createElement(TicTacToe, React.__spread({onMsg: this.props.onMsg}, 
                      this.props.game))
+        );
+      case "Four":
+        return (
+          React.createElement(Four, React.__spread({onMsg: this.props.onMsg}, 
+                this.props.game))
         );
       default:
         return "";
@@ -57,6 +63,7 @@ var GameBoard = React.createClass({displayName: "GameBoard",
     playing
     choices
     */
+    console.log(this.props);
     var setup = this.props.playing ? "" : this._gameSetup();
     var game = this._gameComponent();
     return (
@@ -85,7 +92,7 @@ var TicTacToe = React.createClass({displayName: "TicTacToe",
       var cells = row.map(function(cell, colIndex){
         var key = rowIndex + "," + colIndex;
         return (
-          React.createElement(Cell, {key: key, 
+          React.createElement(TTCCell, {key: key, 
                 active: active, 
                 value: cell, 
                 row: rowIndex, 
@@ -115,7 +122,7 @@ var TicTacToe = React.createClass({displayName: "TicTacToe",
   }
 });
 
-var Cell = React.createClass({displayName: "Cell",
+var TTCCell = React.createClass({displayName: "TTCCell",
   shouldComponentUpdate: function(nextProps, nextState) {
     return nextProps.value !== this.props.value;
   },
@@ -136,4 +143,103 @@ var Cell = React.createClass({displayName: "Cell",
 });
 /*
  * End Tic Tac Toe
+ */
+
+
+/*
+ * Four
+ */
+
+var Four = React.createClass({displayName: "Four",
+  /*
+   * determine where the piece will be placed, and after placing, check if
+   * the game has been won
+   */
+  placePiece: function(column) {
+    this.props.onMsg("gameState", {
+      column: column
+    });
+  },
+  _makeColumns: function() {
+    return this.props.board.map(function(c, i){
+      return (
+        React.createElement(FourColumn, {key: i, 
+                    pieces: c, 
+                    index: i, 
+                    onPlace: this.placePiece})
+      );
+    }, this);
+  },
+  render: function() {
+    var player = this.props.active ? (
+      React.createElement("p", null, "Current Player: ", this.props.nextPlayer)
+    ) : "";
+    return (
+      React.createElement("div", {className: "four"}, 
+        React.createElement("div", {className: "game-message"}, 
+          this.props.msg
+        ), 
+        player, 
+        React.createElement("div", {className: "board"}, 
+          React.createElement("div", {className: "leg left"}), 
+          this._makeColumns(), 
+          React.createElement("div", {className: "leg right"}), 
+          React.createElement("div", {className: "slider"})
+        )
+      )
+    );
+  }
+});
+
+var FourColumn = React.createClass({displayName: "FourColumn",
+  tryPlace: function(event) {
+    if ( this._canPlace() ) {
+      this.setState({
+        preview: undefined
+      });
+      this.props.onPlace(this.props.index);
+    } else {
+      console.error("cannot place any more pieces in this column");
+    }
+  },
+  _canPlace: function() {
+    // filled from the bottom up, so first spot is last filled
+    return this.props.pieces[0] === "";
+  },
+  render: function() {
+    var pieces = this.props.pieces.map(function(p, i){
+      return (
+        React.createElement(FourPiece, {key: i, 
+                   value: p})
+      );
+    });
+    return (
+      React.createElement("div", {className: "column", 
+           onClick: this.tryPlace}, 
+        pieces
+      )
+    )
+  }
+});
+
+var FourPiece = React.createClass({displayName: "FourPiece",
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return (nextProps.value !== this.props.value);
+  },
+  render: function() {
+    var className = this.props.value === "" ? "none" : this.props.value;
+    var pieceClasses = ["piece", className];
+    var spaceClasses = ["space"];
+    var pieceClassName = pieceClasses.join(" ");
+    var spaceClassName = spaceClasses.join(" ");
+    return (
+      React.createElement("div", {className: spaceClassName}, 
+        React.createElement("div", {className: pieceClassName})
+      )
+    );
+  }
+});
+
+/*
+ * End Four
  */

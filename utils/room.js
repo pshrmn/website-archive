@@ -1,4 +1,3 @@
-var TicTacToe = require("../games/tictactoe");
 var Games = require("../games/games");
 
 /*

@@ -122,6 +122,10 @@ TicTacToe.prototype._checkForTie = function() {
   }, this);
 };
 
+/*
+ * UTILITY FUNCTIONS
+ */
+
 function allTheSame(cells) {
   var first = cells[0];
   if ( first === "" ) {

@@ -34,7 +34,7 @@ gulp.task("lint", ["jsx"], function() {
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task("client-js", ["jsx", "lint", "test"]);
+gulp.task("client-js", ["jsx", "lint"]);
 
 gulp.task("watch", function() {
     gulp.watch("./dev/scss/**/*.scss", ["sass"]);
