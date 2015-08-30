@@ -39,7 +39,6 @@ var GameBoard = React.createClass({displayName: "GameBoard",
   },
   _gameComponent: function() {
     if ( this.props.game ) {
-      console.log(this.props.game);
       switch ( this.props.game.name ) {
       case "Tic Tac Toe":
         return (
@@ -63,7 +62,6 @@ var GameBoard = React.createClass({displayName: "GameBoard",
     playing
     choices
     */
-    console.log(this.props);
     var setup = this.props.playing ? "" : this._gameSetup();
     var game = this._gameComponent();
     return (
@@ -198,8 +196,6 @@ var FourColumn = React.createClass({displayName: "FourColumn",
         preview: undefined
       });
       this.props.onPlace(this.props.index);
-    } else {
-      console.error("cannot place any more pieces in this column");
     }
   },
   _canPlace: function() {
