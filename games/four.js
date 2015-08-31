@@ -84,15 +84,11 @@ Four.prototype._checkForGameOver = function(col, row) {
   var won = arrs.some(function(arr){
     for ( var i=0; i < arr.length - 3; i++ ) {
       var slice = arr.slice(i, i+4)
-      var first = slice[0];
-      // don't match on empty spaces
-      if ( first === "" ) {
-        return false;
+      if ( AllTheSamePlayer(slice) ) {
+        return true;
       }
-      return slice.every(function(piece){
-        return piece === first;
-      });
     }
+    return false
   });
   if ( won ) {
     this.active = false;
@@ -145,7 +141,6 @@ function GeneratePossibleWins(colPos, rowPos, board) {
   var negativeArray = NegativeArray(colPos, rowPos, board);
   // positive diagonal array
   var postiveArray = PositiveArray(colPos, rowPos, board);
-
   return [horizontalArray, verticalArray, negativeArray, postiveArray];
 }
 
@@ -189,7 +184,8 @@ function PositiveArray(xPos, yPos, board) {
   return positiveArray;
 }
 
-function AllTheSamePlayer(arr, player){
+function AllTheSamePlayer(arr){
+  var player = arr[0];
   if ( player === "" ) {
     return false;
   }
