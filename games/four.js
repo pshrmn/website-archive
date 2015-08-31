@@ -33,8 +33,8 @@ Four.prototype.update = function(state, socketID) {
     return ;
   }
   this.board[column][row] = this.pieces[this.index];
-  var over = this._checkForGameOver(column, row);
-  if ( !over ) {
+  this._checkForGameOver(column, row);
+  if ( this.active ) {
     this._setNextPlayer();
   }
 
@@ -79,23 +79,41 @@ Four.prototype._whichRow = function(column) {
 };
 
 Four.prototype._checkForGameOver = function(col, row) {
+  // check for a win
   var arrs = GeneratePossibleWins(col, row, this.board);
-  var winners = WinningCombos(arrs, this.pieces[this.index]);
-  if ( winners.length ) {
+  var won = arrs.some(function(arr){
+    for ( var i=0; i < arr.length - 3; i++ ) {
+      var slice = arr.slice(i, i+4)
+      var first = slice[0];
+      // don't match on empty spaces
+      if ( first === "" ) {
+        return false;
+      }
+      return slice.every(function(piece){
+        return piece === first;
+      });
+    }
+  });
+  if ( won ) {
     this.active = false;
     this.message = this.current.name + " wins";
     this.room.endGame();    
-    return true;
-  } else if ( TieGame(this.board) ) {
+    return;
+  }
+
+  // check for a tie
+  var tie = this.board.every(function(column){
+    return column[0] !== "";
+  });
+  if ( tie ) {
     this.active = false;
     this.message = "It's a draw";
     this.room.endGame();
-    return true;
-  } else {
-    this.message = "";
-    return false;
+    return;
   }
-};
+
+  this.message = "";
+}
 
 /*
  * UTILITY FUNCTIONS
@@ -111,22 +129,22 @@ function emptyBoard() {
     ["","","","","",""]];
 }
 
-function GeneratePossibleWins(xPos, yPos, board) {
+function GeneratePossibleWins(colPos, rowPos, board) {
   // horizontal goes across columns
   var horizontalArray = [];
-  var minX = Math.max(xPos - 3, 0);
-  var maxX = Math.min(xPos + 3, board.length - 1);
+  var minX = Math.max(colPos - 3, 0);
+  var maxX = Math.min(colPos + 3, board.length - 1);
   for ( var x = minX; x <= maxX; x++ ) {
-    horizontalArray.push(board[x][yPos]);
+    horizontalArray.push(board[x][rowPos]);
   }
   // vertical is a slice from a column
-  var minY = Math.max(yPos - 3, 0);
-  var maxY = Math.min(yPos + 3, board[0].length -1);
-  var verticalArray = board[xPos].slice(minY, maxY + 1);
+  var minY = Math.max(rowPos - 3, 0);
+  var maxY = Math.min(rowPos + 3, board[0].length -1);
+  var verticalArray = board[colPos].slice(minY, maxY + 1);
   // negative diagonal array
-  var negativeArray = NegativeArray(xPos, yPos, board);
+  var negativeArray = NegativeArray(colPos, rowPos, board);
   // positive diagonal array
-  var postiveArray = PositiveArray(xPos, yPos, board);
+  var postiveArray = PositiveArray(colPos, rowPos, board);
 
   return [horizontalArray, verticalArray, negativeArray, postiveArray];
 }
@@ -171,32 +189,12 @@ function PositiveArray(xPos, yPos, board) {
   return positiveArray;
 }
 
-/*
- * takes an array of arrays. iterate over each array to see
- * if there is a chain of four of the same player in a row
- */
-function WinningCombos(arrs, player) {
-  var winners = [];
-  arrs.forEach(function(arr){
-    for ( var i=0; i < arr.length - 3; i++ ) {
-      var slice = arr.slice(i, i+4)
-      if ( AllTheSamePlayer(slice, player) ) {
-        winners.push(slice);
-      }
-    }
-  });
-  return winners;
-}
-
 function AllTheSamePlayer(arr, player){
+  if ( player === "" ) {
+    return false;
+  }
   return arr.every(function(piece){
     return piece === player;
-  });
-}
-
-function TieGame(board) {
-  return board.every(function(column){
-    return column[0] !== "";
   });
 }
 

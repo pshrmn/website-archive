@@ -214,7 +214,7 @@ var FourColumn = React.createClass({
            onClick={this.tryPlace} >
         {pieces}
       </div>
-    )
+    );
   }
 });
 
