@@ -38,29 +38,48 @@ var GameBoard = React.createClass({displayName: "GameBoard",
     );
   },
   _gameComponent: function() {
+    var game;
     if ( this.props.game ) {
       switch ( this.props.game.name ) {
       case "Tic Tac Toe":
-        return (
-          React.createElement(TicTacToe, React.__spread({onMsg: this.props.onMsg}, 
+        game = (
+          React.createElement(TicTacToe, React.__spread({onMsg: this.props.onMsg, 
+                     you: this.props.you}, 
                      this.props.game))
         );
+        break;
       case "Four":
-        return (
-          React.createElement(Four, React.__spread({onMsg: this.props.onMsg}, 
+        game = (
+          React.createElement(Four, React.__spread({onMsg: this.props.onMsg, 
+                     you: this.props.you}, 
                 this.props.game))
         );
+        break;
       default:
-        return "";
+        game = "";
       }
     }
-    return "";
+    var turn = "";
+    if ( this.props.game ) {
+      turn = (this.props.game.nextPlayer === this.props.you.name) ? 
+        "Your Turn" : this.props.game.nextPlayer + "'s Turn";
+    }
+    return (
+      React.createElement("div", {className: "game"}, 
+        turn, 
+        game
+      )
+    );
   },
   render: function() {
     /*
     game
-    playing
-    choices
+    isOwner
+    you
+    gameInfo
+      currentGame
+      playing
+      gameChoices
     */
     var setup = this.props.playing ? "" : this._gameSetup();
     var game = this._gameComponent();

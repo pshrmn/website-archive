@@ -19,21 +19,21 @@ var UI = React.createClass({displayName: "UI",
 
   this.socket.on("joined", function(resp){
     _this.setState({
-    formErrors: resp.reason
+      formErrors: resp.reason
     });
   });
 
   this.socket.on("left", function(msg) {
     _this.setState({
-    room: undefined,
-    player: undefined,
-    game: undefined
+      room: undefined,
+      player: undefined,
+      game: undefined
     });
   });
 
   this.socket.on("gameState", function(game){
     _this.setState({
-    game: game
+      game: game
     });
   });
   },
@@ -56,8 +56,7 @@ var UI = React.createClass({displayName: "UI",
           errors: this.state.formErrors})
     ) : (
     React.createElement(Room, React.__spread({onMsg: this.sendMessage, 
-        game: this.state.game, 
-        gameInfo: this.props.gameInfo}, 
+        game: this.state.game}, 
         this.state.room))
     );
   return (
@@ -160,11 +159,18 @@ var Room = React.createClass({displayName: "Room",
   render: function() {
   /*
   props: 
-  name
-  people
-    owner, players, you
   game
-    playing, gameChoices, currentGame
+  gameInfo
+    currentGame
+    gameChoices
+    playing
+  name
+  onMsg
+  people
+    max
+    owner
+    players
+    you
   */
   var you = this.props.people.you;
   var readyText = (you && you.ready) ? "Not Ready" : "Ready";
@@ -183,7 +189,8 @@ var Room = React.createClass({displayName: "Room",
     ), 
     React.createElement(GameBoard, React.__spread({onMsg: this.props.onMsg, 
            game: this.props.game, 
-           isOwner: isOwner}, 
+           isOwner: isOwner, 
+           you: this.props.people.you}, 
            this.props.gameInfo))
     )
   );
