@@ -1,3 +1,7 @@
+import React from "react";
+import io from "socket.io";
+import GameBoard from "./games";
+
 var UI = React.createClass({
   getInitialState: function() {
   return {

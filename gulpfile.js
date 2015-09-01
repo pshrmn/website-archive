@@ -4,6 +4,7 @@ var sass = require("gulp-sass");
 var mocha = require("gulp-mocha");
 var react = require("gulp-react");
 var prefix = require("gulp-autoprefixer");
+var webpack = require("webpack");
 
 gulp.task("sass", function() {
     return gulp.src("./dev/scss/**/*.scss")
@@ -22,23 +23,14 @@ gulp.task("test", function () {
         }));
 });
 
-gulp.task("jsx", function() {
-    return gulp.src("./dev/jsx/**/*.jsx")
-        .pipe(react({harmony: true}))
-        .pipe(gulp.dest("./public/js"));
-});
-
-gulp.task("lint", ["jsx"], function() {
+gulp.task("lint", function() {
     return gulp.src("public/js/**/*.js")
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task("client-js", ["jsx", "lint"]);
-
 gulp.task("watch", function() {
     gulp.watch("./dev/scss/**/*.scss", ["sass"]);
-    gulp.watch("./dev/jsx/**/*.jsx", ["client-js"]);
 });
 
-gulp.task("default", ["client-js", "sass"]);
+gulp.task("default", ["lint", "sass"]);
