@@ -8,8 +8,9 @@ body {
 
 header {
   background: #222233;
-  padding: 5px 25px;
-  font-family: "Fugaz One"; }
+  padding: 0 25px;
+  font-family: "Fugaz One";
+  height: 5vh; }
 
 header a {
   text-decoration: none;
@@ -18,20 +19,17 @@ header a {
 #home {
   font-size: 2em; }
 
-#content {
+.login-form {
   margin: 25px 50px 0; }
+  .login-form form {
+    padding: 15px; }
+    .login-form form label {
+      display: block; }
+    .login-form form button {
+      margin-right: 10px; }
+    .login-form form .error {
+      color: red; }
 
-/* form */
-form {
-  padding: 15px; }
-  form label {
-    display: block; }
-  form button {
-    margin-right: 10px; }
-  form .error {
-    color: red; }
-
-/* form */
 .ready {
   display: inline-block;
   width: 10px;
@@ -42,15 +40,9 @@ form {
   .ready.green {
     background: green; }
 
-.players ul {
-  list-style: none;
-  padding: 0; }
-
 .ui {
   font-size: 20px;
   font-family: "Oxygen", sans-serif; }
-  .ui h2 {
-    margin: 0.25em 0; }
   .ui button {
     font-family: "Oxygen", sans-serif;
     font-size: 0.8em;
@@ -65,23 +57,38 @@ form {
   .ui ul, .ui ol {
     margin: 0; }
 
-.person {
-  margin-right: 15px;
-  display: inline-block; }
-  .person .symbols {
-    display: inline-block; }
-  .person .you {
-    font-weight: bold; }
-
-.room-info {
+.room .room-info {
+  box-sizing: border-box;
   display: inline-block;
-  margin-right: 25px;
-  vertical-align: top; }
+  vertical-align: top;
+  max-width: 200px;
+  width: 85vw;
+  height: 95vh;
+  padding: 5px 15px;
+  background: #ddd;
+  border-right: 1px solid #aaa; }
+  .room .room-info h2 {
+    margin: 0.25em 0;
+    word-wrap: break-word; }
+  .room .room-info .players ul {
+    list-style: none;
+    padding: 0; }
+  .room .room-info .person {
+    overflow-x: hidden;
+    margin-right: 15px; }
+    .room .room-info .person.you {
+      font-weight: bold; }
+    .room .room-info .person .symbols {
+      display: inline-block; }
 
-.gameBoard {
+.room .gameboard {
   display: inline-block;
-  vertical-align: top; }
+  vertical-align: top;
+  width: 85vw;
+  box-sizing: border-box;
+  padding: 15px; }
 
 .controls button {
   display: block;
-  margin: 0.5em 0; }
+  margin: 0.5em 0;
+  background: #bbb; }

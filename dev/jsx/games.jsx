@@ -36,7 +36,7 @@ export default React.createClass({
       html = "Playing: " + gameName;
     }
     return this.props.playing ? "" : (
-      <div className="gameSetup">
+      <div className="game-setup">
         {html}
       </div>
     );
@@ -88,7 +88,7 @@ export default React.createClass({
     var setup = this.props.playing ? "" : this._gameSetup();
     var game = this._gameComponent();
     return (
-      <div className="gameBoard">
+      <div className="gameboard">
         {setup}
         {game}
       </div>

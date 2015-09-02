@@ -183,7 +183,7 @@
 	    ) : "";
 	    return _react2["default"].createElement(
 	      "div",
-	      null,
+	      { className: "login-form" },
 	      _react2["default"].createElement(
 	        "form",
 	        null,
@@ -311,13 +311,10 @@
 	    var people = this.props.players.map(function (person, index) {
 	      var owner = person.name === this.props.owner;
 	      var you = person.name === this.props.you.name;
-	      return _react2["default"].createElement(
-	        "li",
-	        { key: index },
-	        _react2["default"].createElement(Person, _extends({ owner: owner,
-	          you: you
-	        }, person))
-	      );
+	      return _react2["default"].createElement(Person, _extends({ key: index,
+	        owner: owner,
+	        you: you
+	      }, person));
 	    }, this);
 	    return _react2["default"].createElement(
 	      "div",
@@ -369,16 +366,12 @@
 	  render: function render() {
 	    var readyClass = this.props.ready ? "ready green" : "ready gray";
 	    var symbols = this._userSymbols();
-	    var youClass = this.props.you ? "name you" : "name";
+	    var youClass = this.props.you ? "person you" : "person";
 	    return _react2["default"].createElement(
-	      "div",
-	      { className: "person" },
+	      "li",
+	      { className: youClass },
 	      _react2["default"].createElement("div", { className: readyClass }),
-	      _react2["default"].createElement(
-	        "span",
-	        { className: youClass },
-	        this.props.name
-	      ),
+	      this.props.name,
 	      symbols,
 	      " - ",
 	      this.props.wins
@@ -467,7 +460,7 @@
 	    }
 	    return this.props.playing ? "" : _react2["default"].createElement(
 	      "div",
-	      { className: "gameSetup" },
+	      { className: "game-setup" },
 	      html
 	    );
 	  },
@@ -514,7 +507,7 @@
 	    var game = this._gameComponent();
 	    return _react2["default"].createElement(
 	      "div",
-	      { className: "gameBoard" },
+	      { className: "gameboard" },
 	      setup,
 	      game
 	    );

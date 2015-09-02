@@ -10,8 +10,9 @@ body {
 
 header {
     background: #222233;
-    padding: 5px 25px;
+    padding: 0 25px;
     font-family: "Fugaz One";
+    height: 5vh;
 }
 
 header a {
@@ -23,28 +24,24 @@ header a {
     font-size: 2em;
 }
 
-#content {
+.login-form {
     margin: 25px 50px 0;
-}
+    form {
+        padding: 15px;
 
-/* form */
-form {
-    padding: 15px;
+        label {
+            display: block;
+        }
 
-    label {
-        display: block;
-    }
+        button {
+            margin-right: 10px;
+        }
 
-    button {
-        margin-right: 10px;
-    }
-
-    .error {
-        color: red;
+        .error {
+            color: red;
+        }
     }
 }
-
-/* form */
 
 .ready {
     display: inline-block;
@@ -59,18 +56,9 @@ form {
     }
 }
 
-.players ul{
-    list-style: none;
-    padding: 0;
-}
-
 .ui {
     font-size: 20px;
     font-family: "Oxygen", sans-serif;
-
-    h2 {
-        margin: 0.25em 0;
-    }
 
     button {
         font-family: "Oxygen", sans-serif;
@@ -92,35 +80,58 @@ form {
     }
 }
 
-
-.person {
-    margin-right: 15px;
-    display: inline-block;
-
-    .symbols {
+.room {
+    .room-info {
+        box-sizing: border-box;
         display: inline-block;
+        vertical-align: top;
+        max-width: 200px;
+        width: 85vw;
+        height: 95vh;
+        padding: 5px 15px;
+        background: #ddd;
+        border-right: 1px solid #aaa;
+
+        h2 {
+            margin: 0.25em 0;
+            word-wrap: break-word;
+        }
+
+        .players ul{
+            list-style: none;
+            padding: 0;
+        }
+
+        .person {
+            overflow-x: hidden;
+            margin-right: 15px;
+
+            &.you {
+                font-weight: bold;
+            }
+
+            .symbols {
+                display: inline-block;
+            }
+        } 
     }
 
-    .you {
-        font-weight: bold;
+    
+    .gameboard {
+        display: inline-block;
+        vertical-align: top;
+        width: 85vw;
+        box-sizing: border-box;
+        padding: 15px;
     }
 }
 
 
-.room-info {
-    display: inline-block;
-    margin-right: 25px;
-    vertical-align: top;
-}
-
-.gameBoard {
-    display: inline-block;
-    vertical-align: top;
-}
 
 .controls {
     button {
         display: block;
         margin: 0.5em 0;
+        background: #bbb;
     }
 }

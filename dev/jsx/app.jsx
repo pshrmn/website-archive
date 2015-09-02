@@ -121,31 +121,31 @@ var RoomForm = React.createClass({
   var hasErrors = (this.props.errors !== undefined && this.props.errors !== "");
   var errors = hasErrors ? (<p className="error" >Error: {this.props.errors}</p>) : "";
   return (
-    <div>
-    <form>
-      {errors}
-      <p>
-      <label htmlFor="nickname">Nickname</label>
-      <input type="text" id="nickname"
-           value={this.state.nickname}
-           onChange={this.setNickname} />
-      </p>
-      <p>
-      <label htmlFor="room">Room</label>
-      <input type="text" id="room"
-           value={this.state.room}
-           onChange={this.setRoom} />
-      </p>
-      <p>
-      <label htmlFor="password">Password</label>
-      <input type="password" id="password"
-           value={this.state.password}
-           onChange={this.setPassword} />
-      </p>
-      <p>
-      <button onClick={this.joinRoom}>Join Room</button>
-      </p>
-    </form>
+    <div className="login-form">
+      <form>
+        {errors}
+        <p>
+        <label htmlFor="nickname">Nickname</label>
+        <input type="text" id="nickname"
+             value={this.state.nickname}
+             onChange={this.setNickname} />
+        </p>
+        <p>
+        <label htmlFor="room">Room</label>
+        <input type="text" id="room"
+             value={this.state.room}
+             onChange={this.setRoom} />
+        </p>
+        <p>
+        <label htmlFor="password">Password</label>
+        <input type="password" id="password"
+             value={this.state.password}
+             onChange={this.setPassword} />
+        </p>
+        <p>
+        <button onClick={this.joinRoom}>Join Room</button>
+        </p>
+      </form>
     </div>
   );
   }
@@ -207,11 +207,10 @@ var ScoreBoard = React.createClass({
     var owner = person.name === this.props.owner;
     var you = person.name === this.props.you.name;
     return (
-    <li key={index}>
-      <Person owner={owner}
+      <Person key={index}
+              owner={owner}
               you={you}
               {...person} />
-    </li>
     );
   }, this);
   return (
@@ -252,15 +251,13 @@ var Person = React.createClass({
   render: function() {
   var readyClass = this.props.ready ? "ready green" : "ready gray";
   var symbols = this._userSymbols();
-  var youClass = this.props.you ? "name you" : "name";
+  var youClass = this.props.you ? "person you" : "person";
   return (
-    <div className="person">
-    <div className={readyClass}></div>
-      <span className={youClass}>
-        {this.props.name}
-      </span>
+    <li className={youClass}>
+      <div className={readyClass}></div>
+      {this.props.name}
       {symbols} - {this.props.wins}
-    </div>
+    </li>
   );
   }
 });
