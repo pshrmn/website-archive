@@ -93,7 +93,7 @@ Four.prototype._checkForGameOver = function(col, row) {
   if ( won ) {
     this.active = false;
     this.message = this.current.name + " wins";
-    this.room.endGame();    
+    this.room.endGame(this.current.name);
     return;
   }
 

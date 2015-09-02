@@ -70,6 +70,8 @@ form {
   display: inline-block; }
   .person .symbols {
     display: inline-block; }
+  .person .you {
+    font-weight: bold; }
 
 .room-info {
   display: inline-block;

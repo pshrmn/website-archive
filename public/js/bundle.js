@@ -314,10 +314,9 @@
 	      return _react2["default"].createElement(
 	        "li",
 	        { key: index },
-	        _react2["default"].createElement(Person, { name: person.name,
-	          ready: person.ready,
-	          owner: owner,
-	          you: you })
+	        _react2["default"].createElement(Person, _extends({ owner: owner,
+	          you: you
+	        }, person))
 	      );
 	    }, this);
 	    return _react2["default"].createElement(
@@ -361,27 +360,28 @@
 	      { title: "owner" },
 	      String.fromCharCode(9818)
 	    ) : "";
-	    var you = this.props.you ? _react2["default"].createElement(
-	      "span",
-	      { title: "you" },
-	      String.fromCharCode(10004)
-	    ) : "";
 	    return _react2["default"].createElement(
 	      "div",
 	      { className: "symbols" },
-	      owner,
-	      you
+	      owner
 	    );
 	  },
 	  render: function render() {
 	    var readyClass = this.props.ready ? "ready green" : "ready gray";
 	    var symbols = this._userSymbols();
+	    var youClass = this.props.you ? "name you" : "name";
 	    return _react2["default"].createElement(
 	      "div",
 	      { className: "person" },
 	      _react2["default"].createElement("div", { className: readyClass }),
-	      this.props.name,
-	      symbols
+	      _react2["default"].createElement(
+	        "span",
+	        { className: youClass },
+	        this.props.name
+	      ),
+	      symbols,
+	      " - ",
+	      this.props.wins
 	    );
 	  }
 	});

@@ -208,10 +208,9 @@ var ScoreBoard = React.createClass({
     var you = person.name === this.props.you.name;
     return (
     <li key={index}>
-      <Person name={person.name}
-          ready={person.ready}
-          owner={owner}
-          you={you} />
+      <Person owner={owner}
+              you={you}
+              {...person} />
     </li>
     );
   }, this);
@@ -244,24 +243,23 @@ var Person = React.createClass({
     var owner = this.props.owner ? (
       <span title="owner">{String.fromCharCode(9818)}</span>
     ) : "";
-    var you = this.props.you ? (
-      <span title="you">{String.fromCharCode(10004)}</span>
-      ) : "";
     return (
       <div className="symbols">
       {owner}
-      {you}
       </div>
     );
   },
   render: function() {
   var readyClass = this.props.ready ? "ready green" : "ready gray";
   var symbols = this._userSymbols();
+  var youClass = this.props.you ? "name you" : "name";
   return (
     <div className="person">
     <div className={readyClass}></div>
-    {this.props.name}
-    {symbols}
+      <span className={youClass}>
+        {this.props.name}
+      </span>
+      {symbols} - {this.props.wins}
     </div>
   );
   }

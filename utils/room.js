@@ -208,8 +208,11 @@ Room.prototype.startGame = function() {
   }, this);
 }
 
-Room.prototype.endGame = function() {
+Room.prototype.endGame = function(winner) {
   this.players.forEach(function(p){
+    if ( winner !== undefined && p.name === winner ) {
+      p.wins++;
+    }
     p.ready = false;
   });
   this.playing = false;

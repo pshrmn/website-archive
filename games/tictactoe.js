@@ -76,7 +76,7 @@ TicTacToe.prototype._checkForGameOver = function() {
   if ( this._checkForWin() ) {
     this.active = false;
     this.message = this.current.name + " wins";
-    this.room.endGame();    
+    this.room.endGame(this.current.name);
     return true;
   } else if ( this._checkForTie() ) {
     this.active = false;

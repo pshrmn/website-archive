@@ -1,11 +1,12 @@
 {
   "name": "weplay",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Plays games with other people",
   "main": "server.js",
   "scripts": {
     "test": "mocha specs --require specs/helpers/chai.js",
     "jsx": "jsx --extension jsx dev/jsx/ public/js/",
+    "webpack": "webpack && webpack --config=webpack.config.min.js",
     "preversion": "npm test"
   },
   "repository": {
