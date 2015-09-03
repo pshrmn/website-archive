@@ -79,7 +79,8 @@ header a {
     .room .room-info .person.you {
       font-weight: bold; }
     .room .room-info .person .symbols {
-      display: inline-block; }
+      display: inline-block;
+      font-weight: normal; }
 
 .room .gameboard {
   display: inline-block;

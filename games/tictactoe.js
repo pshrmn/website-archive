@@ -21,8 +21,8 @@ function TicTacToe(players, room){
 }
 
 /*
- * The TicTacToe state should be the row and column the player
- * intends to mark
+ * takes input (row and column) from a player and updates the state of the game
+ * (if the player is allowed to play and the position is legal)
  */
 TicTacToe.prototype.update = function(state, socketID) {
   if ( !this._canPlay(socketID) ) {
@@ -30,7 +30,7 @@ TicTacToe.prototype.update = function(state, socketID) {
   }
   var row = state.row;
   var column = state.column;
-  if ( !this._emptySpace(row, column) ) {
+  if ( !this._playablePosition(row, column) ) {
     // send a message to the current player???
     return;
   }
@@ -46,6 +46,9 @@ TicTacToe.prototype.update = function(state, socketID) {
   }, this);
 };
 
+/*
+ * returns an object representing the current state of the game
+ */
 TicTacToe.prototype.state = function() {
   return {
     name: this.name,
@@ -56,21 +59,32 @@ TicTacToe.prototype.state = function() {
   };
 };
 
+/*
+ * Verify that the game state update is allowed by checking if the socket
+ * that sent the message is the same as the socket of the current player.
+ */
 TicTacToe.prototype._canPlay = function(socketID) {
   return this.current.is(socketID);
 }
 
-TicTacToe.prototype._emptySpace = function(row, column) {
-  return this.board[row][column] === "";
-};
-
+/*
+ * Change the current player and the index (which is used to determine what
+ * type of piece to place).
+ */
 TicTacToe.prototype._setNextPlayer = function() {
   this.index = (this.index+1) % this.players.length;
   this.current = this.players[this.index];
 };
 
 /*
- * 
+ * Check if the position the player sent is a legal position.
+ */
+TicTacToe.prototype._playablePosition = function(row, column) {
+  return this.board[row][column] === "";
+};
+
+/*
+ * Determine if the game has reached an end state
  */
 TicTacToe.prototype._checkForGameOver = function() {
   if ( this._checkForWin() ) {
