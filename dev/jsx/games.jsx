@@ -12,7 +12,7 @@ export default React.createClass({
   _gameSetup: function() {
     var gameName = this.props.currentGame;
     var html;
-    if ( this.props.isOwner ) {
+    if ( this.props.you.owner ) {
       var choices = this.props.gameChoices.map(function(choice, index){
         return (
           <label key={index}>
@@ -78,7 +78,6 @@ export default React.createClass({
   render: function() {
     /*
     game
-    isOwner
     you
     gameInfo
       currentGame

@@ -172,13 +172,12 @@ var Room = React.createClass({
   onMsg
   people
     max
-    owner
+    spectators
     players
     you
   */
   var you = this.props.people.you;
   var readyText = (you && you.ready) ? "Not Ready" : "Ready";
-  var isOwner = you && (you.name === this.props.people.owner);
   return (
     <div className="room">
     <div className="room-info">
@@ -192,51 +191,68 @@ var Room = React.createClass({
       <ScoreBoard {...this.props.people} />
     </div>
     <GameBoard onMsg={this.props.onMsg}
-           game={this.props.game}
-           isOwner={isOwner}
-           you={this.props.people.you}
-           {...this.props.gameInfo} />
+               game={this.props.game}
+               you={this.props.people.you}
+               {...this.props.gameInfo} />
     </div>
   );
   }
 });
 
 var ScoreBoard = React.createClass({
-  _peopleHTML: function() {
-  var people = this.props.players.map(function(person, index){
-    var owner = person.name === this.props.owner;
-    var you = person.name === this.props.you.name;
+  _spectatorsHTML: function() {
+    var spectators = this.props.spectators.map(function(person, index){
+      var you = person.name === this.props.you.name;
+      return (
+        <Person key={index}
+                you={you}
+                {...person} />
+      );
+    }, this);
     return (
-      <Person key={index}
-              owner={owner}
-              you={you}
-              {...person} />
+      <div className="spectators">
+        <p>Spectators ({this.props.spectators.length})</p>
+        <ul>
+          {spectators}
+        </ul>
+      </div>
     );
-  }, this);
-  return (
-    <div className="players">
-    <p>Players ({this.props.players.length}/{this.props.max})</p>
-    <ul>
-      {people}
-    </ul>
-    </div>
-  );
+  },
+  _playersHTML: function() {
+    var players = this.props.players.map(function(person, index){
+      var you = person.name === this.props.you.name;
+      return (
+        <Person key={index}
+                you={you}
+                {...person} />
+      );
+    }, this);
+    return (
+      <div className="players">
+        <p>Players ({this.props.players.length}/{this.props.max})</p>
+        <ul>
+          {players}
+        </ul>
+      </div>
+    );
   },
   render: function() {
-  var people = this._peopleHTML();
-  return (
-    <div className="scoreboard">
-    {people}
-    </div>
-  );
+    var spectators = this._spectatorsHTML();
+    var players = this._playersHTML();
+    return (
+      <div className="scoreboard">
+        {spectators}
+        {players}
+      </div>
+    );
   }
 });
 
 var Person = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
-  return (nextProps.name !== this.props.name ||
-    nextProps.owner !== this.props.owner ||
-    nextProps.ready !== this.props.ready );
+    return (nextProps.name !== this.props.name ||
+      nextProps.owner !== this.props.owner ||
+      nextProps.ready !== this.props.ready );
   },
   _userSymbols: function() {
     var owner = this.props.owner ? (

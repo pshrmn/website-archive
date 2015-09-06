@@ -1,17 +1,17 @@
 var exceptions = require("./exceptions");
 
-function TicTacToe(players, room){
+function TicTacToe(players, spectators, room){
   this.name = "Tic Tac Toe";
 
   // players should only be of length 2
   this.players = players;
+  this.spectators = spectators;
   if ( this.players.length !== 2 ) {
     throw new exceptions.UserCount(this.players.length, 2);
   }
   // semi-random starting player
-  this.index = Math.random() < 0.5 ? 0 : 1;
+  this.index = Math.floor(Math.random() * this.players.length);
   this.current = this.players[this.index];
-
   this.pieces = ["X", "O"];
   this.board = emptyBoard();
   this.active = true;
@@ -42,6 +42,9 @@ TicTacToe.prototype.update = function(state, socketID) {
 
   var gameState = this.state();
   this.players.forEach(function(player){
+    player.send("gameState", gameState);
+  }, this);
+  this.spectators.forEach(function(player){
     player.send("gameState", gameState);
   }, this);
 };

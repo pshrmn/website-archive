@@ -3,10 +3,12 @@ var Room = require("./room");
 
 module.exports = function(io) {
   var rooms = {};
+
   // send out a ping every 30 seconds to keep the web socket alive (for Heroku)
   var interval = setInterval(function() {
     io.emit("ping", "Keep Alive")
   }, 30000);
+
   io.on("connection", function(socket){
     socket.on("join", function(msg){
       var name = msg.room;
@@ -20,6 +22,7 @@ module.exports = function(io) {
       if ( room !== undefined ) {
         room.addPlayer(player, msg.password);
       } else {  
+        player.owner = true;
         socket.join(name);
         rooms[name] = new Room(io.to(name), player, name, msg.password);
       }

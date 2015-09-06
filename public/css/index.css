@@ -70,7 +70,7 @@ header a {
   .room .room-info h2 {
     margin: 0.25em 0;
     word-wrap: break-word; }
-  .room .room-info .players ul {
+  .room .room-info ul {
     list-style: none;
     padding: 0; }
   .room .room-info .person {

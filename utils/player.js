@@ -1,5 +1,6 @@
-function Player(name, socket) {
+function Player(name, socket, owner) {
   this.name = name;
+  this.owner = owner || false;
   this.ready = false;
   this.wins = 0;
 
@@ -10,6 +11,7 @@ Player.prototype.description = function() {
   return {
     name: this.name,
     wins: this.wins,
+    owner: this.owner,
     ready: this.ready
   };
 };

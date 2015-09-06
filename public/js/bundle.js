@@ -261,13 +261,12 @@
 	    onMsg
 	    people
 	      max
-	      owner
+	      spectators
 	      players
 	      you
 	    */
 	    var you = this.props.people.you;
 	    var readyText = you && you.ready ? "Not Ready" : "Ready";
-	    var isOwner = you && you.name === this.props.people.owner;
 	    return _react2["default"].createElement(
 	      "div",
 	      { className: "room" },
@@ -297,7 +296,6 @@
 	      ),
 	      _react2["default"].createElement(_games2["default"], _extends({ onMsg: this.props.onMsg,
 	        game: this.props.game,
-	        isOwner: isOwner,
 	        you: this.props.people.you
 	      }, this.props.gameInfo))
 	    );
@@ -307,12 +305,34 @@
 	var ScoreBoard = _react2["default"].createClass({
 	  displayName: "ScoreBoard",
 
-	  _peopleHTML: function _peopleHTML() {
-	    var people = this.props.players.map(function (person, index) {
-	      var owner = person.name === this.props.owner;
+	  _spectatorsHTML: function _spectatorsHTML() {
+	    var spectators = this.props.spectators.map(function (person, index) {
 	      var you = person.name === this.props.you.name;
 	      return _react2["default"].createElement(Person, _extends({ key: index,
-	        owner: owner,
+	        you: you
+	      }, person));
+	    }, this);
+	    return _react2["default"].createElement(
+	      "div",
+	      { className: "spectators" },
+	      _react2["default"].createElement(
+	        "p",
+	        null,
+	        "Spectators (",
+	        this.props.spectators.length,
+	        ")"
+	      ),
+	      _react2["default"].createElement(
+	        "ul",
+	        null,
+	        spectators
+	      )
+	    );
+	  },
+	  _playersHTML: function _playersHTML() {
+	    var players = this.props.players.map(function (person, index) {
+	      var you = person.name === this.props.you.name;
+	      return _react2["default"].createElement(Person, _extends({ key: index,
 	        you: you
 	      }, person));
 	    }, this);
@@ -331,16 +351,18 @@
 	      _react2["default"].createElement(
 	        "ul",
 	        null,
-	        people
+	        players
 	      )
 	    );
 	  },
 	  render: function render() {
-	    var people = this._peopleHTML();
+	    var spectators = this._spectatorsHTML();
+	    var players = this._playersHTML();
 	    return _react2["default"].createElement(
 	      "div",
 	      { className: "scoreboard" },
-	      people
+	      spectators,
+	      players
 	    );
 	  }
 	});
@@ -431,7 +453,7 @@
 	  _gameSetup: function _gameSetup() {
 	    var gameName = this.props.currentGame;
 	    var html;
-	    if (this.props.isOwner) {
+	    if (this.props.you.owner) {
 	      var choices = this.props.gameChoices.map(function (choice, index) {
 	        return _react2["default"].createElement(
 	          "label",
@@ -496,7 +518,6 @@
 	  render: function render() {
 	    /*
 	    game
-	    isOwner
 	    you
 	    gameInfo
 	      currentGame
