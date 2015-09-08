@@ -3,44 +3,6 @@ import TicTacToe from "./tictactoe";
 import Four from "./four";
 
 export default React.createClass({
-  sendGame: function(event){
-    var game = event.target.value;
-    this.props.onMsg("set game", {
-      game: game
-    });
-  },
-  _gameSetup: function() {
-    var gameName = this.props.currentGame;
-    var html;
-    if ( this.props.you.owner ) {
-      var choices = this.props.gameChoices.map(function(choice, index){
-        return (
-          <label key={index}>
-            {choice}
-            <input type="radio"
-                   name="game"
-                   checked={choice === gameName}
-                   value={choice}
-                   onChange={this.sendGame} />
-          </label>
-        );
-      }, this);
-
-      html = (
-        <div>
-          <p>Select the game to play:</p>
-          {choices}
-        </div>
-      );
-    } else {
-      html = "Playing: " + gameName;
-    }
-    return this.props.playing ? "" : (
-      <div className="game-setup">
-        {html}
-      </div>
-    );
-  },
   _gameComponent: function() {
     var game;
     if ( this.props.game ) {
@@ -80,16 +42,62 @@ export default React.createClass({
     game
     you
     gameInfo
-      currentGame
       playing
-      gameChoices
+      setup
+        currentGame
+        gameChoices
     */
-    var setup = this.props.playing ? "" : this._gameSetup();
+    var setup = this.props.playing ? "" : (
+      <GameSetup you={this.props.you}
+                 onMsg={this.props.onMsg}
+                 {...this.props.setup} />
+    );
     var game = this._gameComponent();
     return (
       <div className="gameboard">
         {setup}
         {game}
+      </div>
+    );
+  }
+});
+
+var GameSetup = React.createClass({
+  sendGame: function(event){
+    var game = event.target.value;
+    this.props.onMsg("set game", {
+      game: game
+    });
+  },
+  render: function() {
+    var gameName = this.props.currentGame;
+    var html;
+    if ( this.props.you.owner ) {
+      var choices = this.props.gameChoices.map(function(choice, index){
+        return (
+          <label key={index}>
+            {choice}
+            <input type="radio"
+                   name="game"
+                   checked={choice === gameName}
+                   value={choice}
+                   onChange={this.sendGame} />
+          </label>
+        );
+      }, this);
+
+      html = (
+        <div>
+          <p>Select the game to play:</p>
+          {choices}
+        </div>
+      );
+    } else {
+      html = "Playing: " + gameName;
+    }
+    return this.props.playing ? "" : (
+      <div className="game-setup">
+        {html}
       </div>
     );
   }

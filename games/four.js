@@ -1,10 +1,10 @@
 var exceptions = require("./exceptions");
 
-function Four(players, spectators, room) {
+function Four(players, manager) {
   this.name = "Four";
+  this.manager = manager;
   
   this.players = players;
-  this.spectators = spectators;
   if ( this.players.length !== 2 ) {
     throw new exceptions.UserCount(this.players.length, 2);
   }
@@ -16,7 +16,6 @@ function Four(players, spectators, room) {
   this.active = true;
   this.message = "";
 
-  this.room = room;
 }
 
 /*
@@ -44,13 +43,7 @@ Four.prototype.update = function(state, socketID) {
     this._setNextPlayer();
   }
 
-  var gameState = this.state();
-  this.players.forEach(function(player){
-    player.send("gameState", gameState);
-  }, this);
-  this.spectators.forEach(function(player){
-    player.send("gameState", gameState);
-  }, this);
+  return this.state();
 };
 
 /*
@@ -122,7 +115,7 @@ Four.prototype._checkForGameOver = function(col, row) {
   if ( won ) {
     this.active = false;
     this.message = this.current.name + " wins";
-    this.room.endGame(this.current.name);
+    this.manager.endGame(this.current.name);
     return;
   }
 
@@ -133,7 +126,7 @@ Four.prototype._checkForGameOver = function(col, row) {
   if ( tie ) {
     this.active = false;
     this.message = "It's a draw";
-    this.room.endGame();
+    this.manager.endGame();
     return;
   }
 
@@ -233,4 +226,8 @@ function allTheSamePlayer(arr){
   });
 }
 
-module.exports = Four;
+module.exports = {
+  game: Four,
+  minPlayers: 2,
+  maxPlayers: 2
+};

@@ -4,13 +4,13 @@ _This is a rough draft_
 
 ####`Game(players)`
 
-Constructor. It takes an argument `players` which is an array of players.
+Constructor. It takes an argument `players` which is an array of players and a `manager` which is the game manager to report a game ending to.
 
-    var g = new Game(players);
+    var g = new Game(players, manager);
 
 ####`Game.update(state)`
 
-Takes an argument with an updated `state` based on user input. Returns the game's new state. The state should be able to get across the game's current state (eg active, player 1 wins, draw), the board, and which players' turn it is.
+Takes an argument with an updated `state` based on user input. Returns the game's new state. The state should be able to get across the game's current state (eg active, player 1 wins, draw), the board, and which players' turn it is. Once the turn has completed, the function returns the new state of the game.
 
     {
         state: {

@@ -1,4 +1,4 @@
-var Games = require("../games/games");
+var GameManager = require("./manager");
 
 /*
  * A room is used for 2+ people to play a game.
@@ -10,34 +10,20 @@ function Room(socket, owner, name, password) {
   this.password = password;
 
   this.people = [owner];
-  this.minPlayers = 2;
-  this.maxPlayers = 2;
-  this.playing = false;
 
-  // default to the first game in the list
-  this.games = Games;
-  this.gameOptions = Object.keys(this.games)
-  this.gameName = this.gameOptions[0];
-  this.game = undefined;
+  this.gameManager = new GameManager(this);
 
-  this.info();
+  this.playerState();
 }
 
 /*
  * Check if a user with the given name already exists in the room
  */
-Room.prototype.hasPlayer = function(name) {
+Room.prototype.nameTaken = function(name) {
   return this.people.some(function(p){
     return p.name === name;
   });
-}
-
-/*
- * Return a list of sockets connected to the room
- */
-Room.prototype.socketIDs = function() {
-  return Object.keys(this.socket.connected);
-}
+};
 
 /*
  * Add a new player if the room is under capacity and the correct password
@@ -49,13 +35,13 @@ Room.prototype.addPlayer = function(player, password) {
   if ( password !== this.password ) {
     error = true;
     reason = "Room " + this.name + " exists, but you entered the incorrect password";
-  } else if ( this.hasPlayer(player.name) ) {
+  } else if ( this.nameTaken(player.name) ) {
     error = true;
     reason = "There is already a player with this nickname in the room";
   } else {
     this.people.push(player);
     player.join(this.name);
-    this.info();
+    this.playerState();
   }
   player.send("joined", {
     error: error,
@@ -92,10 +78,8 @@ Room.prototype.removePlayer = function(playerID) {
     if ( wasOwner && this.people.length ) {
       this.owner = this.people[0];
     }
-    if ( this.playing ) {
-      this.endGame();
-    }
-    this.info();
+    this.gameManager.playerLeft(playerID);
+    this.playerState();
   }
   return found;
 };
@@ -104,7 +88,7 @@ Room.prototype.removePlayer = function(playerID) {
  * Check to see if all of the players are still in the room.
  */
 Room.prototype.checkPlayers = function() {
-  var connected = this.socketIDs();
+  var connected = Object.keys(this.socket.connected);
   var setNewOwner = false;
   if ( connected.length !== this.people.length ) {
     // filter down players to only ones still in the room
@@ -121,7 +105,7 @@ Room.prototype.checkPlayers = function() {
       this.owner = this.people[0];
       this.people[0].owner = true;
     }
-    this.info();
+    this.playerState();
   }
 };
 
@@ -129,10 +113,19 @@ Room.prototype.shouldDelete = function() {
   return this.people.length === 0;
 };
 
+Room.prototype.playerState = function() {
+  var roomState = this.state();
+  // send out to each player so they can see their own information
+  this.people.forEach(function(p){
+    roomState.room.people.you = p.description();
+    p.send("roomState", roomState);
+  }, this);
+};
+
 /*
- * Send information about the room to everyone in it.
+ * Information about the state of the room
  */
-Room.prototype.info = function() {
+Room.prototype.state = function() {
   var players = [];
   var spectators = [];
   this.people.forEach(function(p){
@@ -143,33 +136,25 @@ Room.prototype.info = function() {
       spectators.push(desc);
     }
   });
-  // send out to each player so they can see their own information
-  this.people.forEach(function(p){
-    p.send("info", {
-      room: {
-        name: this.name,
-        people: {
-          spectators: spectators,
-          players: players,
-          you: p.description(),
-          max: this.maxPlayers
-        },
-        gameInfo: {
-          playing: this.playing,
-          gameChoices: this.gameOptions,
-          currentGame: this.gameName
-        }
-      }
-    });
-  }, this);
+  var gameState = this.gameManager.state();
+  return {
+    room: {
+      name: this.name,
+      people: {
+        spectators: spectators,
+        players: players
+      },
+      gameState: gameState
+    }
+  }
 };
 
-Room.prototype.toggleReady = function(socketID) {
+Room.prototype.togglePlayer = function(socketID) {
   // can't toggle while playing
-  if ( this.playing ) {
+  if ( this.gameManager.playing ) {
     return;
   }
-  // find the player in the players array
+  
   this.people.some(function(p) {
     if ( p.is(socketID) ) {
       p.ready = !p.ready;
@@ -177,14 +162,17 @@ Room.prototype.toggleReady = function(socketID) {
     }
     return false;
   });
-  // figure out if everyone is ready
-  var readyCount = this.people.reduce(function(prev, player) {
-    return player.ready ? prev + 1 : prev;
-  }, 0);
-  if ( readyCount >= this.minPlayers ) {
-    this.startGame();  
-  }
-  this.info();
+  var players = [];
+  var spectators = [];
+  this.people.forEach(function(p){
+    if ( p.ready ) {
+      players.push(p);
+    } else {
+      spectators.push(p);
+    }
+  });
+  this.gameManager.setPlayers(players, spectators);
+  this.playerState();
 };
 
 Room.prototype.setGame = function(gameName, socketID) {
@@ -192,52 +180,22 @@ Room.prototype.setGame = function(gameName, socketID) {
   if ( !this.owner.is(socketID) ) {
     return;
   }
-  if ( this.games[gameName] ) {
-    this.gameName = gameName;
-    this.info();
-  }
-}
-
-Room.prototype.startGame = function() {
-  this.playing = true;
-  try {
-    var gameFn = this.games[this.gameName];
-    var players = [];
-    var spectators = [];
+  var set = this.gameManager.setGame(gameName);
+  if ( set ) {
+    // reset the ready on all players when the game switches?
     this.people.forEach(function(p){
-      if ( p.ready ) {
-        players.push(p);
-      } else {
-        spectators.push(p);
-      }
+      p.ready = false;
     });
-    this.game = new gameFn(players, spectators, this);
-  } catch (e) {
-    console.error("failed to create game");
-    // will fail if the incorrect number of players is provided
-    return;
+    this.playerState();
   }
-  this.people.forEach(function(p){
-    p.send("gameState", this.game.state());
-  }, this);
 }
 
-Room.prototype.endGame = function(winner) {
-  this.people.forEach(function(p){
-    if ( winner !== undefined && p.name === winner ) {
-      p.wins++;
-    }
-    p.ready = false;
-  });
-  this.playing = false;
-  this.info();
+Room.prototype.endGame = function() {
+  this.playerState();
 }
 
 Room.prototype.updateGame = function(state, socketID) {
-  if ( !this.playing ) {
-    return;
-  }
-  this.game.update(state, socketID);
+  this.gameManager.update(state, socketID);
 };
 
 module.exports = Room;

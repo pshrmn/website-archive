@@ -76,20 +76,16 @@
 	    */
 	    this.socket = (0, _socketIo2["default"])();
 	    var _this = this;
-	    this.socket.on("info", function (info) {
-	      _this.setState({
-	        room: info.room,
-	        player: info.player
-	      });
-	    });
 
 	    this.socket.on("joined", function (resp) {
+	      console.log("joined", resp);
 	      _this.setState({
 	        formErrors: resp.reason
 	      });
 	    });
 
 	    this.socket.on("left", function (msg) {
+	      console.log("left", msg);
 	      _this.setState({
 	        room: undefined,
 	        player: undefined,
@@ -97,7 +93,16 @@
 	      });
 	    });
 
+	    this.socket.on("roomState", function (state) {
+	      console.log("roomState", state);
+	      _this.setState({
+	        room: state.room,
+	        player: state.player
+	      });
+	    });
+
 	    this.socket.on("gameState", function (game) {
+	      console.log("gameState", game);
 	      _this.setState({
 	        game: game
 	      });
@@ -252,18 +257,18 @@
 	  render: function render() {
 	    /*
 	    props: 
-	    game
-	    gameInfo
-	      currentGame
-	      gameChoices
-	      playing
-	    name
-	    onMsg
-	    people
-	      max
-	      spectators
-	      players
-	      you
+	      name
+	      people
+	        spectators
+	        players
+	        you
+	      gameState
+	        playing
+	        setup
+	          currentGame
+	          gameChoices
+	      game
+	      onMsg
 	    */
 	    var you = this.props.people.you;
 	    var readyText = you && you.ready ? "Not Ready" : "Ready";
@@ -297,7 +302,7 @@
 	      _react2["default"].createElement(_games2["default"], _extends({ onMsg: this.props.onMsg,
 	        game: this.props.game,
 	        you: this.props.people.you
-	      }, this.props.gameInfo))
+	      }, this.props.gameState))
 	    );
 	  }
 	});
@@ -344,8 +349,6 @@
 	        null,
 	        "Players (",
 	        this.props.players.length,
-	        "/",
-	        this.props.max,
 	        ")"
 	      ),
 	      _react2["default"].createElement(
@@ -444,48 +447,6 @@
 	exports["default"] = _react2["default"].createClass({
 	  displayName: "games",
 
-	  sendGame: function sendGame(event) {
-	    var game = event.target.value;
-	    this.props.onMsg("set game", {
-	      game: game
-	    });
-	  },
-	  _gameSetup: function _gameSetup() {
-	    var gameName = this.props.currentGame;
-	    var html;
-	    if (this.props.you.owner) {
-	      var choices = this.props.gameChoices.map(function (choice, index) {
-	        return _react2["default"].createElement(
-	          "label",
-	          { key: index },
-	          choice,
-	          _react2["default"].createElement("input", { type: "radio",
-	            name: "game",
-	            checked: choice === gameName,
-	            value: choice,
-	            onChange: this.sendGame })
-	        );
-	      }, this);
-
-	      html = _react2["default"].createElement(
-	        "div",
-	        null,
-	        _react2["default"].createElement(
-	          "p",
-	          null,
-	          "Select the game to play:"
-	        ),
-	        choices
-	      );
-	    } else {
-	      html = "Playing: " + gameName;
-	    }
-	    return this.props.playing ? "" : _react2["default"].createElement(
-	      "div",
-	      { className: "game-setup" },
-	      html
-	    );
-	  },
 	  _gameComponent: function _gameComponent() {
 	    var game;
 	    if (this.props.game) {
@@ -520,17 +481,67 @@
 	    game
 	    you
 	    gameInfo
-	      currentGame
 	      playing
-	      gameChoices
+	      setup
+	        currentGame
+	        gameChoices
 	    */
-	    var setup = this.props.playing ? "" : this._gameSetup();
+	    var setup = this.props.playing ? "" : _react2["default"].createElement(GameSetup, _extends({ you: this.props.you,
+	      onMsg: this.props.onMsg
+	    }, this.props.setup));
 	    var game = this._gameComponent();
 	    return _react2["default"].createElement(
 	      "div",
 	      { className: "gameboard" },
 	      setup,
 	      game
+	    );
+	  }
+	});
+
+	var GameSetup = _react2["default"].createClass({
+	  displayName: "GameSetup",
+
+	  sendGame: function sendGame(event) {
+	    var game = event.target.value;
+	    this.props.onMsg("set game", {
+	      game: game
+	    });
+	  },
+	  render: function render() {
+	    var gameName = this.props.currentGame;
+	    var html;
+	    if (this.props.you.owner) {
+	      var choices = this.props.gameChoices.map(function (choice, index) {
+	        return _react2["default"].createElement(
+	          "label",
+	          { key: index },
+	          choice,
+	          _react2["default"].createElement("input", { type: "radio",
+	            name: "game",
+	            checked: choice === gameName,
+	            value: choice,
+	            onChange: this.sendGame })
+	        );
+	      }, this);
+
+	      html = _react2["default"].createElement(
+	        "div",
+	        null,
+	        _react2["default"].createElement(
+	          "p",
+	          null,
+	          "Select the game to play:"
+	        ),
+	        choices
+	      );
+	    } else {
+	      html = "Playing: " + gameName;
+	    }
+	    return this.props.playing ? "" : _react2["default"].createElement(
+	      "div",
+	      { className: "game-setup" },
+	      html
 	    );
 	  }
 	});

@@ -56,7 +56,7 @@ module.exports = function(io) {
       if ( !room ) {
         return;
       }
-      room.toggleReady(socket.id);
+      room.togglePlayer(socket.id);
     });
 
     socket.on("set game", function(msg){
