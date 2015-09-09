@@ -61,12 +61,12 @@ GameManager.prototype.state = function() {
 };
 
 GameManager.prototype.broadcast = function(type, msg) {
-    this.players.forEach(function(p){
+    this.players.forEach(p => {
       p.send(type, msg);
-    }, this);
-    this.spectators.forEach(function(p){
+    });
+    this.spectators.forEach(p => {
       p.send(type, msg);
-    }, this);
+    });
 };
 
 
@@ -116,7 +116,7 @@ GameManager.prototype.startGame = function() {
 GameManager.prototype.endGame = function(winner) {
   this.game = undefined;
   this.playing = false;
-  this.players.forEach(function(p){
+  this.players.forEach(p => {
     if ( winner !== undefined && p.name === winner ) {
       p.wins++;
     }
@@ -146,7 +146,7 @@ GameManager.prototype.playerLeft = function(socketID) {
   if ( !this.playing ) {
     return;
   }
-  var found = this.players.some(function(p){
+  var found = this.players.some(p => {
     return p.is(socketID);
   });
   if ( found ) {

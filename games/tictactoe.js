@@ -9,7 +9,7 @@ function TicTacToe(players, manager){
     throw new exceptions.UserCount(this.players.length, 2);
   }
   // semi-random starting player
-  this.index = Math.floor(Math.random() * this.players.length);
+  this.index = 0;
   this.current = this.players[this.index];
   this.pieces = ["X", "O"];
   this.board = emptyBoard();
@@ -110,12 +110,12 @@ TicTacToe.prototype._checkForWin = function() {
     [[2,0],[1,1],[0,2]]
   ];
 
-  return combos.some(function(combo){
-    var cells = combo.map(function(cell){
+  return combos.some(combo => {
+    var cells = combo.map(cell => {
       return this.board[cell[0]][cell[1]];
-    }, this);
+    });
     return allTheSame(cells);
-  }, this);
+  });
 };
 
 /*
@@ -123,11 +123,11 @@ TicTacToe.prototype._checkForWin = function() {
  * on the turn that fills the board)
  */
 TicTacToe.prototype._checkForTie = function() {
-  return this.board.every(function(row){
-    return row.every(function(cell){
+  return this.board.every(row => {
+    return row.every(cell => {
       return cell !== "";
-    }, this);
-  }, this);
+    });
+  });
 };
 
 /*
@@ -139,7 +139,7 @@ function allTheSame(cells) {
   if ( first === "" ) {
     return false;
   }
-  return cells.every(function(c){
+  return cells.every(c => {
     return c === first;
   });
 }

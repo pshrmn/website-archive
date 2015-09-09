@@ -16,14 +16,14 @@ var UI = React.createClass({
     var _this = this;
 
     this.socket.on("joined", function(resp){
-      console.log("joined", resp);
+      //console.log("joined", resp);
       _this.setState({
         formErrors: resp.reason
       });
     });
 
     this.socket.on("left", function(msg) {
-      console.log("left", msg);
+      //console.log("left", msg);
       _this.setState({
         room: undefined,
         player: undefined,
@@ -32,7 +32,7 @@ var UI = React.createClass({
     });
 
     this.socket.on("roomState", function(state){
-      console.log("roomState", state);
+      //console.log("roomState", state);
       _this.setState({
         room: state.room,
         player: state.player
@@ -40,7 +40,7 @@ var UI = React.createClass({
     });
 
     this.socket.on("gameState", function(game){
-      console.log("gameState", game);
+      //console.log("gameState", game);
       _this.setState({
         game: game
       });

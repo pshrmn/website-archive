@@ -20,7 +20,7 @@ function Room(socket, owner, name, password) {
  * Check if a user with the given name already exists in the room
  */
 Room.prototype.nameTaken = function(name) {
-  return this.people.some(function(p){
+  return this.people.some(p => {
     return p.name === name;
   });
 };
@@ -58,7 +58,7 @@ Room.prototype.removePlayer = function(playerID) {
   var wasOwner = false;
   var spliceIndex;
   // filter out the player being removed
-  this.people.forEach(function(player, index){
+  this.people.forEach((player, index) => {
     if ( player.is(playerID) ) {
       if ( this.owner.name === player.name ) {
         wasOwner = true;
@@ -91,16 +91,23 @@ Room.prototype.checkPlayers = function() {
   var connected = Object.keys(this.socket.connected);
   var setNewOwner = false;
   if ( connected.length !== this.people.length ) {
-    // filter down players to only ones still in the room
-    this.people = this.people.filter(function(player){
-      var stillConnected = connected.some(function(socketID){
+    // find any players that have left, and remove them. If the owner left
+    // set a new owner
+    var people = [];
+    this.people.forEach(player => {
+      var stillConnected = connected.some(socketID => {
         return player.is(socketID);
       });
-      if ( player.owner && !stillConnected ) {
-        setNewOwner = true;
+      if ( stillConnected ) {
+        people.push(player);
+      } else {
+        this.gameManager.playerLeft(player.socket.id);
+        if ( player.owner ) {
+          setNewOwner = true;
+        }
       }
-      return stillConnected;
-    }, this);
+    });
+    this.people = people;
     if ( setNewOwner && this.people.length ) {
       this.owner = this.people[0];
       this.people[0].owner = true;
@@ -109,6 +116,9 @@ Room.prototype.checkPlayers = function() {
   }
 };
 
+/*
+ * the game master should delete the room when no players are in it
+ */
 Room.prototype.shouldDelete = function() {
   return this.people.length === 0;
 };
@@ -116,10 +126,10 @@ Room.prototype.shouldDelete = function() {
 Room.prototype.playerState = function() {
   var roomState = this.state();
   // send out to each player so they can see their own information
-  this.people.forEach(function(p){
+  this.people.forEach(p => {
     roomState.room.people.you = p.description();
     p.send("roomState", roomState);
-  }, this);
+  });
 };
 
 /*
@@ -128,7 +138,7 @@ Room.prototype.playerState = function() {
 Room.prototype.state = function() {
   var players = [];
   var spectators = [];
-  this.people.forEach(function(p){
+  this.people.forEach(p => {
     var desc = p.description();
     if ( p.ready ) {
       players.push(desc);
@@ -155,7 +165,7 @@ Room.prototype.togglePlayer = function(socketID) {
     return;
   }
   
-  this.people.some(function(p) {
+  this.people.some(p => {
     if ( p.is(socketID) ) {
       p.ready = !p.ready;
       return true;
@@ -164,7 +174,7 @@ Room.prototype.togglePlayer = function(socketID) {
   });
   var players = [];
   var spectators = [];
-  this.people.forEach(function(p){
+  this.people.forEach(p => {
     if ( p.ready ) {
       players.push(p);
     } else {
@@ -183,7 +193,7 @@ Room.prototype.setGame = function(gameName, socketID) {
   var set = this.gameManager.setGame(gameName);
   if ( set ) {
     // reset the ready on all players when the game switches?
-    this.people.forEach(function(p){
+    this.people.forEach(p => {
       p.ready = false;
     });
     this.playerState();

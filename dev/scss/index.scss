@@ -121,7 +121,7 @@ header a {
     .gameboard {
         display: inline-block;
         vertical-align: top;
-        width: 85vw;
+        max-width: 85vw;
         box-sizing: border-box;
         padding: 15px;
     }
