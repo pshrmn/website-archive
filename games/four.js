@@ -8,7 +8,7 @@ function Four(players, manager) {
   if ( this.players.length !== 2 ) {
     throw new exceptions.UserCount(this.players.length, 2);
   }
-  this.index = Math.floor(Math.random() * this.players.length);
+  this.index = 0;
   this.current = this.players[this.index];
 
   this.pieces = ["black", "red"];

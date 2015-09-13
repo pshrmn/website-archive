@@ -398,8 +398,11 @@
 	      _react2["default"].createElement("div", { className: readyClass }),
 	      this.props.name,
 	      symbols,
-	      " - ",
-	      this.props.wins
+	      " (",
+	      this.props.wins,
+	      "-",
+	      this.props.losses,
+	      ")"
 	    );
 	  }
 	});

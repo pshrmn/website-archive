@@ -117,8 +117,12 @@ GameManager.prototype.endGame = function(winner) {
   this.game = undefined;
   this.playing = false;
   this.players.forEach(p => {
-    if ( winner !== undefined && p.name === winner ) {
-      p.wins++;
+    if ( winner !== undefined ) {
+      if ( p.name === winner ) {
+        p.wins++;
+      } else {
+        p.losses++;
+      }
     }
     p.ready = false;
   });

@@ -277,7 +277,7 @@ var Person = React.createClass({
     <li className={youClass}>
       <div className={readyClass}></div>
       {this.props.name}
-      {symbols} - {this.props.wins}
+      {symbols} ({this.props.wins}-{this.props.losses})
     </li>
   );
   }

@@ -3,6 +3,7 @@ function Player(name, socket, owner) {
   this.owner = owner || false;
   this.ready = false;
   this.wins = 0;
+  this.losses = 0;
 
   this.socket = socket;
 }
@@ -11,6 +12,7 @@ Player.prototype.description = function() {
   return {
     name: this.name,
     wins: this.wins,
+    losses: this.losses,
     owner: this.owner,
     ready: this.ready
   };
