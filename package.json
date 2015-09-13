@@ -1,6 +1,6 @@
 {
   "name": "weplay",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Plays games with other people",
   "main": "server.js",
   "scripts": {
@@ -17,6 +17,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/psherman/weplay/issues"
+  },
+  "engines": {
+    "node": "4.x"
   },
   "homepage": "https://github.com/psherman/weplay",
   "dependencies": {
