@@ -43,6 +43,9 @@ GameManager.prototype.update = function(state, socketID) {
   var newState = this.game.update(state, socketID);
   if ( newState ) {
     this.broadcast("gameState", newState);
+    if ( newState.active === false ) {
+      this.endGame(newState.result.winner);
+    }
   }
 };
 
@@ -105,7 +108,7 @@ GameManager.prototype.tryToStart = function() {
  */
 GameManager.prototype.startGame = function() {  
   try {
-    this.game = new this.gameData.game(this.players, this);
+    this.game = new this.gameData.game(this.players);
     this.playing = true;
     this.broadcast("gameState", this.game.state());
   } catch(e) {

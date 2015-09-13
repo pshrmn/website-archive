@@ -4,9 +4,9 @@ _This is a rough draft_
 
 ####`Game(players)`
 
-Constructor. It takes an argument `players` which is an array of players and a `manager` which is the game manager to report a game ending to.
+Constructor. It takes an argument `players` which is an array of players.
 
-    var g = new Game(players, manager);
+    var g = new Game(players);
 
 ####`Game.update(state)`
 

@@ -1,8 +1,7 @@
 var exceptions = require("./exceptions");
 
-function Four(players, manager) {
+function Four(players) {
   this.name = "Four";
-  this.manager = manager;
   
   this.players = players;
   if ( this.players.length !== 2 ) {
@@ -15,7 +14,10 @@ function Four(players, manager) {
   this.board = emptyBoard();
   this.active = true;
   this.message = "";
-
+  this.result = {
+    status: "ongoing",
+    winner: undefined
+  };
 }
 
 /*
@@ -55,7 +57,8 @@ Four.prototype.state = function() {
     active: this.active,
     msg: this.message,
     nextPlayer: this.current.name,
-    board: this.board
+    board: this.board,
+    result: this.result
   };
 };
 
@@ -112,11 +115,15 @@ Four.prototype._checkForGameOver = function(col, row) {
     }
     return false
   });
+
   if ( won ) {
     this.active = false;
     this.message = this.current.name + " wins";
-    this.manager.endGame(this.current.name);
-    return;
+    this.result = {
+      status: "win",
+      winner: this.current.name
+    };
+    return true;
   }
 
   // check for a tie
@@ -126,11 +133,15 @@ Four.prototype._checkForGameOver = function(col, row) {
   if ( tie ) {
     this.active = false;
     this.message = "It's a draw";
-    this.manager.endGame();
-    return;
+    this.result = {
+      status: "tie",
+      winner: undefined
+    };
+    return true;
   }
 
   this.message = "";
+  return false;
 }
 
 /*

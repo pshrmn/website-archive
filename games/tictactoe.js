@@ -1,8 +1,7 @@
 var exceptions = require("./exceptions");
 
-function TicTacToe(players, manager){
+function TicTacToe(players){
   this.name = "Tic Tac Toe";
-  this.manager = manager;
 
   this.players = players;
   if ( this.players.length !== 2 ) {
@@ -15,6 +14,10 @@ function TicTacToe(players, manager){
   this.board = emptyBoard();
   this.active = true;
   this.message = "";
+  this.result = {
+    status: "ongoing",
+    winner: undefined
+  };
 }
 
 /*
@@ -50,6 +53,7 @@ TicTacToe.prototype.state = function() {
     msg: this.message,
     nextPlayer: this.current.name,
     board: this.board,
+    result: this.result
   };
 };
 
@@ -83,13 +87,19 @@ TicTacToe.prototype._playablePosition = function(row, column) {
 TicTacToe.prototype._checkForGameOver = function() {
   if ( this._checkForWin() ) {
     this.active = false;
+    this.result = {
+      status: "win",
+      winner: this.current.name
+    };
     this.message = this.current.name + " wins";
-    this.manager.endGame(this.current.name);
     return true;
   } else if ( this._checkForTie() ) {
     this.active = false;
+    this.result = {
+      status: "tie",
+      winner: undefined
+    };
     this.message = "It's a draw";
-    this.manager.endGame();
     return true;
   } else {
     this.message = "";
