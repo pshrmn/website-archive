@@ -16,14 +16,12 @@ var UI = React.createClass({
     var _this = this;
 
     this.socket.on("joined", function(resp){
-      //console.log("joined", resp);
       _this.setState({
         formErrors: resp.reason
       });
     });
 
     this.socket.on("left", function(msg) {
-      //console.log("left", msg);
       _this.setState({
         room: undefined,
         player: undefined,
@@ -32,7 +30,6 @@ var UI = React.createClass({
     });
 
     this.socket.on("roomState", function(state){
-      //console.log("roomState", state);
       _this.setState({
         room: state.room,
         player: state.player
@@ -40,7 +37,6 @@ var UI = React.createClass({
     });
 
     this.socket.on("gameState", function(game){
-      //console.log("gameState", game);
       _this.setState({
         game: game
       });
@@ -81,7 +77,7 @@ var RoomForm = React.createClass({
     return {
       nickname: "",
       room: "",
-      password: "",
+      password: ""
     };
   },
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -270,16 +266,16 @@ var Person = React.createClass({
     );
   },
   render: function() {
-  var readyClass = this.props.ready ? "ready green" : "ready gray";
-  var symbols = this._userSymbols();
-  var youClass = this.props.you ? "person you" : "person";
-  return (
-    <li className={youClass}>
-      <div className={readyClass}></div>
-      {this.props.name}
-      {symbols} ({this.props.wins}-{this.props.losses})
-    </li>
-  );
+    var readyClass = this.props.ready ? "ready green" : "ready gray";
+    var symbols = this._userSymbols();
+    var youClass = this.props.you ? "person you" : "person";
+    return (
+      <li className={youClass}>
+        <div className={readyClass}></div>
+        {this.props.name}
+        {symbols} ({this.props.wins}-{this.props.losses})
+      </li>
+    );
   }
 });
 
