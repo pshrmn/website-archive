@@ -1,4 +1,4 @@
-var Card = require("../games/cards/card");
+var Card = require("../server/games/cards/card");
 
 describe("Card", function() {
     describe("constructor", function() {

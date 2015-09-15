@@ -1,5 +1,5 @@
-var Card = require("../games/cards/card");
-var Deck = require("../games/cards/deck");
+var Card = require("../server/games/cards/card");
+var Deck = require("../server/games/cards/deck");
 
 describe("Deck", function() {
     describe("constructor", function() {

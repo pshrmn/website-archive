@@ -1,5 +1,5 @@
-var Room = require("../utils/room");
-var Player = require("../utils/player");
+var Room = require("../server/utils/room");
+var Player = require("../server/utils/player");
 var sinon = require("sinon");
 
 

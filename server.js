@@ -1,8 +1,8 @@
 var express = require("express");
 var http = require("http");
 var socket = require("socket.io");
-var routes = require("./routes");
-var gamemaster = require("./utils/gamemaster");
+var routes = require("./server/routes");
+var gamemaster = require("./server/utils/gamemaster");
 var nunjucks = require("nunjucks");
 
 var app = express();

@@ -1,6 +1,6 @@
-var TicTacToe = require("../games/tictactoe");
-var exceptions = require("../games/exceptions");
-var Player = require("../utils/player");
+var TicTacToe = require("../server/games/tictactoe");
+var exceptions = require("../server/games/exceptions");
+var Player = require("../server/utils/player");
 var sinon = require("sinon");
 
 describe("TicTacToe", function() {
