@@ -7,29 +7,27 @@ describe("Room", function() {
     sinon.stub(Player.prototype, "send", function(type, message) { return; });
     sinon.stub(Player.prototype, "join", function(name, callback) { return; });
     sinon.stub(Player.prototype, "leave", function(name, callback) { return; });
-    sinon.stub(Room.prototype, "socketIDs", function() {
 
-    });
     var owner = new Player("Steinbrenner", {id:0});
     describe("constructor", function() {
         var r = new Room(undefined, owner, "Yankees", "redsucks");
         it("should create a room with the owner as a player", function() {
             expect(r.owner).equal(owner);
-            expect(r.players.length).equal(1);
+            expect(r.people.length).equal(1);
             expect(r.name).equal("Yankees");
             expect(r.password).equal("redsucks"); 
         });
     });
 
-    describe("hasPlayer", function() {
+    describe("nameTaken", function() {
         var r = new Room(undefined, owner, "Yankees", "redsucks");            
 
         it("should return true if a player with the name is in the room", function() {
-            expect(r.hasPlayer("Steinbrenner")).equal(true);
+            expect(r.nameTaken("Steinbrenner")).equal(true);
         });
 
         it("should return false if no player in the room has the name", function() {
-            expect(r.hasPlayer("Henry")).equal(false);
+            expect(r.nameTaken("Henry")).equal(false);
         });
     });
 
@@ -52,7 +50,7 @@ describe("Room", function() {
             var babe = new Player("Babe", {id:3});
             var joined = r.addPlayer(babe, "redsucks");
             expect(joined).equal(true);
-            expect(r.players.length).equal(2);
+            expect(r.people.length).equal(2);
         });
 
         it("should fail if there are too many players already in the room", function() {
@@ -66,20 +64,20 @@ describe("Room", function() {
         it("should remove the player from the room", function() {
             var r = new Room(undefined, owner, "Yankees", "redsucks");
             var jr = new Player("Steinbrenner", {id:2});
-            r.players.push(jr);
-            expect(r.players.length).equal(2);
+            r.people.push(jr);
+            expect(r.people.length).equal(2);
             var removed = r.removePlayer(2);
             expect(removed).equal(true);
-            expect(r.players.length).equal(1);
+            expect(r.people.length).equal(1);
         });
 
         it("should assign a new owner if the owner leaves", function() {
             var r = new Room(undefined, owner, "Yankees", "redsucks");
             var jr = new Player("Steinbrenner", {id:2});
-            r.players.push(jr);
+            r.people.push(jr);
             var removed = r.removePlayer(0);
             expect(removed).equal(true);
-            expect(r.players.length).equal(1);
+            expect(r.people.length).equal(1);
             expect(r.owner).equal(jr);
         });
     });
@@ -91,12 +89,12 @@ describe("Room", function() {
     describe("shouldDelete", function() {
         var r = new Room(undefined, owner, "Yankees", "redsucks");
         it("shouldn't delete the room when there are players present", function() {
-            expect(r.players.length).equal(1);
+            expect(r.people.length).equal(1);
             expect(r.shouldDelete()).equal(false);
         });
         it("should delete the room when there are no players", function() {
             r.removePlayer(0);
-            expect(r.players.length).equal(0);
+            expect(r.people.length).equal(0);
             expect(r.shouldDelete()).equal(true);
         });
     });
