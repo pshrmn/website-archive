@@ -1,15 +1,15 @@
 {
   "name": "weplay",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Plays games with other people",
   "main": "server.js",
   "scripts": {
     "css": "npm run sass & npm run prefix",
     "lint": "eslint dev --ext .jsx",
-    "prefix": "postcss --use autoprefixer public/css/games.css public/css/index.css --dir public/css/",
+    "prefix": "postcss --use autoprefixer --autoprefixer.browsers \"last 2 versions\" public/css/games.css public/css/index.css --dir public/css/",
     "preversion": "npm test",
     "sass": "node-sass dev/scss/** -o public/css/**",
-    "test": "mocha specs --require specs/helpers/chai.js",
+    "test": "mocha specs --require specs/helpers/chai.js --compilers js:babel/register",
     "webpack": "webpack & webpack --config=webpack.config.min.js"
   },
   "repository": {
@@ -33,12 +33,13 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.0.2",
+    "babel": "^5.8.23",
     "babel-eslint": "^4.1.2",
     "babel-loader": "^5.3.2",
     "chai": "^3.2.0",
     "eslint": "^1.4.1",
     "eslint-plugin-react": "^3.3.2",
-    "mocha": "^2.2.5",
+    "mocha": "^2.3.2",
     "postcss-cli": "^2.1.0",
     "react-tools": "^0.13.3",
     "sinon": "^1.16.1",

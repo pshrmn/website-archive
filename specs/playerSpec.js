@@ -1,4 +1,4 @@
-var Player = require("../server/utils/player")
+import Player from "../server/utils/player";
 
 describe("Player", function(){
     describe("constructor", function(){

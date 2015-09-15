@@ -1,4 +1,4 @@
-var Card = require("../server/games/cards/card");
+import Card from "../server/games/cards/card";
 
 describe("Card", function() {
     describe("constructor", function() {
@@ -16,7 +16,7 @@ describe("Card", function() {
                 }
             ];
             combos.forEach(function(vals){
-                var card = new Card(vals.suit, vals.value);
+                let card = new Card(vals.suit, vals.value);
                 expect(card.suit).equal(vals.suit);
                 expect(card.value).equal(vals.value);
             });
@@ -28,7 +28,7 @@ describe("Card", function() {
     describe("same", function() {
         var c = new Card("Diamonds", "Jack");
         it("checks if the other card has the same suit and value", function() {
-              var combos = [
+            let combos = [
                 {
                     suit: "Diamonds",
                     value: "Jack",
@@ -48,7 +48,7 @@ describe("Card", function() {
                 }
             ];
             combos.forEach(function(vals){
-                var card = new Card(vals.suit, vals.value);
+                let card = new Card(vals.suit, vals.value);
                 expect(c.same(card)).equal(vals.expect);
             });
         });

@@ -1,5 +1,5 @@
-var Card = require("../server/games/cards/card");
-var Deck = require("../server/games/cards/deck");
+import Card from "../server/games/cards/card";
+import Deck from "../server/games/cards/deck";
 
 describe("Deck", function() {
     describe("constructor", function() {

@@ -1,6 +1,6 @@
-var Room = require("../server/utils/room");
-var Player = require("../server/utils/player");
-var sinon = require("sinon");
+import Room from "../server/utils/room";
+import Player from "../server/utils/player";
+import sinon from "sinon";
 
 
 describe("Room", function() {
