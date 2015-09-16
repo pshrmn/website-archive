@@ -1,6 +1,9 @@
 import React from "react";
 
 export default React.createClass({
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return this.props.id !== nextProps.id;
+  },
   sendPosition: function(row, column) {
     this.props.onMsg("gameState", {
       row: row,

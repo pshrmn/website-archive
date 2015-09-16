@@ -18,6 +18,8 @@ function Four(players) {
     status: "ongoing",
     winner: undefined
   };
+
+  this.moveID = 0;
 }
 
 /*
@@ -58,7 +60,8 @@ Four.prototype.state = function() {
     msg: this.message,
     nextPlayer: this.current.name,
     board: this.board,
-    result: this.result
+    result: this.result,
+    id: this.moveID++
   };
 };
 

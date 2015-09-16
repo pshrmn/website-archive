@@ -17,7 +17,7 @@ export default React.createClass({
       case "Four":
         game = (
           <Four onMsg={this.props.onMsg}
-                     you={this.props.you}
+                you={this.props.you}
                 {...this.props.game} />
         );
         break;

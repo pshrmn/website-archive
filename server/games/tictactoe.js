@@ -18,6 +18,8 @@ function TicTacToe(players){
     status: "ongoing",
     winner: undefined
   };
+
+  this.moveID = 0;
 }
 
 /*
@@ -53,7 +55,8 @@ TicTacToe.prototype.state = function() {
     msg: this.message,
     nextPlayer: this.current.name,
     board: this.board,
-    result: this.result
+    result: this.result,
+    id: this.moveID++
   };
 };
 

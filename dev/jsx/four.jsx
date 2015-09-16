@@ -1,6 +1,9 @@
 import React from "react";
 
 export default React.createClass({
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return this.props.id !== nextProps.id;
+  },
   /*
    * determine where the piece will be placed, and after placing, check if
    * the game has been won

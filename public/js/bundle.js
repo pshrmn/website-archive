@@ -565,6 +565,9 @@
 	exports["default"] = _react2["default"].createClass({
 	  displayName: "tictactoe",
 
+	  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+	    return this.props.id !== nextProps.id;
+	  },
 	  sendPosition: function sendPosition(row, column) {
 	    this.props.onMsg("gameState", {
 	      row: row,
@@ -657,6 +660,9 @@
 	exports["default"] = _react2["default"].createClass({
 	  displayName: "four",
 
+	  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+	    return this.props.id !== nextProps.id;
+	  },
 	  /*
 	   * determine where the piece will be placed, and after placing, check if
 	   * the game has been won

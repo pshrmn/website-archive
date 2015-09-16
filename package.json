@@ -1,11 +1,11 @@
 {
   "name": "weplay",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Plays games with other people",
   "main": "server.js",
   "scripts": {
     "css": "npm run sass & npm run prefix",
-    "lint": "eslint dev --ext .jsx",
+    "lint": "eslint dev/jsx --ext .jsx",
     "prefix": "postcss --use autoprefixer --autoprefixer.browsers \"last 2 versions\" public/css/games.css public/css/index.css --dir public/css/",
     "preversion": "npm test",
     "sass": "node-sass dev/scss/** -o public/css/**",
