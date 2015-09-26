@@ -10,11 +10,21 @@ header {
   background: #222233;
   padding: 0 25px;
   font-family: "Fugaz One";
-  height: 5vh; }
+  height: 5vh;
+  min-height: 2.25em; }
+  header a {
+    text-decoration: none;
+    color: #fff; }
 
-header a {
-  text-decoration: none;
-  color: #fff; }
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  padding: 5px 0;
+  width: 100vw; }
+  footer a {
+    color: #222233; }
 
 #home {
   font-size: 2em; }
