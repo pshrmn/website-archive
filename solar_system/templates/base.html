@@ -1,0 +1,63 @@
+{% load staticfiles %}
+
+<!doctype html>
+<html>
+<head>
+<title>
+{% block title%}
+Solar System
+{% endblock title %}
+</title>
+
+{% block stylesheets %}
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+{% endblock stylesheets %}
+
+<style type="text/css">
+{% block inline-css %}
+{% endblock inline-css %}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<header>
+    <a href="{% url 'home' %}">Solar System</a>
+{% block header %}
+  <nav>
+    <ul>
+      {% if user.is_authenticated %}
+      <li class="username">
+          {{ user.username | capfirst }}
+      </li>
+      <li>
+          <a href="{% url 'logout' %}?next=/">Logout</a>
+      </li>
+      {% else %}
+      <li>
+          <a href="{% url 'login' %}">Login</a>
+      </li>
+      <li>
+          <a href="{% url 'signup' %}">Sign Up</a>
+      </li>
+      {% endif %}            
+    </ul>
+  </nav>
+{% endblock header %}
+</header>
+<main>
+{% block content %}
+{% endblock content %}
+</main>
+
+{% block javascript %}
+{% endblock javascript %}
+
+<script type="text/javascript">
+{% block inline-js %}
+{% endblock inline-js %}
+</script>
+
+</body>
+</html>
