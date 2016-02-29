@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+<h1>
+    {{ solarsystem.name }}
+</h1>
+{% if is_creator %}
+<div class="dangerous">
+    <a href="{% url 'delete_solar_system' solarsystem.pk %}">Delete</a>
+    <a href="{% url 'update_solar_system' solarsystem.pk %}">Update</a>
+</div>
+<p>
+{% if solarsystem.public %}
+    Public
+{% else %}
+    Private
+{% endif %}
+</p>
+{% endif %}
+
+{% endblock content %}

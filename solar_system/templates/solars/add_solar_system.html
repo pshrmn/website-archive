@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+{% endblock stylesheets %}
+
+{% block content %}
+<form action="{% url 'add_solar_system' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p class="submit"><button type="submit" name="submit">Save</button></p>
+</form>
+{% endblock content %}
+

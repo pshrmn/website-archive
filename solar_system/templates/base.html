@@ -32,6 +32,9 @@ Solar System
           {{ user.username | capfirst }}
       </li>
       <li>
+          <a href="{% url 'list_solar_systems' %}">Solar Systems</a>
+      </li>
+      <li>
           <a href="{% url 'logout' %}?next=/">Logout</a>
       </li>
       {% else %}
