@@ -11,7 +11,7 @@ from .forms import SolarSystemForm
 class ListSolarSystems(LoginRequiredMixin, ListView):
 
     model = SolarSystem
-    template_name = 'solars/list_solar_systems.html'
+    template_name = 'solar_systems/list_solar_systems.html'
 
     def get_queryset(self):
         print(self.request.user.solarsystem_set.all())
@@ -21,7 +21,7 @@ class ListSolarSystems(LoginRequiredMixin, ListView):
 class SolarSystemView(DetailView):
 
     model = SolarSystem
-    template_name = 'solars/solar_system.html'
+    template_name = 'solar_systems/solar_system.html'
 
     def get_object(self):
         solar_system = get_object_or_404(SolarSystem, pk=self.kwargs.get("pk"))
@@ -38,7 +38,7 @@ class SolarSystemView(DetailView):
 class AddSolarSystemView(LoginRequiredMixin, CreateView):
 
     model = SolarSystem
-    template_name = 'solars/add_solar_system.html'
+    template_name = 'solar_systems/add_solar_system.html'
     form_class = SolarSystemForm
 
     def form_valid(self, form):
@@ -54,7 +54,7 @@ class AddSolarSystemView(LoginRequiredMixin, CreateView):
 class DeleteSolarSystemView(LoginRequiredMixin, DeleteView):
 
     model = SolarSystem
-    template_name = 'solars/delete_solar_system.html'
+    template_name = 'solar_systems/delete_solar_system.html'
 
     def get_success_url(self):
         return '/solar-systems'
@@ -69,7 +69,7 @@ class DeleteSolarSystemView(LoginRequiredMixin, DeleteView):
 class UpdateSolarSystemView(LoginRequiredMixin, UpdateView):
 
     model = SolarSystem
-    template_name = 'solars/update_solar_system.html'
+    template_name = 'solar_systems/update_solar_system.html'
     form_class = SolarSystemForm
 
     def get_object(self):

@@ -15,7 +15,7 @@ class Star(models.Model):
     radius = models.FloatField()
 
     solar_system = models.ForeignKey(
-        'solar.SolarSystem',
+        'solar_system.SolarSystem',
         on_delete=models.CASCADE
     )
 
@@ -36,7 +36,7 @@ class Planet(models.Model):
     orbit = models.IntegerField()
 
     star = models.ForeignKey(
-        'solar.Star',
+        'solar_system.Star',
         on_delete=models.CASCADE
     )
 
@@ -51,6 +51,6 @@ class Moon(models.Model):
     orbit = models.IntegerField()
 
     planet = models.ForeignKey(
-        'solar.Planet',
+        'solar_system.Planet',
         on_delete=models.CASCADE
     )

@@ -49,17 +49,17 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
                 ('radius', models.FloatField()),
-                ('solar_system', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='solar.SolarSystem')),
+                ('solar_system', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='solar_system.SolarSystem')),
             ],
         ),
         migrations.AddField(
             model_name='planet',
             name='star',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='solar.Star'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='solar_system.Star'),
         ),
         migrations.AddField(
             model_name='moon',
             name='planet',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='solar.Planet'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='solar_system.Planet'),
         ),
     ]
