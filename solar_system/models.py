@@ -7,6 +7,9 @@ class SolarSystem(models.Model):
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return '{} - {}'.format(self.pk, self.name)
+
 
 class Star(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
@@ -14,10 +17,13 @@ class Star(models.Model):
     name = models.CharField(max_length=100)
     radius = models.FloatField()
 
-    solar_system = models.ForeignKey(
+    solarsystem = models.ForeignKey(
         'solar_system.SolarSystem',
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return '{} - {}'.format(self.pk, self.name)
 
 
 class Planet(models.Model):
@@ -26,19 +32,22 @@ class Planet(models.Model):
     name = models.CharField(max_length=100)
     # radius of the planet
     radius = models.FloatField()
-    # distance from the sun
-    # (distance from center of sun to center of planet is
-    # sun.radius + distance + planet.radius)
+    # distance from the star
+    # (distance from center of star to center of planet is
+    # star.radius + distance + planet.radius)
     distance = models.FloatField()
     # the number of seconds in a day
     day_length = models.IntegerField()
-    # orbital period of rotation around the sun in seconds
+    # orbital period of rotation around the star in seconds
     orbit = models.IntegerField()
 
     star = models.ForeignKey(
         'solar_system.Star',
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return '{} - {}'.format(self.pk, self.name)
 
 
 class Moon(models.Model):
@@ -54,3 +63,6 @@ class Moon(models.Model):
         'solar_system.Planet',
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return '{} - {}'.format(self.pk, self.name)

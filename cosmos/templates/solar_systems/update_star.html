@@ -8,9 +8,9 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<form action="{% url 'add_solar_system' %}" method="post">
+<form action="{% url 'update_star' object.pk %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <p class="submit"><button type="submit" name="submit">Save</button></p>
+    <p class="submit"><button type="submit" name="submit">Update</button></p>
 </form>
 {% endblock content %}
