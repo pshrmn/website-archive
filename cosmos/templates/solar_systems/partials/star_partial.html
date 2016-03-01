@@ -7,7 +7,7 @@
   </div>
 
   {% for planet in star.planet_set.all %}
-    {% include 'solar_systems/planet_partial.html' %}
+    {% include 'solar_systems/partials/planet_partial.html' %}
   {% empty %}
     There are no planets orbiting this star.
   {% endfor %}

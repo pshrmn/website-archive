@@ -10,7 +10,7 @@ from solar_system.forms import PlanetForm
 class AddPlanetView(LoginRequiredMixin, CreateView):
 
     model = Planet
-    template_name = 'solar_systems/add_planet.html'
+    template_name = 'solar_systems/forms/add_planet.html'
     form_class = PlanetForm
 
     def get_context_data(self, **kwargs):
@@ -30,7 +30,7 @@ class AddPlanetView(LoginRequiredMixin, CreateView):
 class DeletePlanetView(LoginRequiredMixin, DeleteView):
 
     model = Planet
-    template_name = 'solar_systems/delete_planet.html'
+    template_name = 'solar_systems/forms/delete_planet.html'
 
     def get_success_url(self):
         return '/solar-systems/n/{}'.format(self.object.star.solarsystem.id)
@@ -45,7 +45,7 @@ class DeletePlanetView(LoginRequiredMixin, DeleteView):
 class UpdatePlanetView(LoginRequiredMixin, UpdateView):
 
     model = Planet
-    template_name = 'solar_systems/update_planet.html'
+    template_name = 'solar_systems/forms/update_planet.html'
     form_class = PlanetForm
 
     def get_object(self):

@@ -10,7 +10,7 @@ from solar_system.forms import StarForm
 class AddStarView(LoginRequiredMixin, CreateView):
 
     model = Star
-    template_name = 'solar_systems/add_star.html'
+    template_name = 'solar_systems/forms/add_star.html'
     form_class = StarForm
 
     def get_context_data(self, **kwargs):
@@ -30,7 +30,7 @@ class AddStarView(LoginRequiredMixin, CreateView):
 class DeleteStarView(LoginRequiredMixin, DeleteView):
 
     model = Star
-    template_name = 'solar_systems/delete_star.html'
+    template_name = 'solar_systems/forms/delete_star.html'
 
     def get_success_url(self):
         return '/solar-systems/n/{}'.format(self.object.solarsystem.id)
@@ -45,7 +45,7 @@ class DeleteStarView(LoginRequiredMixin, DeleteView):
 class UpdateStarView(LoginRequiredMixin, UpdateView):
 
     model = Star
-    template_name = 'solar_systems/update_star.html'
+    template_name = 'solar_systems/forms/update_star.html'
     form_class = StarForm
 
     def get_object(self):

@@ -1,3 +1,4 @@
+import json
 from django.views.generic import (CreateView, DeleteView, UpdateView,
                                   ListView, DetailView)
 from django.shortcuts import get_object_or_404
@@ -31,13 +32,50 @@ class SolarSystemView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_creator'] = self.request.user == context['solarsystem'].creator
+        context['solar_system_json'] = self.make_json(context['solarsystem'])
         return context
+
+    @staticmethod
+    def make_json(solar_system):
+        # only one star per solar system (use one-to-one?)
+        stars = solar_system.star_set.all()
+        star = stars[0] if stars is not None else []
+        ss = {
+            "name": solar_system.name,
+        }
+        if star is not None:
+            ss["star"] = {
+                "name": star.name,
+                "radius": star.radius,
+                "planets": []
+            }
+            for planet in star.planet_set.all():
+                p = {
+                    "name": planet.name,
+                    "radius": planet.radius,
+                    "distance": planet.distance,
+                    "day_length": planet.day_length,
+                    "orbit": planet.orbit,
+                    "moons": []
+                }
+                for moon in planet.moon_set.all():
+                    p["moons"].append({
+                        "name": moon.name,
+                        "radius": moon.radius,
+                        "distance": moon.distance,
+                        "day_length": moon.day_length,
+                        "orbit": moon.orbit,
+                    })
+                ss["star"]["planets"].append(p)
+        else:
+            ss["star"] = []
+        return json.dumps(ss)
 
 
 class AddSolarSystemView(LoginRequiredMixin, CreateView):
 
     model = SolarSystem
-    template_name = 'solar_systems/add_solar_system.html'
+    template_name = 'solar_systems/forms/add_solar_system.html'
     form_class = SolarSystemForm
 
     def form_valid(self, form):
@@ -51,7 +89,7 @@ class AddSolarSystemView(LoginRequiredMixin, CreateView):
 class DeleteSolarSystemView(LoginRequiredMixin, DeleteView):
 
     model = SolarSystem
-    template_name = 'solar_systems/delete_solar_system.html'
+    template_name = 'solar_systems/forms/delete_solar_system.html'
 
     def get_success_url(self):
         return '/solar-systems'
@@ -66,7 +104,7 @@ class DeleteSolarSystemView(LoginRequiredMixin, DeleteView):
 class UpdateSolarSystemView(LoginRequiredMixin, UpdateView):
 
     model = SolarSystem
-    template_name = 'solar_systems/update_solar_system.html'
+    template_name = 'solar_systems/forms/update_solar_system.html'
     form_class = SolarSystemForm
 
     def get_object(self):

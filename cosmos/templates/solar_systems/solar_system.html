@@ -2,6 +2,10 @@
 
 {% load staticfiles %}
 
+{% block title %}
+{{ solarsystem.name }} | {{ block.super }}
+{% endblock title %}
+
 {% block content %}
 <h1>
     {{ solarsystem.name }}
@@ -21,7 +25,7 @@
 {% endif %}
 
 {% for star in solarsystem.star_set.all %}
-  {% include 'solar_systems/star_partial.html' %}
+  {% include 'solar_systems/partials/star_partial.html' %}
 {% empty %}
     <p>
       There are no stars in this solar system.
@@ -32,3 +36,10 @@
 {% endfor %}
 
 {% endblock content %}
+
+{% block javascript %}
+{% endblock javascript %}
+
+{% block inline-js %}
+const solarSystemJSON = {{ solar_system_json|safe }};
+{% endblock inline-js %}
