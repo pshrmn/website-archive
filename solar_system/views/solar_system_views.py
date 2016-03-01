@@ -39,11 +39,11 @@ class SolarSystemView(DetailView):
     def make_json(solar_system):
         # only one star per solar system (use one-to-one?)
         stars = solar_system.star_set.all()
-        star = stars[0] if stars is not None else []
         ss = {
             "name": solar_system.name,
         }
-        if star is not None:
+        if len(stars) > 0:
+            star = stars[0]
             ss["star"] = {
                 "name": star.name,
                 "radius": star.radius,

@@ -6,6 +6,12 @@
 {{ solarsystem.name }} | {{ block.super }}
 {% endblock title %}
 
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/solar-system.css' %}">
+{% endblock stylesheets %}
+
+
 {% block content %}
 <h1>
     {{ solarsystem.name }}
@@ -24,6 +30,8 @@
 </p>
 {% endif %}
 
+<div id="solar-system"></div>
+
 {% for star in solarsystem.star_set.all %}
   {% include 'solar_systems/partials/star_partial.html' %}
 {% empty %}
@@ -38,6 +46,8 @@
 {% endblock content %}
 
 {% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+<script async src="{% static 'js/orbits.js' %}" type="text/javascript"></script>
 {% endblock javascript %}
 
 {% block inline-js %}

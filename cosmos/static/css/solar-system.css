@@ -1,0 +1,21 @@
+#solar-system svg {
+    background: #fff;
+}
+.arc {
+  fill: none;
+  stroke: #999;
+  stroke-width: 1px;
+}
+g.planet circle {
+  fill: #fff;
+  stroke: #444;
+  stroke-width: 1px;
+}
+.sun {
+  fill: #FFDB04;
+}
+.meridian {
+  stroke: #5A5A77;
+  stroke-dasharray: 1px;
+  shape-rendering: crispEdges;
+}
