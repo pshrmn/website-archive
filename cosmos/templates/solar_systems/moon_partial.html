@@ -4,4 +4,18 @@
     <a href="{% url 'delete_moon' moon.pk %}">Delete Moon</a>
     <a href="{% url 'update_moon' moon.pk %}">Update Moon</a>
   </div>
+  <ul>
+    <li>
+      Radius: {{moon.radius}} kms
+    </li>
+    <li>
+      Distance from Planet: {{moon.distance}} kms
+    </li>
+    <li>
+      Day Length: {{moon.day_length}} seconds
+    </li>
+    <li>
+      Orbital Period: {{moon.orbit}} seconds
+    </li>
+  </ul>
 </div>

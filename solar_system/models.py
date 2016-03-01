@@ -15,7 +15,7 @@ class Star(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
 
     name = models.CharField(max_length=100)
-    radius = models.FloatField()
+    radius = models.IntegerField()
 
     solarsystem = models.ForeignKey(
         'solar_system.SolarSystem',
@@ -31,11 +31,11 @@ class Planet(models.Model):
 
     name = models.CharField(max_length=100)
     # radius of the planet
-    radius = models.FloatField()
+    radius = models.IntegerField()
     # distance from the star
     # (distance from center of star to center of planet is
     # star.radius + distance + planet.radius)
-    distance = models.FloatField()
+    distance = models.IntegerField()
     # the number of seconds in a day
     day_length = models.IntegerField()
     # orbital period of rotation around the star in seconds
@@ -57,8 +57,8 @@ class Moon(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
 
     name = models.CharField(max_length=100)
-    radius = models.FloatField()
-    distance = models.FloatField()
+    radius = models.IntegerField()
+    distance = models.IntegerField()
     day_length = models.IntegerField()
     orbit = models.IntegerField()
 

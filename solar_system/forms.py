@@ -21,7 +21,7 @@ class StarForm(ModelForm):
         }
         error_messages = {
             'radius': {
-                'invalid': 'Radius must be a number'
+                'invalid': 'Radius must be a whole number'
             }
         }
 
@@ -46,10 +46,10 @@ class PlanetForm(ModelForm):
         }
         error_messages = {
             'radius': {
-                'invalid': 'Radius must be a number'
+                'invalid': 'Radius must be a whole number'
             },
             'distance': {
-                'invalid': 'Distance must be a number'
+                'invalid': 'Distance must be a whole number'
             },
             'day_length': {
                 'invalid': 'Day length must be a whole number'
@@ -80,10 +80,10 @@ class MoonForm(ModelForm):
         }
         error_messages = {
             'radius': {
-                'invalid': 'Radius must be a number'
+                'invalid': 'Radius must be a whole number'
             },
             'distance': {
-                'invalid': 'Distance must be a number'
+                'invalid': 'Distance must be a whole number'
             },
             'day_length': {
                 'invalid': 'Day length must be a whole number'
