@@ -1,0 +1,7 @@
+<div>
+  <h4>{{ moon.name }}</h4>
+  <div class="dangerous">
+    <a href="{% url 'delete_moon' moon.pk %}">Delete Moon</a>
+    <a href="{% url 'update_moon' moon.pk %}">Update Moon</a>
+  </div>
+</div>

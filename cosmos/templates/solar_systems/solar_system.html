@@ -21,39 +21,7 @@
 {% endif %}
 
 {% for star in solarsystem.star_set.all %}
-<div class="star">
-  <h2>{{ star.name }}</h2>
-  <div class="dangerous">
-    <a href="{% url 'delete_star' star.pk %}">Delete Star</a>
-    <a href="{% url 'update_star' star.pk %}">Update Star</a>
-    <a href="{% url 'add_planet' star.pk %}">Add A Planet</a>
-  </div>
-
-  {% for planet in star.planet_set.all %}
-  <div>
-    <h3>{{ planet.name }}</h3>
-    <div class="dangerous">
-      <a href="{% url 'delete_planet' planet.pk %}">Delete Planet</a>
-      <a href="{% url 'update_planet' planet.pk %}">Update Planet</a>
-      <a href="{% url 'add_moon' planet.pk %}">Add A Moon</a>
-    </div>
-
-    {% for moon in planet.moon_set.all %}
-    <div>
-      <h4>{{ moon.name }}</h4>
-      <div class="dangerous">
-        <a href="{% url 'delete_moon' moon.pk %}">Delete Moon</a>
-        <a href="{% url 'update_moon' moon.pk %}">Update Moon</a>
-      </div>
-    </div>
-    {% empty %}
-      There are no moons orbiting this planet.
-    {% endfor %}
-  </div>
-  {% empty %}
-    There are no planets orbiting this star.
-  {% endfor %}
-</div>
+  {% include 'solar_systems/star_partial.html' %}
 {% empty %}
     <p>
       There are no stars in this solar system.

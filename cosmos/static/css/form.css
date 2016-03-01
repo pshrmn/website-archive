@@ -1,6 +1,6 @@
-form p, form label {
-  display: inline-block; }
-
+form label {
+  display: block;
+}
 form p {
   padding: 5px; }
 

@@ -46,6 +46,9 @@ class Planet(models.Model):
         on_delete=models.CASCADE
     )
 
+    class Meta:
+        ordering = ["distance"]
+
     def __str__(self):
         return '{} - {}'.format(self.pk, self.name)
 
@@ -58,6 +61,9 @@ class Moon(models.Model):
     distance = models.FloatField()
     day_length = models.IntegerField()
     orbit = models.IntegerField()
+
+    class Meta:
+        ordering = ["distance"]
 
     planet = models.ForeignKey(
         'solar_system.Planet',

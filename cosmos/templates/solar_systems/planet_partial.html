@@ -1,0 +1,29 @@
+<div class="planet">
+  <h3>{{ planet.name }}</h3>
+  <div class="dangerous">
+      <a href="{% url 'delete_planet' planet.pk %}">Delete Planet</a>
+      <a href="{% url 'update_planet' planet.pk %}">Update Planet</a>
+      <a href="{% url 'add_moon' planet.pk %}">Add A Moon</a>
+    </div>
+  <ul>
+    <li>
+      Radius: {{planet.radius}} kms
+    </li>
+    <li>
+      Distance from Star: {{planet.distance}} million kms
+    </li>
+    <li>
+      Day Length: {{planet.day_length}} seconds
+    </li>
+    <li>
+      Orbital Period: {{planet.orbit}} seconds
+    </li>
+  </ul>
+  {% for moon in planet.moon_set.all %}
+    {% include 'solar_systems/moon_partial.html' %}
+  {% empty %}
+    <div>
+      There are no moons orbiting this planet.
+    </div>
+  {% endfor %}
+</div>
