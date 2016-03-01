@@ -1,4 +1,11 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+{% endblock stylesheets %}
+
 
 {% block content %}
 <form action="{% url 'signup' %}" method="post">

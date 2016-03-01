@@ -19,6 +19,11 @@ class StarForm(ModelForm):
             'name': 'Name',
             'radius': 'Radius (kms)'
         }
+        error_messages = {
+            'radius': {
+                'invalid': 'Radius must be a number'
+            }
+        }
 
 
 class PlanetForm(ModelForm):
@@ -28,10 +33,30 @@ class PlanetForm(ModelForm):
         fields = ('name', 'radius', 'distance', 'day_length', 'orbit')
         labels = {
             'name': 'Name',
-            'radius': 'Radius (kms)',
-            'distance': 'Distance from Star (million kms)',
-            'day_length': 'Day Length (seconds)',
-            'orbit': 'Orbital Period (second)'
+            'radius': 'Radius',
+            'distance': 'Distance from Star',
+            'day_length': 'Day Length',
+            'orbit': 'Orbital Period'
+        }
+        help_texts = {
+            'radius': 'kilometers',
+            'distance': 'million kilometers',
+            'day_length': 'seconds',
+            'orbit': 'seconds'
+        }
+        error_messages = {
+            'radius': {
+                'invalid': 'Radius must be a number'
+            },
+            'distance': {
+                'invalid': 'Distance must be a number'
+            },
+            'day_length': {
+                'invalid': 'Day length must be a whole number'
+            },
+            'orbit': {
+                'invalid': 'Orbit must be a whole number'
+            }
         }
 
 
@@ -42,8 +67,28 @@ class MoonForm(ModelForm):
         fields = ('name', 'radius', 'distance', 'day_length', 'orbit')
         labels = {
             'name': 'Name',
-            'radius': 'Radius (kms)',
-            'distance': 'Distance from Planet (million kms)',
-            'day_length': 'Day Length (seconds)',
-            'orbit': 'Orbital Period (second)'
+            'radius': 'Radius',
+            'distance': 'Distance from Planet',
+            'day_length': 'Day Length',
+            'orbit': 'Orbital Period'
+        }
+        help_texts = {
+            'radius': 'kilometers',
+            'distance': 'kilometers',
+            'day_length': 'seconds',
+            'orbit': 'seconds'
+        }
+        error_messages = {
+            'radius': {
+                'invalid': 'Radius must be a number'
+            },
+            'distance': {
+                'invalid': 'Distance must be a number'
+            },
+            'day_length': {
+                'invalid': 'Day length must be a whole number'
+            },
+            'orbit': {
+                'invalid': 'Orbit must be a whole number'
+            }
         }

@@ -23,7 +23,7 @@ Solar System
 </head>
 <body>
 <header>
-    <a href="{% url 'home' %}">Solar System</a>
+    <a href="{% url 'home' %}">The Cosmos</a>
 {% block header %}
   <nav>
     <ul>
@@ -32,7 +32,10 @@ Solar System
           {{ user.username | capfirst }}
       </li>
       <li>
-          <a href="{% url 'list_solar_systems' %}">Solar Systems</a>
+          <a href="{% url 'list_solar_systems' %}">Your Solar Systems</a>
+      </li>
+      <li>
+        <a href="{% url 'add_solar_system' %}">Add A Solar System</a>
       </li>
       <li>
           <a href="{% url 'logout' %}?next=/">Logout</a>
