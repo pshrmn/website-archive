@@ -8,7 +8,7 @@ from users.views import LoginView, LogoutView, SignUpView
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
-    url(r'^solar-systems/', include('solar_system.urls')),
+    url(r'^systems/', include('system.urls')),
 ]
 
 # user account related views

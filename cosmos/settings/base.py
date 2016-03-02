@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
-    'solar_system',
+    'system',
 ]
 
 MIDDLEWARE_CLASSES = [

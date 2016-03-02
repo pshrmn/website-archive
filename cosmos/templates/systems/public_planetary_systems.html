@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    Public Planetary Systems | {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div>
+    <a href="{% url 'add_system' %}">Add A Planetary System</a>
+</div>
+{% endif %}
+<ol>
+{% for ps in planetarysystem_list %}
+    <li class="planetary-system">
+        <a class="title" href="{% url 'system' ps.id %}">
+            {{ ps.name }}
+        </a>
+        {% if ps.creator == user %}
+        <div class="dangerous">
+            <a href="{% url 'update_system' ps.pk %}">Update</a>
+            <a href="{% url 'delete_system' ps.pk %}">Delete</a>
+        </div>
+        {% endif %}
+    </li>
+{% empty %}
+    <li>
+        There are no public planetary systems.
+    </li>
+{% endfor %}
+</ol>
+{% endblock content %}

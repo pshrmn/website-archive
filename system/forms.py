@@ -1,12 +1,12 @@
 from django.forms import ModelForm
 
-from .models import SolarSystem, Star, Planet, Moon
+from .models import PlanetarySystem, Star, Planet, Moon
 
 
-class SolarSystemForm(ModelForm):
+class PlanetarySystemForm(ModelForm):
 
     class Meta:
-        model = SolarSystem
+        model = PlanetarySystem
         fields = ('name', 'public')
 
 

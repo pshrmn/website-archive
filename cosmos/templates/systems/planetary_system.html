@@ -3,26 +3,26 @@
 {% load staticfiles %}
 
 {% block title %}
-{{ solarsystem.name }} | {{ block.super }}
+{{ planetarysystem.name }} | {{ block.super }}
 {% endblock title %}
 
 {% block stylesheets %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'css/solar-system.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/system.css' %}">
 {% endblock stylesheets %}
 
 
 {% block content %}
 <h1>
-    {{ solarsystem.name }}
+    {{ planetarysystem.name }}
 </h1>
 {% if is_creator %}
 <div class="dangerous">
-    <a href="{% url 'delete_solar_system' solarsystem.pk %}">Delete</a>
-    <a href="{% url 'update_solar_system' solarsystem.pk %}">Update</a>
+    <a href="{% url 'delete_system' planetarysystem.pk %}">Delete</a>
+    <a href="{% url 'update_system' planetarysystem.pk %}">Update</a>
 </div>
 <p>
-{% if solarsystem.public %}
+{% if planetarysystem.public %}
     Public
 {% else %}
     Private
@@ -30,16 +30,16 @@
 </p>
 {% endif %}
 
-<div id="solar-system"></div>
+<div id="system"></div>
 
-{% for star in solarsystem.star_set.all %}
-  {% include 'solar_systems/partials/star_partial.html' %}
+{% for star in planetarysystem.star_set.all %}
+  {% include 'systems/partials/star_partial.html' %}
 {% empty %}
     <p>
-      There are no stars in this solar system.
+      There are no stars in this planetary system.
     </p>
     {% if is_creator %}
-      <a href="{% url 'add_star' solarsystem.pk %}">Add Star</a>
+      <a href="{% url 'add_star' planetarysystem.pk %}">Add Star</a>
     {% endif %}
 {% endfor %}
 
@@ -51,5 +51,5 @@
 {% endblock javascript %}
 
 {% block inline-js %}
-const solarSystemJSON = {{ solar_system_json|safe }};
+const planetarySystemJSON = {{ planetary_system_json|safe }};
 {% endblock inline-js %}

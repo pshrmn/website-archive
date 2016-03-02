@@ -1,3 +1,3 @@
-#Solar System
+#Cosmos
 
-Create and watch your own solar system of planets orbiting a star.
+Create and watch your own planetary systems.

@@ -29,13 +29,13 @@ The Cosmos
     <ul>
       {% if user.is_authenticated %}
       <li>
-        <a href="{% url 'public_solar_systems' %}">Public Solar Systems</a>
+        <a href="{% url 'public_systems' %}">Public Systems</a>
       </li>
       <li>
-          <a href="{% url 'list_solar_systems' %}">Your Solar Systems</a>
+          <a href="{% url 'list_systems' %}">Your Systems</a>
       </li>
       <li>
-        <a href="{% url 'add_solar_system' %}">Add A Solar System</a>
+        <a href="{% url 'add_system' %}">Add A Planetary System</a>
       </li>
       <li class="username">
           {{ user.username | capfirst }}
@@ -45,7 +45,7 @@ The Cosmos
       </li>
       {% else %}
       <li>
-        <a href="{% url 'public_solar_systems' %}">Public Solar Systems</a>
+        <a href="{% url 'public_systems' %}">Public Systems</a>
       </li>
       <li>
           <a href="{% url 'login' %}">Login</a>

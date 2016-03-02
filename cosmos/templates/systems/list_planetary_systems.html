@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    Your Planetary Systems | {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+<div>
+    <a href="{% url 'add_system' %}">Add A Planetary System</a>
+</div>
+<ol>
+{% for ps in planetarysystem_list %}
+    <li class="planetary-system">
+        <a class="title" href="{% url 'system' ps.id %}">
+            {{ ps.name }}
+        </a>
+        <div class="dangerous">
+            <a href="{% url 'update_system' ps.pk %}">Update</a>
+            <a href="{% url 'delete_system' ps.pk %}">Delete</a>
+        </div>
+    </li>
+{% empty %}
+    <li>
+        You have no planetary systems.
+    </li>
+{% endfor %}
+</ol>
+{% endblock content %}

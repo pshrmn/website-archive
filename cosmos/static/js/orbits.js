@@ -8,7 +8,7 @@ var radius = 250;
 var height = radius * 2;
 var width = radius * 2;
 var innerRadius = radius - 25;
-var planets = solarSystemJSON.star.planets;
+var planets = planetarySystemJSON.star.planets;
 var pixelLength = distancePerPixel(planets, innerRadius);
 var maxDistance = d3.max(planets, function(p) {
   return p.distance;
@@ -33,10 +33,10 @@ planets.forEach(function(p, i) {
 var offsetFunction = function(d, i) {
   return d.normDistance;
 }
-var solarSystem = d3.select("#solar-system");
+var system = d3.select("#system");
 
 // create the SVG
-var svg = solarSystem
+var svg = system
   .append("svg")
     .attr("width", width)
     .attr("height", height);

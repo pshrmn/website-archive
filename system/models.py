@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 
-class SolarSystem(models.Model):
+class PlanetarySystem(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     public = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
@@ -17,8 +17,8 @@ class Star(models.Model):
     name = models.CharField(max_length=100)
     radius = models.IntegerField()
 
-    solarsystem = models.ForeignKey(
-        'solar_system.SolarSystem',
+    planetarysystem = models.ForeignKey(
+        'system.PlanetarySystem',
         on_delete=models.CASCADE
     )
 
@@ -42,7 +42,7 @@ class Planet(models.Model):
     orbit = models.IntegerField()
 
     star = models.ForeignKey(
-        'solar_system.Star',
+        'system.Star',
         on_delete=models.CASCADE
     )
 
@@ -66,7 +66,7 @@ class Moon(models.Model):
         ordering = ["distance"]
 
     planet = models.ForeignKey(
-        'solar_system.Planet',
+        'system.Planet',
         on_delete=models.CASCADE
     )
 

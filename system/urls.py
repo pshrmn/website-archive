@@ -3,14 +3,14 @@ from django.conf.urls import url, include
 from . import views
 
 urlpatterns = [
-    url('^$', views.ListSolarSystems.as_view(), name='list_solar_systems'),
-    url('^public$', views.PublicSolarSystems.as_view(), name='public_solar_systems'),
-    url('^add$', views.AddSolarSystemView.as_view(), name='add_solar_system'),
+    url('^$', views.ListPlanetarySystems.as_view(), name='list_systems'),
+    url('^public$', views.PublicPlanetarySystems.as_view(), name='public_systems'),
+    url('^add$', views.AddPlanetarySystemView.as_view(), name='add_system'),
 
     url('^(?P<pk>[0-9]+)/', include([
-        url('^$', views.SolarSystemView.as_view(), name='solar_system'),
-        url('^delete$', views.DeleteSolarSystemView.as_view(), name='delete_solar_system'),
-        url('^update$', views.UpdateSolarSystemView.as_view(), name='update_solar_system'),
+        url('^$', views.PlanetarySystemView.as_view(), name='system'),
+        url('^delete$', views.DeletePlanetarySystemView.as_view(), name='delete_system'),
+        url('^update$', views.UpdatePlanetarySystemView.as_view(), name='update_system'),
 
         url('^add-star$', views.AddStarView.as_view(), name='add_star'),
         url('^delete-star$', views.DeleteStarView.as_view(), name='delete_star'),
