@@ -19,3 +19,10 @@ p.active {
 .errorlist {
   color: red;
 }
+
+table {
+  text-align: center;
+}
+thead td {
+  max-width: 100px;
+}

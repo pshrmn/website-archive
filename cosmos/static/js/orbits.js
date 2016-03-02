@@ -24,10 +24,10 @@ var logScale = d3.scale.log()
 
 planets.forEach(function(p, i) {
   // normalize the distance to the size of the svg
-  p.normDistance = logScale(p.distance);
-  //p.normDistance = p.distance * pixelLength;
+  //p.normDistance = logScale(p.distance);
+  p.normDistance = p.distance * pixelLength;
   // randomize the starting location
-  p.offsetAngle = Math.floor(Math.random() * 360);
+  p.offsetAngle = 0;//Math.floor(Math.random() * 360);
 });
 
 var offsetFunction = function(d, i) {
@@ -86,7 +86,12 @@ function step(timestamp) {
 
   planetCircles
     .attr("transform", function(d, i) {
-      var rotate = (360 * (diff / (period * d.orbit))) % 360;
+
+      var seconds_in_a_year = Math.abs(d.day_length * d.orbit);
+      var percent = (diff*period / seconds_in_a_year) % 1;
+      
+
+      var rotate = 360 * percent;
       return "rotate(" + (d.offsetAngle-rotate) + ")translate(0, " + (-offsetFunction(d,i)) + ")";
     });
 
