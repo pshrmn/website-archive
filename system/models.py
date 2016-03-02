@@ -39,7 +39,7 @@ class Planet(models.Model):
     # the number of seconds in a day
     day_length = models.IntegerField()
     # orbital period of rotation around the star in days
-    orbit = models.IntegerField()
+    orbit = models.FloatField()
 
     star = models.ForeignKey(
         'system.Star',
@@ -60,7 +60,7 @@ class Moon(models.Model):
     radius = models.IntegerField()
     distance = models.IntegerField()
     day_length = models.IntegerField()
-    orbit = models.IntegerField()
+    orbit = models.FloatField()
 
     class Meta:
         ordering = ["distance"]
