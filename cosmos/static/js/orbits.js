@@ -10,9 +10,24 @@ var width = radius * 2;
 var innerRadius = radius - 25;
 var planets = solarSystemJSON.star.planets;
 var pixelLength = distancePerPixel(planets, innerRadius);
+var maxDistance = d3.max(planets, function(p) {
+  return p.distance;
+});
+var minDistance = d3.min(planets, function(p) {
+  return p.distance;
+});
+
+var logScale = d3.scale.log()
+  .base(minDistance)
+  .domain([1, maxDistance])
+  .range([0, innerRadius]);
+
 planets.forEach(function(p, i) {
   // normalize the distance to the size of the svg
-  p.normDistance = p.distance * pixelLength;
+  p.normDistance = logScale(p.distance);
+  //p.normDistance = p.distance * pixelLength;
+  // randomize the starting location
+  p.offsetAngle = Math.floor(Math.random() * 360);
 });
 
 var offsetFunction = function(d, i) {
@@ -38,14 +53,6 @@ var arcs = g.append("g")
     .classed("arc", true)
     .attr("r", offsetFunction);
 
-// the starting line
-var meridian = g.append("line")
-  .classed("meridian", true)
-  .attr("x1", 0)
-  .attr("x2", 0)
-  .attr("y1", 0)
-  .attr("y2", -innerRadius);
-
 var sun = g.append("circle")
   .classed("sun", true)
   .attr("r", 4);
@@ -58,10 +65,10 @@ var planetCircles = g.append("g")
   .enter().append("g")
     .classed("planet", true)
     .attr("transform", function(d, i) {
-      return "translate(0, " + (-offsetFunction(d,i)) + ")";
+      return "rotate(" + d.offsetAngle + ")translate(0, " + (-offsetFunction(d,i)) + ")";
     });
 
-planetCircles.append("circle").attr("r", 3)
+planetCircles.append("circle").attr("r", 2)
 
 planetCircles.append("title")
   .text(function(d) {
@@ -70,7 +77,7 @@ planetCircles.append("title")
 
 // the animation callback
 var start = null;
-var period = 100;
+var period = 1000;
 function step(timestamp) {
   if ( start === null ) {
     start = timestamp;
@@ -80,7 +87,7 @@ function step(timestamp) {
   planetCircles
     .attr("transform", function(d, i) {
       var rotate = (360 * (diff / (period * d.orbit))) % 360;
-      return "rotate(" + (-rotate) + ")translate(0, " + (-offsetFunction(d,i)) + ")";
+      return "rotate(" + (d.offsetAngle-rotate) + ")translate(0, " + (-offsetFunction(d,i)) + ")";
     });
 
   window.requestAnimationFrame(step);

@@ -24,7 +24,7 @@ class AddMoonView(LoginRequiredMixin, CreateView):
         return super(AddMoonView, self).form_valid(form)
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.planet.star.solarsystem.id)
+        return '/solar-systems/{}/'.format(self.object.planet.star.solarsystem.id)
 
 
 class DeleteMoonView(LoginRequiredMixin, DeleteView):
@@ -33,7 +33,7 @@ class DeleteMoonView(LoginRequiredMixin, DeleteView):
     template_name = 'solar_systems/forms/delete_moon.html'
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.planet.star.solarsystem.id)
+        return '/solar-systems/{}/'.format(self.object.planet.star.solarsystem.id)
 
     def get_object(self):
         star = super().get_object()
@@ -55,4 +55,4 @@ class UpdateMoonView(LoginRequiredMixin, UpdateView):
         return obj
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.planet.star.solarsystem.id)
+        return '/solar-systems/{}/'.format(self.object.planet.star.solarsystem.id)

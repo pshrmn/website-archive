@@ -38,7 +38,7 @@ class Planet(models.Model):
     distance = models.IntegerField()
     # the number of seconds in a day
     day_length = models.IntegerField()
-    # orbital period of rotation around the star in seconds
+    # orbital period of rotation around the star in days
     orbit = models.IntegerField()
 
     star = models.ForeignKey(

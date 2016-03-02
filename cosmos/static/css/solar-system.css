@@ -12,7 +12,7 @@ g.planet circle {
   stroke-width: 1px;
 }
 .sun {
-  fill: #FFDB04;
+  fill: #FFC107;
 }
 .meridian {
   stroke: #5A5A77;

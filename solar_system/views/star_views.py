@@ -24,7 +24,7 @@ class AddStarView(LoginRequiredMixin, CreateView):
         return super(AddStarView, self).form_valid(form)
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.solarsystem.id)
+        return '/solar-systems/{}/'.format(self.object.solarsystem.id)
 
 
 class DeleteStarView(LoginRequiredMixin, DeleteView):
@@ -33,7 +33,7 @@ class DeleteStarView(LoginRequiredMixin, DeleteView):
     template_name = 'solar_systems/forms/delete_star.html'
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.solarsystem.id)
+        return '/solar-systems/{}/'.format(self.object.solarsystem.id)
 
     def get_object(self):
         star = super().get_object()
@@ -55,4 +55,4 @@ class UpdateStarView(LoginRequiredMixin, UpdateView):
         return obj
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.solarsystem.id)
+        return '/solar-systems/{}/'.format(self.object.solarsystem.id)

@@ -42,7 +42,7 @@ class PlanetForm(ModelForm):
             'radius': 'kilometers',
             'distance': 'million kilometers',
             'day_length': 'seconds',
-            'orbit': 'seconds'
+            'orbit': 'days'
         }
         error_messages = {
             'radius': {
@@ -76,7 +76,7 @@ class MoonForm(ModelForm):
             'radius': 'kilometers',
             'distance': 'kilometers',
             'day_length': 'seconds',
-            'orbit': 'seconds'
+            'orbit': 'days'
         }
         error_messages = {
             'radius': {

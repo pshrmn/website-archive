@@ -24,7 +24,7 @@ class AddPlanetView(LoginRequiredMixin, CreateView):
         return super(AddPlanetView, self).form_valid(form)
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.star.solarsystem.id)
+        return '/solar-systems/{}/'.format(self.object.star.solarsystem.id)
 
 
 class DeletePlanetView(LoginRequiredMixin, DeleteView):
@@ -33,7 +33,7 @@ class DeletePlanetView(LoginRequiredMixin, DeleteView):
     template_name = 'solar_systems/forms/delete_planet.html'
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.star.solarsystem.id)
+        return '/solar-systems/{}/'.format(self.object.star.solarsystem.id)
 
     def get_object(self):
         planet = super().get_object()
@@ -55,4 +55,4 @@ class UpdatePlanetView(LoginRequiredMixin, UpdateView):
         return obj
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.star.solarsystem.id)
+        return '/solar-systems/{}/'.format(self.object.star.solarsystem.id)

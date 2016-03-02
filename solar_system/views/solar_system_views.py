@@ -83,7 +83,7 @@ class AddSolarSystemView(LoginRequiredMixin, CreateView):
         return super(AddSolarSystemView, self).form_valid(form)
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.id)
+        return '/solar-systems/{}/'.format(self.object.id)
 
 
 class DeleteSolarSystemView(LoginRequiredMixin, DeleteView):
@@ -92,7 +92,7 @@ class DeleteSolarSystemView(LoginRequiredMixin, DeleteView):
     template_name = 'solar_systems/forms/delete_solar_system.html'
 
     def get_success_url(self):
-        return '/solar-systems'
+        return '/solar-systems/'
 
     def get_object(self):
         solar_system = super().get_object()
@@ -114,4 +114,4 @@ class UpdateSolarSystemView(LoginRequiredMixin, UpdateView):
         return obj
 
     def get_success_url(self):
-        return '/solar-systems/n/{}'.format(self.object.id)
+        return '/solar-systems/{}/'.format(self.object.id)
