@@ -23,7 +23,9 @@ The Cosmos
 </head>
 <body>
 <header>
-    <a href="{% url 'home' %}" class="home">The Cosmos</a>
+    <a href="{% url 'home' %}" class="home">
+    <img src="{% static 'img/logo.png' %}" />
+    </a>
 {% block header %}
   <nav>
     <ul>
