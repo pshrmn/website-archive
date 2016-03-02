@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url('^$', views.ListSolarSystems.as_view(), name='list_solar_systems'),
+    url('^public$', views.PublicSolarSystems.as_view(), name='public_solar_systems'),
     url('^add$', views.AddSolarSystemView.as_view(), name='add_solar_system'),
 
     url('^(?P<pk>[0-9]+)/', include([

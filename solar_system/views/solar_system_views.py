@@ -18,6 +18,14 @@ class ListSolarSystems(LoginRequiredMixin, ListView):
         return self.request.user.solarsystem_set.all()
 
 
+class PublicSolarSystems(ListView):
+    template_name = "solar_systems/public_solar_systems.html"
+    model = SolarSystem
+
+    def get_queryset(self):
+        return SolarSystem.objects.filter(public=True)
+
+
 class SolarSystemView(DetailView):
 
     model = SolarSystem

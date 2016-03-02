@@ -23,13 +23,13 @@ The Cosmos
 </head>
 <body>
 <header>
-    <a href="{% url 'home' %}">The Cosmos</a>
+    <a href="{% url 'home' %}" class="home">The Cosmos</a>
 {% block header %}
   <nav>
     <ul>
       {% if user.is_authenticated %}
-      <li class="username">
-          {{ user.username | capfirst }}
+      <li>
+        <a href="{% url 'public_solar_systems' %}">Public Solar Systems</a>
       </li>
       <li>
           <a href="{% url 'list_solar_systems' %}">Your Solar Systems</a>
@@ -37,10 +37,16 @@ The Cosmos
       <li>
         <a href="{% url 'add_solar_system' %}">Add A Solar System</a>
       </li>
+      <li class="username">
+          {{ user.username | capfirst }}
+      </li>
       <li>
           <a href="{% url 'logout' %}?next=/">Logout</a>
       </li>
       {% else %}
+      <li>
+        <a href="{% url 'public_solar_systems' %}">Public Solar Systems</a>
+      </li>
       <li>
           <a href="{% url 'login' %}">Login</a>
       </li>

@@ -1,11 +1,12 @@
 <div class="star">
   <h2>{{ star.name }}</h2>
+  {% if star.creator == self.request.user %}
   <div class="dangerous">
     <a href="{% url 'delete_star' star.pk %}">Delete Star</a>
     <a href="{% url 'update_star' star.pk %}">Update Star</a>
     <a href="{% url 'add_planet' star.pk %}">Add A Planet</a>
   </div>
-
+  {% endif %}
   {% for planet in star.planet_set.all %}
     {% include 'solar_systems/partials/planet_partial.html' %}
   {% empty %}

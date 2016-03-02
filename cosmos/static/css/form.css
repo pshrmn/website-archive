@@ -1,11 +1,21 @@
 form label {
   display: block;
 }
-form p {
-  padding: 5px; }
 
-select {
-  font-size: 16px; }
+form p {
+  padding: 5px;
+}
 
 p.active {
-  background: rgba(61, 179, 102, 0.25); }
+  background: rgba(61, 179, 102, 0.25);
+}
+
+
+.helptext {
+  display: block;
+  font-style: italic;
+}
+
+.errorlist {
+  color: red;
+}

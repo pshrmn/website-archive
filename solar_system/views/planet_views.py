@@ -19,7 +19,10 @@ class AddPlanetView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.star = get_object_or_404(Star, pk=self.kwargs.get('pk'))
+        star = get_object_or_404(Star, pk=self.kwargs.get('pk'))
+        if star.creator != self.request.user:
+            raise Http404
+        form.instance.star = star
         form.instance.creator = self.request.user
         return super(AddPlanetView, self).form_valid(form)
 

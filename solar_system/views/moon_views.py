@@ -19,7 +19,10 @@ class AddMoonView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.planet = get_object_or_404(Planet, pk=self.kwargs.get('pk'))
+        planet = get_object_or_404(Planet, pk=self.kwargs.get('pk'))
+        if planet.creator != self.request.user:
+            raise Http404
+        form.instance.planet = planet
         form.instance.creator = self.request.user
         return super(AddMoonView, self).form_valid(form)
 

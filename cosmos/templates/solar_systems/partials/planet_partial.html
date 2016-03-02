@@ -1,10 +1,12 @@
 <div class="planet">
   <h3>{{ planet.name }}</h3>
+  {% if planet.creator == self.request.user %}
   <div class="dangerous">
-      <a href="{% url 'delete_planet' planet.pk %}">Delete Planet</a>
-      <a href="{% url 'update_planet' planet.pk %}">Update Planet</a>
-      <a href="{% url 'add_moon' planet.pk %}">Add A Moon</a>
-    </div>
+    <a href="{% url 'delete_planet' planet.pk %}">Delete Planet</a>
+    <a href="{% url 'update_planet' planet.pk %}">Update Planet</a>
+    <a href="{% url 'add_moon' planet.pk %}">Add A Moon</a>
+  </div>
+  {% endif %}
   <ul>
     <li>
       Radius: {{planet.radius}} kms
@@ -16,7 +18,7 @@
       Day Length: {{planet.day_length}} seconds
     </li>
     <li>
-      Orbital Period: {{planet.orbit}} seconds
+      Orbital Period: {{planet.orbit}} days
     </li>
   </ul>
   {% for moon in planet.moon_set.all %}

@@ -1,13 +1,54 @@
 html, body {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
+  margin: 0;
 }
 
-.helptext {
-  display: block;
-  font-style: italic;
+.home {
+  font-size: 2em;
+  font-weight: bold;
 }
 
-.errorlist {
-  color: red;
+header {
+  background: #223;
+  color: #ccc;
+  padding: 5px 25px;
+}
+
+
+header ul {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+header nav {
+  margin-left: auto;
+}
+
+header li {
+  margin: 0 10px;
+}
+
+header a, header a:visited {
+  color: #ccc;
+  text-decoration: none;
+}
+
+a, a:visited {
+  color: #444;
+}
+
+main {
+  width: 80%;
+  margin: 25px auto 0;
+}
+
+@media (max-width: 900px){
+  main {
+    width: 90%;
+    min-width: 500px;
+  }
 }

@@ -19,7 +19,10 @@ class AddStarView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.solarsystem = get_object_or_404(SolarSystem, pk=self.kwargs.get('pk'))
+        solarsystem = get_object_or_404(SolarSystem, pk=self.kwargs.get('pk'))
+        if solarsystem.creator != self.request.user:
+            raise Http404
+        form.instance.solarsystem = solarsystem
         form.instance.creator = self.request.user
         return super(AddStarView, self).form_valid(form)
 
