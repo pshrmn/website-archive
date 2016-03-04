@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 
 class PlanetarySystem(models.Model):
@@ -9,6 +10,9 @@ class PlanetarySystem(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.pk, self.name)
+
+    def get_absolute_url(self):
+        return reverse('system', kwargs={"pk": self.pk})
 
 
 class Star(models.Model):

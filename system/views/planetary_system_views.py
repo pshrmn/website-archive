@@ -4,6 +4,7 @@ from django.views.generic import (CreateView, DeleteView, UpdateView,
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.urlresolvers import reverse
 
 from system.models import PlanetarySystem
 from system.forms import PlanetarySystemForm
@@ -91,7 +92,7 @@ class AddPlanetarySystemView(LoginRequiredMixin, CreateView):
         return super(AddPlanetarySystemView, self).form_valid(form)
 
     def get_success_url(self):
-        return '/systems/{}/'.format(self.object.id)
+        return self.object.get_absolute_url()
 
 
 class DeletePlanetarySystemView(LoginRequiredMixin, DeleteView):
@@ -100,7 +101,7 @@ class DeletePlanetarySystemView(LoginRequiredMixin, DeleteView):
     template_name = 'systems/forms/delete_planetary_system.html'
 
     def get_success_url(self):
-        return '/systems/'
+        return reverse('list_systems')
 
     def get_object(self):
         planetary_system = super().get_object()
@@ -122,4 +123,4 @@ class UpdatePlanetarySystemView(LoginRequiredMixin, UpdateView):
         return obj
 
     def get_success_url(self):
-        return '/systems/{}/'.format(self.object.id)
+        return self.object.get_absolute_url()
