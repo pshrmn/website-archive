@@ -56,9 +56,19 @@ a, a:visited {
 main {
   width: 80%;
   margin: 25px auto 0;
+  min-height: 80vh;
+}
+
+footer {
+  text-align: center;
+  padding: 5px 0;
+  width: 100vw;
 }
 
 @media (max-width: 900px){
+  header {
+    min-width: 500px;
+  }
   main {
     width: 90%;
     min-width: 500px;
