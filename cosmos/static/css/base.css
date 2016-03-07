@@ -4,21 +4,23 @@ html, body {
   margin: 0;
 }
 
-.home {
+.home{
   font-size: 2em;
   font-weight: bold;
 }
 
 header {
-  background: #223;
+  background: #222233;
   color: #ccc;
-  padding: 5px 25px;
+  padding: 10px 25px;
+  border-bottom: 2px solid #efefef;
 }
 
 
 header ul {
   display: flex;
   flex-flow: row wrap;
+  align-items: flex-end;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -26,6 +28,7 @@ header ul {
 
 header nav {
   margin-left: auto;
+  padding: 10px 0;
 }
 
 header li {
@@ -33,8 +36,17 @@ header li {
 }
 
 header a, header a:visited {
-  color: #ccc;
+  color: #efefef;
   text-decoration: none;
+}
+
+.user {
+  background: #5E5E69;
+  border-radius: 5px;
+}
+
+.user a, .user a:visited {
+  color: #efefef;
 }
 
 a, a:visited {

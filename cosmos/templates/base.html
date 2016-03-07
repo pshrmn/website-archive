@@ -23,37 +23,50 @@ Cosmos
 </head>
 <body>
 <header>
-    <a href="{% url 'home' %}" class="home">
-    <img src="{% static 'img/logo.png' %}" />
-    </a>
+    
 {% block header %}
   <nav>
     <ul>
+      <li>
+        <a href="{% url 'home' %}" class="home">
+          <img src="{% static 'img/logo.png' %}" />
+        </a>
+      </li>
       {% if user.is_authenticated %}
       <li>
         <a href="{% url 'public_systems' %}">Public Systems</a>
       </li>
-      <li>
-          <a href="{% url 'list_systems' %}">Your Systems</a>
-      </li>
-      <li>
-        <a href="{% url 'add_system' %}">Add A Planetary System</a>
-      </li>
-      <li class="username">
-          {{ user.username | capfirst }}
-      </li>
-      <li>
-          <a href="{% url 'logout' %}?next=/">Logout</a>
+      <li class="user">
+        <ul>
+          <li>
+            <a href="{% url 'profile' user.username %}">
+              {{ user.username | capfirst }}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'list_systems' %}">Your Systems</a>
+          </li>
+          <li>
+            <a href="{% url 'add_system' %}">Add A System</a>
+          </li>
+          <li>
+              <a href="{% url 'logout' %}?next=/">Logout</a>
+          </li>
+        </ul>
       </li>
       {% else %}
       <li>
         <a href="{% url 'public_systems' %}">Public Systems</a>
       </li>
-      <li>
-          <a href="{% url 'login' %}">Login</a>
-      </li>
-      <li>
-          <a href="{% url 'signup' %}">Sign Up</a>
+      <li class="user">
+        <ul>
+          <li>
+              <a href="{% url 'login' %}">Login</a>
+          </li>
+          <li>
+              <a href="{% url 'signup' %}">Sign Up</a>
+          </li>
+        </ul>
       </li>
       {% endif %}            
     </ul>

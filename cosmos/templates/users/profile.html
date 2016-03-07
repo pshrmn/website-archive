@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<h1>{{ user.username }}</h1>
+<div class="systems">
+  <div>
+      <a href="{% url 'add_system' %}">Add A Planetary System</a>
+  </div>
+  <ul>
+  {% for ps in user.planetarysystem_set.all %}
+    <li class="planetary-system">
+        <a class="title" href="{% url 'system' ps.id %}">
+            {{ ps.name }}
+        </a>
+        <div class="dangerous">
+            <a href="{% url 'update_system' ps.pk %}">Update</a>
+            <a href="{% url 'delete_system' ps.pk %}">Delete</a>
+        </div>
+    </li>
+  {% empty %}
+    <li>You haven't created any planetary systems yet.</li>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock content %}
