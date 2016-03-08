@@ -13,14 +13,14 @@ from system.forms import PlanetarySystemForm
 class ListPlanetarySystems(LoginRequiredMixin, ListView):
 
     model = PlanetarySystem
-    template_name = 'systems/list_planetary_systems.html'
+    template_name = 'systems/planetary_system/list.html'
 
     def get_queryset(self):
         return self.request.user.planetarysystem_set.all()
 
 
 class PublicPlanetarySystems(ListView):
-    template_name = "systems/public_planetary_systems.html"
+    template_name = "systems/planetary_system/public_list.html"
     model = PlanetarySystem
 
     def get_queryset(self):
@@ -30,10 +30,13 @@ class PublicPlanetarySystems(ListView):
 class PlanetarySystemView(DetailView):
 
     model = PlanetarySystem
-    template_name = 'systems/planetary_system.html'
+    template_name = 'systems/planetary_system/detail.html'
 
     def get_object(self):
-        planetary_system = get_object_or_404(PlanetarySystem, pk=self.kwargs.get("pk"))
+        planetary_system = get_object_or_404(
+            PlanetarySystem,
+            name=self.kwargs.get('system_name').replace('+', ' '),
+            creator__username=self.kwargs.get('username'))
         if not planetary_system.public and planetary_system.creator != self.request.user:
             raise Http404
         return planetary_system
@@ -48,7 +51,7 @@ class PlanetarySystemView(DetailView):
 class AddPlanetarySystemView(LoginRequiredMixin, CreateView):
 
     model = PlanetarySystem
-    template_name = 'systems/forms/add_planetary_system.html'
+    template_name = 'systems/planetary_system/add.html'
     form_class = PlanetarySystemForm
 
     def form_valid(self, form):
@@ -62,13 +65,21 @@ class AddPlanetarySystemView(LoginRequiredMixin, CreateView):
 class DeletePlanetarySystemView(LoginRequiredMixin, DeleteView):
 
     model = PlanetarySystem
-    template_name = 'systems/forms/delete_planetary_system.html'
+    template_name = 'systems/planetary_system/delete.html'
 
     def get_success_url(self):
-        return reverse('list_systems')
+        return reverse(
+            'list_systems',
+            kwargs={
+                'username': self.request.user.username
+            }
+        )
 
     def get_object(self):
-        planetary_system = super().get_object()
+        planetary_system = get_object_or_404(
+            PlanetarySystem,
+            name=self.kwargs.get('system_name').replace('+', ' '),
+            creator__username=self.kwargs.get('username'))
         if planetary_system.creator != self.request.user:
             raise Http404
         return planetary_system
@@ -77,14 +88,17 @@ class DeletePlanetarySystemView(LoginRequiredMixin, DeleteView):
 class UpdatePlanetarySystemView(LoginRequiredMixin, UpdateView):
 
     model = PlanetarySystem
-    template_name = 'systems/forms/update_planetary_system.html'
+    template_name = 'systems/planetary_system/update.html'
     form_class = PlanetarySystemForm
 
     def get_object(self):
-        obj = super().get_object()
-        if obj.creator != self.request.user:
+        planetary_system = get_object_or_404(
+            PlanetarySystem,
+            name=self.kwargs.get('system_name').replace('+', ' '),
+            creator__username=self.kwargs.get('username'))
+        if planetary_system.creator != self.request.user:
             raise Http404
-        return obj
+        return planetary_system
 
     def get_success_url(self):
         return self.object.get_absolute_url()

@@ -10,16 +10,21 @@ from system.forms import StarForm
 class AddStarView(LoginRequiredMixin, CreateView):
 
     model = Star
-    template_name = 'systems/forms/add_star.html'
+    template_name = 'systems/star/add.html'
     form_class = StarForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['planetary_system_id'] = self.kwargs.get('pk')
+        context['planetary_system'] = self.kwargs.get('system_name')
+        context['username'] = self.kwargs.get('username')
         return context
 
     def form_valid(self, form):
-        planetarysystem = get_object_or_404(PlanetarySystem, pk=self.kwargs.get('pk'))
+        planetarysystem = get_object_or_404(
+            PlanetarySystem,
+            name=self.kwargs.get('system_name').replace('+', ' '),
+            creator__username=self.kwargs.get('username')
+        )
         if planetarysystem.creator != self.request.user:
             raise Http404
         form.instance.planetarysystem = planetarysystem
@@ -33,29 +38,39 @@ class AddStarView(LoginRequiredMixin, CreateView):
 class DeleteStarView(LoginRequiredMixin, DeleteView):
 
     model = Star
-    template_name = 'systems/forms/delete_star.html'
+    template_name = 'systems/star/delete.html'
 
     def get_success_url(self):
         return self.object.planetarysystem.get_absolute_url()
 
     def get_object(self):
-        star = super().get_object()
-        if star.creator != self.request.user:
+        # roundabout, but get the star based on the planetary system
+        planetarysystem = get_object_or_404(
+            PlanetarySystem,
+            name=self.kwargs.get('system_name').replace('+', ' '),
+            creator__username=self.kwargs.get('username')
+        )
+        if planetarysystem.creator != self.request.user:
             raise Http404
-        return star
+        return planetarysystem.star_set.first()
 
 
 class UpdateStarView(LoginRequiredMixin, UpdateView):
 
     model = Star
-    template_name = 'systems/forms/update_star.html'
+    template_name = 'systems/star/update.html'
     form_class = StarForm
 
     def get_object(self):
-        obj = super().get_object()
-        if obj.creator != self.request.user:
+        # roundabout, but get the star based on the planetary system
+        planetarysystem = get_object_or_404(
+            PlanetarySystem,
+            name=self.kwargs.get('system_name').replace('+', ' '),
+            creator__username=self.kwargs.get('username')
+        )
+        if planetarysystem.creator != self.request.user:
             raise Http404
-        return obj
+        return planetarysystem.star_set.first()
 
     def get_success_url(self):
         return self.object.planetarysystem.get_absolute_url()

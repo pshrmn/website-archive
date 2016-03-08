@@ -8,7 +8,7 @@ var radius = 250;
 var height = radius * 2;
 var width = radius * 2;
 var innerRadius = radius - 25;
-var planets = planetarySystemJSON.star.planets;
+var planets = planetarySystemJSON.planets;
 var pixelLength = distancePerPixel(planets, innerRadius);
 var maxDistance = d3.max(planets, function(p) {
   return p.distance;

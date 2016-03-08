@@ -44,10 +44,10 @@ Cosmos
             </a>
           </li>
           <li>
-            <a href="{% url 'list_systems' %}">Your Systems</a>
+            <a href="{% url 'list_systems' username=user.username %}">Your Systems</a>
           </li>
           <li>
-            <a href="{% url 'add_system' %}">Add A System</a>
+            <a href="{% url 'add_system' user.username %}">Add A System</a>
           </li>
           <li>
               <a href="{% url 'logout' %}?next=/">Logout</a>

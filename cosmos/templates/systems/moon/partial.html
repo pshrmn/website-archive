@@ -2,8 +2,8 @@
   <h4>{{ moon.name }}</h4>
   {% if moon.creator == user %}
   <div class="dangerous">
-    <a href="{% url 'delete_moon' moon.pk %}">Delete Moon</a>
-    <a href="{% url 'update_moon' moon.pk %}">Update Moon</a>
+    <a href="{% url 'delete_moon' username system_name planet.url_name moon.url_name %}">Delete Moon</a>
+    <a href="{% url 'update_moon' username system_name planet.url_name moon.url_name %}">Update Moon</a>
   </div>
   {% endif %}
   <ul>

@@ -8,11 +8,11 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<form action="{% url 'update_planet' object.pk %}" method="post">
+<form action="{% url 'add_moon' username system_name planet_name %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <p class="submit"><button type="submit" name="submit">Update</button></p>
+    <p class="submit"><button type="submit" name="submit">Save</button></p>
 </form>
 
-{% include 'systems/partials/planet_references.html' %}
+{% include 'systems/moon/references.html' %}
 {% endblock content %}

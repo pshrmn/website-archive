@@ -8,7 +8,7 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<form action="{% url 'update_system' object.pk %}" method="post">
+<form action="{% url 'update_system' object.creator.username object.url_name %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <p class="submit"><button type="submit" name="submit">Update</button></p>

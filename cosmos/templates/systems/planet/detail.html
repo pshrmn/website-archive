@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+  Planet {{ planet.name }} | {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+{% with system=planet.planetarysystem creator=system.creator %}
+  <h1>{{ planet.name }}</h1>
+  <h3>
+    A Member of the <a href="{% url 'system' username system_name %}">{{ system.name }}</a> Planetary System.
+  </h3>
+  {% if planet.creator == user %}
+  <div class="dangerous">
+  <a href="{% url 'delete_planet' username system_name planet.url_name %}">Delete Planet</a>
+  <a href="{% url 'update_planet' username system_name planet.url_name %}">Update Planet</a>
+  <a href="{% url 'add_moon' username system_name planet.url_name %}">Add A Moon</a>
+  </div>
+  {% endif %}
+{% endwith %}
+<ul>
+  <li>
+    Radius: {{planet.radius}} kms
+  </li>
+  <li>
+    Distance from Star: {{planet.distance}} million kms
+  </li>
+  <li>
+    Stellar Day Length: {{day_length}}
+  </li>
+  <li>
+    Orbital Period: {{planet.orbit}} days
+  </li>
+  <li>
+    Time for light to reach planet: {{ light_time }}
+  </li>
+</ul>
+
+{% for moon in planet.moon_set.all %}
+{% include 'systems/moon/partial.html' %}
+{% empty %}
+<div>
+  There are no moons orbiting this planet.
+</div>
+{% endfor %}
+{% endblock content %}

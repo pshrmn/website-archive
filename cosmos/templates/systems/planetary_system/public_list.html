@@ -6,21 +6,16 @@
 {% endblock title %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<div>
-    <a href="{% url 'add_system' %}">Add A Planetary System</a>
-</div>
-{% endif %}
 <ol>
 {% for ps in planetarysystem_list %}
     <li class="planetary-system">
-        <a class="title" href="{% url 'system' ps.id %}">
+        <a class="title" href="{% url 'system' user.username ps.url_name %}">
             {{ ps.name }}
         </a>
         {% if ps.creator == user %}
         <div class="dangerous">
-            <a href="{% url 'update_system' ps.pk %}">Update</a>
-            <a href="{% url 'delete_system' ps.pk %}">Delete</a>
+            <a href="{% url 'update_system' user.username ps.url_name %}">Update</a>
+            <a href="{% url 'delete_system' user.username ps.url_name %}">Delete</a>
         </div>
         {% endif %}
     </li>

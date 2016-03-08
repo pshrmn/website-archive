@@ -7,10 +7,12 @@
     <p>
         Are you sure that you want to delete this star? Doing so will cause any planets caught in its gravitational field to lose their source of energy, effectively killing off any life forms present on them. On the bright side, since the planets are no longer under the effect of the gravitational pull of the star, they will fling off into the great unknown, abandoning the monotony of following the same orbit for billions of years.
     </p>
-    <form action="{% url 'delete_star' object.pk %}" method="post">
+    {% with object.planetarysystem as system %}
+    <form action="{% url 'delete_star' system.creator.username system.url_name %}" method="post">
         {% csrf_token %}
         <p class="submit">
             <button type="submit" name="submit">Confirm Delete</button>
         </p>
     </form>
+    {% endwith %}
 {% endblock content %}

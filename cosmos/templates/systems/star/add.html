@@ -8,11 +8,11 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<form action="{% url 'add_star' planetary_system_id %}" method="post">
+<form action="{% url 'add_star' username planetary_system %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <p class="submit"><button type="submit" name="submit">Save</button></p>
 </form>
 
-{% include 'systems/partials/star_references.html' %}
+{% include 'systems/star/references.html' %}
 {% endblock content %}

@@ -8,9 +8,11 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<form action="{% url 'add_system' %}" method="post">
+<form action="{% url 'add_planet' username system_name %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <p class="submit"><button type="submit" name="submit">Save</button></p>
 </form>
+
+{% include 'systems/planet/references.html' %}
 {% endblock content %}

@@ -16,11 +16,6 @@
 <h1>
     {{ planetarysystem.name }}
 </h1>
-{% if is_creator %}
-<div class="dangerous">
-    <a href="{% url 'delete_system' planetarysystem.pk %}">Delete</a>
-    <a href="{% url 'update_system' planetarysystem.pk %}">Update</a>
-</div>
 <p>
 {% if planetarysystem.public %}
     Public
@@ -28,21 +23,42 @@
     Private
 {% endif %}
 </p>
+{% if is_creator %}
+<div class="dangerous">
+    <a href="{% url 'delete_system' planetarysystem.creator.username planetarysystem.url_name %}">Delete</a>
+    <a href="{% url 'update_system' planetarysystem.creator.username planetarysystem.url_name %}">Update</a>
+</div>
 {% endif %}
 
 <div id="system"></div>
 
 {% for star in planetarysystem.star_set.all %}
-  {% include 'systems/partials/star_partial.html' %}
+  {% include 'systems/star/partial.html' %}
 {% empty %}
     <p>
       There are no stars in this planetary system.
     </p>
     {% if is_creator %}
-      <a href="{% url 'add_star' planetarysystem.pk %}">Add Star</a>
+      <a href="{% url 'add_star' planetarysystem.creator.username planetarysystem.url_name %}">Add Star</a>
     {% endif %}
 {% endfor %}
-
+<div>
+  <h3>Planets:</h3>
+  {% if is_creator %}
+    <a href="{% url 'add_planet' planetarysystem.creator.username planetarysystem.url_name %}">Add A Planet</a>
+  {% endif %}
+  <ul>
+  {% for planet in planetarysystem.planet_set.all %}
+    <li>
+      <a href="{% url 'planet' planetarysystem.creator.username planetarysystem.url_name planet.url_name %}">{{ planet.name }}</a>
+    </li>
+  {% empty %}
+    <li>
+      There are no planets in this planetary system. I suppose it isn't much of a <em>planetary</em> system.
+    </li>
+  {% endfor %}
+  </ul>
+</div>
 {% endblock content %}
 
 {% block javascript %}
