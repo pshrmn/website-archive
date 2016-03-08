@@ -20,6 +20,7 @@ urlpatterns = [
     ])),
 
     url(r'^planet/(?P<pk>[0-9]+)/', include([
+        url(r'^$', views.PlanetView.as_view(), name='planet'),
         url(r'^delete$', views.DeletePlanetView.as_view(), name='delete_planet'),
         url(r'^update$', views.UpdatePlanetView.as_view(), name='update_planet'),
         url(r'^add-moon$', views.AddMoonView.as_view(), name='add_moon'),

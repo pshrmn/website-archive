@@ -7,9 +7,18 @@
     <a href="{% url 'add_planet' star.pk %}">Add A Planet</a>
   </div>
   {% endif %}
-  {% for planet in star.planet_set.all %}
-    {% include 'systems/partials/planet_partial.html' %}
-  {% empty %}
-    There are no planets orbiting this star.
-  {% endfor %}
+  <div>
+    <h3>Planets:</h3>
+    <ul>
+    {% for planet in star.planet_set.all %}
+      <li>
+        <a href="{% url 'planet' planet.pk %}">{{ planet.name }}</a>
+      </li>
+    {% empty %}
+      <li>
+        There are no planets orbiting this star.
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
 </div>

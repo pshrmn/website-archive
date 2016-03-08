@@ -12,7 +12,14 @@ class PlanetarySystem(models.Model):
         return '{} - {}'.format(self.pk, self.name)
 
     def get_absolute_url(self):
-        return reverse('system', kwargs={"pk": self.pk})
+        return reverse('system', kwargs={'pk': self.pk})
+
+    def to_json(self):
+        star = self.star_set.first()
+        return {
+            'name': self.name,
+            'star': star.to_json() if star else []
+        }
 
 
 class Star(models.Model):
@@ -28,6 +35,13 @@ class Star(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.pk, self.name)
+
+    def to_json(self):
+        return {
+            'name': self.name,
+            'radius': self.radius,
+            'planets': [planet.to_json() for planet in self.planet_set.all()]
+        }
 
 
 class Planet(models.Model):
@@ -56,6 +70,24 @@ class Planet(models.Model):
     def __str__(self):
         return '{} - {}'.format(self.pk, self.name)
 
+    def get_absolute_url(self):
+        return reverse('planet', kwargs={'pk': self.pk})
+
+    def to_json(self):
+        return {
+            'name': self.name,
+            'radius': self.radius,
+            'distance': self.distance,
+            'day_length': self.day_length,
+            'orbit': self.orbit,
+            'moons': [moon.to_json() for moon in self.moon_set.all()]
+        }
+
+    def light_time(self):
+        speed_of_light = 299792458
+        distance = self.distance*1000000*1000
+        return distance / speed_of_light
+
 
 class Moon(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
@@ -76,3 +108,12 @@ class Moon(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.pk, self.name)
+
+    def to_json(self):
+        return {
+            'name': self.name,
+            'radius': self.radius,
+            'distance': self.distance,
+            'day_length': self.day_length,
+            'orbit': self.orbit
+        }

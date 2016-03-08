@@ -15,15 +15,10 @@ urlpatterns = [
 # user account related views
 urlpatterns += [
     url(r'^login$', LoginView.as_view(), name='login'),
-    url(r'^logout$',
-        logout,
-        kwargs={'next_page': 'home'},
-        name='logout'),
+    url(r'^logout$', logout, kwargs={'next_page': 'home'}, name='logout'),
     url(r'^signup', SignUpView.as_view(), name='signup'),
     url(r'^u/$', BaseProfileView.as_view(), name='base_profile'),
-    url(r'^u/(?P<username>[a-zA-Z0-9_]+)$',
-        ProfileView.as_view(),
-        name='profile')
+    url(r'^u/(?P<username>[a-zA-Z0-9_]+)/$', ProfileView.as_view(), name='profile')
 ]
 
 urlpatterns += [

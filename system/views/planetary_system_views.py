@@ -41,44 +41,8 @@ class PlanetarySystemView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_creator'] = self.request.user == context['planetarysystem'].creator
-        context['planetary_system_json'] = self.make_json(context['planetarysystem'])
+        context['planetary_system_json'] = json.dumps(context['planetarysystem'].to_json())
         return context
-
-    @staticmethod
-    def make_json(planetary_system):
-        # only one star per system until I solve the n-body problem :)
-        stars = planetary_system.star_set.all()
-        ss = {
-            "name": planetary_system.name,
-        }
-        if len(stars) > 0:
-            star = stars[0]
-            ss["star"] = {
-                "name": star.name,
-                "radius": star.radius,
-                "planets": []
-            }
-            for planet in star.planet_set.all():
-                p = {
-                    "name": planet.name,
-                    "radius": planet.radius,
-                    "distance": planet.distance,
-                    "day_length": planet.day_length,
-                    "orbit": planet.orbit,
-                    "moons": []
-                }
-                for moon in planet.moon_set.all():
-                    p["moons"].append({
-                        "name": moon.name,
-                        "radius": moon.radius,
-                        "distance": moon.distance,
-                        "day_length": moon.day_length,
-                        "orbit": moon.orbit,
-                    })
-                ss["star"]["planets"].append(p)
-        else:
-            ss["star"] = []
-        return json.dumps(ss)
 
 
 class AddPlanetarySystemView(LoginRequiredMixin, CreateView):

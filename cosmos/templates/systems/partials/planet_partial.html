@@ -1,5 +1,9 @@
 <div class="planet">
-  <h3>{{ planet.name }}</h3>
+  <h3>
+    <a href="{% url 'planet' planet.pk %}">
+      {{ planet.name }}
+    </a>
+  </h3>
   {% if planet.creator == user %}
   <div class="dangerous">
     <a href="{% url 'delete_planet' planet.pk %}">Delete Planet</a>
