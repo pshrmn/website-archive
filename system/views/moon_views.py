@@ -13,6 +13,17 @@ class AddMoonView(LoginRequiredMixin, CreateView):
     template_name = 'systems/moon/add.html'
     form_class = MoonForm
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['creator'] = self.request.user
+        initial['planet'] = get_object_or_404(
+            Planet,
+            name=self.kwargs.get('planet_name').replace('+', ' '),
+            planetarysystem__name=self.kwargs.get('system_name').replace('+', ' '),
+            creator__username=self.kwargs.get('username')
+        )
+        return initial
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['username'] = self.kwargs.get('username')
@@ -21,16 +32,8 @@ class AddMoonView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        planet = get_object_or_404(
-            Planet,
-            name=self.kwargs.get('planet_name').replace('+', ' '),
-            planetarysystem__name=self.kwargs.get('system_name').replace('+', ' '),
-            creator__username=self.kwargs.get('username')
-        )
-        if planet.creator != self.request.user:
+        if form.instance.planet.creator != self.request.user:
             raise Http404
-        form.instance.planet = planet
-        form.instance.creator = self.request.user
         return super(AddMoonView, self).form_valid(form)
 
     def get_success_url(self):

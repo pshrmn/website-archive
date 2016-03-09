@@ -54,6 +54,11 @@ class AddPlanetarySystemView(LoginRequiredMixin, CreateView):
     template_name = 'systems/planetary_system/add.html'
     form_class = PlanetarySystemForm
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['creator'] = self.request.user
+        return initial
+
     def form_valid(self, form):
         form.instance.creator = self.request.user
         return super(AddPlanetarySystemView, self).form_valid(form)

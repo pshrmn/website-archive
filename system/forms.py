@@ -1,4 +1,5 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, widgets
+from django.core.exceptions import NON_FIELD_ERRORS
 
 from .models import PlanetarySystem, Star, Planet, Moon
 
@@ -7,14 +8,22 @@ class PlanetarySystemForm(ModelForm):
 
     class Meta:
         model = PlanetarySystem
-        fields = ('name', 'public')
+        fields = ('name', 'public', 'creator')
+
+        widgets = {
+            'creator': widgets.HiddenInput()
+        }
+
+        disabled = {
+            'creator': True
+        }
 
 
 class StarForm(ModelForm):
 
     class Meta:
         model = Star
-        fields = ('name', 'radius')
+        fields = ('name', 'radius', 'creator')
         labels = {
             'name': 'Name',
             'radius': 'Radius (kms)'
@@ -25,12 +34,20 @@ class StarForm(ModelForm):
             }
         }
 
+        widgets = {
+            'creator': widgets.HiddenInput()
+        }
+
+        disabled = {
+            'creator': True
+        }
+
 
 class PlanetForm(ModelForm):
 
     class Meta:
         model = Planet
-        fields = ('name', 'radius', 'distance', 'day_length', 'orbit')
+        fields = ('name', 'radius', 'distance', 'day_length', 'orbit', 'creator', 'planetarysystem')
         labels = {
             'name': 'Name',
             'radius': 'Radius',
@@ -56,7 +73,20 @@ class PlanetForm(ModelForm):
             },
             'orbit': {
                 'invalid': 'Orbit must be a whole number'
+            },
+            NON_FIELD_ERRORS: {
+                'unique_together': 'A planet with this name already exists in this system.'
             }
+        }
+
+        widgets = {
+            'creator': widgets.HiddenInput(),
+            'planetarysystem': widgets.HiddenInput()
+        }
+
+        disabled = {
+            'creator': True,
+            'planetarysystem': True
         }
 
 
@@ -64,7 +94,8 @@ class MoonForm(ModelForm):
 
     class Meta:
         model = Moon
-        fields = ('name', 'radius', 'distance', 'day_length', 'orbit')
+        fields = ('name', 'radius', 'distance', 'day_length', 'orbit',
+                  'creator', 'planet')
         labels = {
             'name': 'Name',
             'radius': 'Radius',
@@ -90,5 +121,18 @@ class MoonForm(ModelForm):
             },
             'orbit': {
                 'invalid': 'Orbit must be a whole number'
+            },
+            NON_FIELD_ERRORS: {
+                'unique_together': 'A moon with this name is already orbiting this planet.'
             }
+        }
+
+        widgets = {
+            'creator': widgets.HiddenInput(),
+            'planet': widgets.HiddenInput()
+        }
+
+        disabled = {
+            'creator': True,
+            'planet': True
         }

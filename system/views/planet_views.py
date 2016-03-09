@@ -42,6 +42,15 @@ class AddPlanetView(LoginRequiredMixin, CreateView):
     template_name = 'systems/planet/add.html'
     form_class = PlanetForm
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['creator'] = self.request.user
+        initial['planetarysystem'] = get_object_or_404(
+            PlanetarySystem,
+            name=self.kwargs.get('system_name').replace('+', ' '),
+            creator__username=self.kwargs.get('username'))
+        return initial
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['username'] = self.kwargs.get('username')
@@ -49,14 +58,8 @@ class AddPlanetView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        planetary_system = get_object_or_404(
-            PlanetarySystem,
-            name=self.kwargs.get('system_name').replace('+', ' '),
-            creator__username=self.kwargs.get('username'))
-        if planetary_system.creator != self.request.user:
+        if form.instance.planetarysystem.creator != self.request.user:
             raise Http404
-        form.instance.planetarysystem = planetary_system
-        form.instance.creator = self.request.user
         return super(AddPlanetView, self).form_valid(form)
 
     def get_success_url(self):

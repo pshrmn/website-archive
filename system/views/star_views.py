@@ -13,6 +13,11 @@ class AddStarView(LoginRequiredMixin, CreateView):
     template_name = 'systems/star/add.html'
     form_class = StarForm
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['creator'] = self.request.user
+        return initial
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['planetary_system'] = self.kwargs.get('system_name')
