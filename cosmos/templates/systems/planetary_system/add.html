@@ -8,9 +8,12 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<form action="{% url 'add_system' user.username %}" method="post">
+<form action="{% url 'add_system' username %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <p class="submit"><button type="submit" name="submit">Save</button></p>
+    <p class="submit">
+      <button type="submit" name="submit">Save</button>
+      <a href="{% url 'list_systems' username %}">Cancel</a>
+    </p>
 </form>
 {% endblock content %}

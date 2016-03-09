@@ -43,6 +43,7 @@ class PlanetarySystemView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
         context['is_creator'] = self.request.user == context['planetarysystem'].creator
         context['planetary_system_json'] = json.dumps(context['planetarysystem'].to_json())
         return context
@@ -58,6 +59,11 @@ class AddPlanetarySystemView(LoginRequiredMixin, CreateView):
         initial = super().get_initial()
         initial['creator'] = self.request.user
         return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
@@ -80,6 +86,11 @@ class DeletePlanetarySystemView(LoginRequiredMixin, DeleteView):
             }
         )
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
+
     def get_object(self):
         planetary_system = get_object_or_404(
             PlanetarySystem,
@@ -95,6 +106,11 @@ class UpdatePlanetarySystemView(LoginRequiredMixin, UpdateView):
     model = PlanetarySystem
     template_name = 'systems/planetary_system/update.html'
     form_class = PlanetarySystemForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
 
     def get_object(self):
         planetary_system = get_object_or_404(

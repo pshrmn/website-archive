@@ -26,9 +26,7 @@ class AddMoonView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['username'] = self.kwargs.get('username')
-        context['system_name'] = self.kwargs.get('system_name')
-        context['planet_name'] = self.kwargs.get('planet_name')
+        context.update(self.kwargs)
         return context
 
     def form_valid(self, form):
@@ -47,9 +45,7 @@ class DeleteMoonView(LoginRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['username'] = self.kwargs.get('username')
-        context['system_name'] = self.kwargs.get('system_name')
-        context['planet_name'] = self.kwargs.get('planet_name')
+        context.update(self.kwargs)
         return context
 
     def get_success_url(self):
@@ -76,9 +72,7 @@ class UpdateMoonView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['username'] = self.kwargs.get('username')
-        context['system_name'] = self.kwargs.get('system_name')
-        context['planet_name'] = self.kwargs.get('planet_name')
+        context.update(self.kwargs)
         return context
 
     def get_object(self):

@@ -26,13 +26,12 @@ class PlanetView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
         # cut off any decimal places
         light_seconds = int(context['planet'].light_time())
         # figure out how many hours
         context['light_time'] = pretty_time(light_seconds)
         context['day_length'] = pretty_time(context['planet'].day_length)
-        context['system_name'] = self.kwargs.get('system_name')
-        context['username'] = self.kwargs.get('username')
         return context
 
 
@@ -53,8 +52,7 @@ class AddPlanetView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['username'] = self.kwargs.get('username')
-        context['system_name'] = self.kwargs.get('system_name')
+        context.update(self.kwargs)
         return context
 
     def form_valid(self, form):
@@ -77,8 +75,7 @@ class DeletePlanetView(LoginRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['system_name'] = self.kwargs.get('system_name')
-        context['username'] = self.kwargs.get('username')
+        context.update(self.kwargs)
         return context
 
     def get_object(self):
@@ -101,8 +98,7 @@ class UpdatePlanetView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['system_name'] = self.kwargs.get('system_name')
-        context['username'] = self.kwargs.get('username')
+        context.update(self.kwargs)
         return context
 
     def get_object(self):

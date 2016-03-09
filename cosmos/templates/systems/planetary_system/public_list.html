@@ -9,13 +9,13 @@
 <ol>
 {% for ps in planetarysystem_list %}
     <li class="planetary-system">
-        <a class="title" href="{% url 'system' user.username ps.url_name %}">
+        <a class="title" href="{% url 'system' ps.creator.username ps.url_name %}">
             {{ ps.name }}
         </a>
         {% if ps.creator == user %}
         <div class="dangerous">
-            <a href="{% url 'update_system' user.username ps.url_name %}">Update</a>
-            <a href="{% url 'delete_system' user.username ps.url_name %}">Delete</a>
+            <a href="{% url 'update_system' ps.creator.username ps.url_name %}">Update</a>
+            <a href="{% url 'delete_system' ps.creator.username ps.url_name %}">Delete</a>
         </div>
         {% endif %}
     </li>

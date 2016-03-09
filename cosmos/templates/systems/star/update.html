@@ -8,12 +8,13 @@
 {% endblock stylesheets %}
 
 {% block content %}
-{% with object.planetarysystem as system %}
-<form action="{% url 'update_star' system.creator.username system.url_name %}" method="post">
+<form action="{% url 'update_star' username system_name %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <p class="submit"><button type="submit" name="submit">Update</button></p>
+    <p class="submit">
+      <button type="submit" name="submit">Update</button>
+      <a href="{% url 'system' username system_name %}">Cancel</a>
+    </p>
 </form>
-{% endwith %}
 {% include 'systems/star/references.html' %}
 {% endblock content %}

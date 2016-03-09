@@ -20,8 +20,7 @@ class AddStarView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['planetary_system'] = self.kwargs.get('system_name')
-        context['username'] = self.kwargs.get('username')
+        context.update(self.kwargs)
         return context
 
     def form_valid(self, form):
@@ -45,6 +44,11 @@ class DeleteStarView(LoginRequiredMixin, DeleteView):
     model = Star
     template_name = 'systems/star/delete.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
+
     def get_success_url(self):
         return self.object.planetarysystem.get_absolute_url()
 
@@ -65,6 +69,11 @@ class UpdateStarView(LoginRequiredMixin, UpdateView):
     model = Star
     template_name = 'systems/star/update.html'
     form_class = StarForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
 
     def get_object(self):
         # roundabout, but get the star based on the planetary system

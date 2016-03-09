@@ -11,6 +11,7 @@
         {% csrf_token %}
         <p class="submit">
             <button type="submit" name="submit">Confirm Delete</button>
+            <a href="{% url 'planet' username system_name planet_name %}">Cancel</a>
         </p>
     </form>
 {% endblock content %}
