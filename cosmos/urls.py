@@ -10,10 +10,14 @@ from system.views import PublicPlanetarySystems
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
-    url(r'^u/$', BaseProfileView.as_view(), name='base_profile'),
     url(r'^public-systems$', PublicPlanetarySystems.as_view(), name='public_systems'),
-    url(r'^u/(?P<username>[a-zA-Z0-9_]+)$', ProfileView.as_view(), name='profile'),
-    url(r'^u/(?P<username>[a-zA-Z0-9_]+)/', include('system.urls')),
+    url(r'^u/', include([
+        url(r'^$', BaseProfileView.as_view(), name='base_profile'),
+        url(r'^(?P<username>[a-zA-Z0-9@\.\+\-_]+)/', include([
+            url(r'^$', ProfileView.as_view(), name='profile'),
+            url(r'^', include('system.urls'))
+        ])),
+        ])),
 ]
 
 urlpatterns += [
