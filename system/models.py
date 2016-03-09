@@ -33,7 +33,7 @@ class PlanetarySystem(models.Model):
         planets = self.planet_set.all()
         return {
             'name': self.name,
-            'star': star.to_json() if star else [],
+            'star': star.to_json() if star else None,
             'planets': [p.to_json() for p in planets]
         }
 
