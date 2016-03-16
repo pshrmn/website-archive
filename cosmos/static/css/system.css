@@ -9,6 +9,7 @@
   stroke: #ccc;
   stroke-width: 1px;
   opacity: 0.25;
+  stroke-dasharray: 1px 5px;
 }
 g.satellite circle {
   fill: #444;

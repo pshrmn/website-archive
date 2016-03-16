@@ -33,9 +33,44 @@
 {% endblock javascript %}
 
 {% block inline-js %}
-var exampleJSON = {"name":"The Solar System","star":{"name":"The Sun","radius":696342},"planets":[{"name":"Mercury","orbit":0.5,"moons":[],"radius":2440,"color":"#67748A","day_length":15137279,"distance":57,"normDistance":60,"offsetAngle":0},{"name":"Venus","orbit":1.92,"moons":[],"radius":6052,"color":"#B1681A","day_length":10101375,"distance":108,"normDistance":113.68421052631578,"offsetAngle":0},{"name":"Earth","orbit":365,"moons":[{"name":"The Moon","orbit":1,"radius":1737,"color":"#401499","day_length":2360534,"distance":384400}],"radius":6378,"color":"#A9EF41","day_length":86164,"distance":150,"normDistance":157.89473684210526,"offsetAngle":0},{"name":"Mars","orbit":667,"moons":[],"radius":3397,"color":"#EF4354","day_length":88761,"distance":228,"normDistance":240,"offsetAngle":0}]};
-var star = exampleJSON.star;
-var planets = exampleJSON.planets;
+var star = {"name":"The Sun", "radius":696342};
+var planets = [
+  {
+    "name":"Mercury",
+    "orbit":0.5,
+    "moons":[],
+    "radius":2440,
+    "color":"#2196F3",
+    "day_length":15137279,
+    "distance":57
+  },
+  {
+    "name":"Venus",
+    "orbit":1.92,
+    "moons":[],
+    "radius":6052,
+    "color":"#FF9800",
+    "day_length":10101375,
+    "distance":108,
+  },
+  {
+    "name":"Earth",
+    "orbit":365,
+    "moons":[],
+    "radius":6378,
+    "color":"#8BC34A",
+    "day_length":86164,
+    "distance":150,
+  },
+  {
+    "name":"Mars",
+    "orbit":667,"moons":[],
+    "radius":3397,
+    "color":"#E91E63",
+    "day_length":88761,
+    "distance":228,
+  }
+];
 var stepFn = orbit(star, planets, {
   radius: 150,
   holder: '#system',

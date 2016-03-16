@@ -3,7 +3,7 @@ function orbit(primary, satellites, options) {
   var holder = options.holder || document.body;
   var radius = options.radius || 250;
   var period = options.period || 1000;
-  var hasArcs = options.hasArcs || true;
+  var hasArcs = options.hasArcs === undefined ? true: options.hasArcs;
 
   var furthest = d3.max(satellites, function(d) { return d.distance; });
   /*
