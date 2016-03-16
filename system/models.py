@@ -116,7 +116,7 @@ class Planet(models.Model):
     def light_time(self):
         speed_of_light = 299792458
         distance = self.distance*1000000*1000
-        return distance / speed_of_light
+        return int(distance / speed_of_light)
 
 
 class Moon(models.Model):

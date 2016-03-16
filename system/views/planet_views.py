@@ -5,7 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from system.models import Planet, PlanetarySystem
 from system.forms import PlanetForm
-from system.helpers import pretty_time
 
 
 class PlanetView(DetailView):
@@ -27,11 +26,6 @@ class PlanetView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(self.kwargs)
-        # cut off any decimal places
-        light_seconds = int(context['planet'].light_time())
-        # figure out how many hours
-        context['light_time'] = pretty_time(light_seconds)
-        context['day_length'] = pretty_time(context['planet'].day_length)
         return context
 
 

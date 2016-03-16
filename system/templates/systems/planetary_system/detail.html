@@ -63,9 +63,17 @@
 
 {% block javascript %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
-<script async src="{% static 'js/orbits.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/orbit.js' %}" type="text/javascript"></script>
 {% endblock javascript %}
 
 {% block inline-js %}
-const planetarySystemJSON = {{ planetary_system_json|safe }};
+var planetarySystemJSON = {{ planetary_system_json|safe }};
+var star = planetarySystemJSON.star;
+var planets = planetarySystemJSON.planets;
+var stepFn = orbit(star, planets, {
+  radius: 250,
+  holder: '#system',
+  period: 2500
+});
+window.requestAnimationFrame(stepFn);
 {% endblock inline-js %}

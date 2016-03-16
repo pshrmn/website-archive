@@ -1,3 +1,5 @@
+{% load system_extras %}
+
 <div>
   <h4>{{ moon.name }}</h4>
   {% if moon.creator == user %}
@@ -14,7 +16,7 @@
       Distance from Planet: {{moon.distance}} kms
     </li>
     <li>
-      Day Length: {{moon.day_length}} seconds
+      Day Length: {{moon.day_length|pretty_time}}
     </li>
     <li>
       Orbital Period: {{moon.orbit}} days

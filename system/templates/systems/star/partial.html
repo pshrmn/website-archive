@@ -6,4 +6,9 @@
     <a href="{% url 'update_star' star.creator.username star.planetarysystem.url_name %}">Update Star</a>
   </div>
   {% endif %}
+  <ul>
+    <li>
+      Radius: {{ star.radius }} kilometers
+    </li>
+  </ul>
 </div>

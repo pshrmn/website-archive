@@ -1,3 +1,8 @@
+from django import template
+
+register = template.Library()
+
+
 def pretty_time(total_seconds):
     hours, rest = divmod(total_seconds, 60*60)
     minutes, seconds = divmod(rest, 60)
@@ -9,3 +14,5 @@ def pretty_time(total_seconds):
     if seconds != 0:
         times.append('%d seconds' % seconds)
     return ' '.join(times)
+
+register.filter('pretty_time', pretty_time)

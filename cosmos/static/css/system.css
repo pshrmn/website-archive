@@ -6,12 +6,12 @@
   stroke: #999;
   stroke-width: 1px;
 }
-g.planet circle {
+g.satellite circle {
   fill: #fff;
   stroke: #444;
   stroke-width: 1px;
 }
-.sun {
+.primary {
   fill: #FFC107;
 }
 .meridian {
