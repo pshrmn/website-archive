@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from colorfield.fields import ColorField
+from colorfield2.fields import ColorField
 
 from .validators import legal_chars
 

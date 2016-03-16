@@ -20,6 +20,6 @@
 {% include 'systems/planet/references.html' %}
 {% endblock content %}
 
-{% block head-javascript %}
-<script src="{% static 'colorfield/jscolor/jscolor.js' %}" type="text/javascript"></script>
-{% endblock head-javascript %}
+{% block extra-head %}
+{{ form.media }}
+{% endblock extra-head %}

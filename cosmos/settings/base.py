@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'users',
     'system',
-    'colorfield'
+    'colorfield2'
 ]
 
 MIDDLEWARE_CLASSES = [
