@@ -1,8 +1,10 @@
 from django import template
+import json
 
 register = template.Library()
 
 
+@register.filter(is_safe=True)
 def pretty_time(total_seconds):
     hours, rest = divmod(total_seconds, 60*60)
     minutes, seconds = divmod(rest, 60)
@@ -15,4 +17,7 @@ def pretty_time(total_seconds):
         times.append('%d seconds' % seconds)
     return ' '.join(times)
 
-register.filter('pretty_time', pretty_time)
+
+@register.filter()
+def dump(json_dict):
+    return json.dumps(json_dict)

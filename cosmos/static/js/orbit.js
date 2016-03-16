@@ -3,10 +3,16 @@ function orbit(primary, satellites, options) {
   var holder = options.holder || document.body;
   var radius = options.radius || 250;
   var period = options.period || 1000;
+  var hasArcs = options.hasArcs || true;
 
   var furthest = d3.max(satellites, function(d) { return d.distance; });
+  /*
+  the range on the scale is offset to prevent:
+  1. the outermost satellite from extending beyond the svg
+  2. the innermost satellites from overlapping the primary
+  */
   var fitScale = d3.scale.linear()
-    .range([0, radius-10])
+    .range([5, radius-10])
     .domain([0, furthest])
 
   satellites.forEach(function(p, i) {
@@ -21,8 +27,11 @@ function orbit(primary, satellites, options) {
   }
 
   var svg = makeSVG(holder, radius);
-  var arcs = drawArcs(svg, satellites, offsetScale);
-  var primaryEle = drawPrimary(svg, primary);
+  drawSpace(svg, radius)
+  if ( hasArcs ) {
+    drawArcs(svg, satellites, offsetScale);
+  }
+  drawPrimary(svg, primary);
   var satellitesEles = initSatellites(svg, satellites, offsetScale);
 
   // the animation callback
@@ -55,6 +64,13 @@ function makeSVG(holder, radius) {
   return svg;
 }
 
+function drawSpace(svg, radius) {
+  var space = svg.append('circle')
+    .classed({'space': true})
+    .attr('r', radius);
+  return space;
+}
+
 function drawArcs(svg, satellites, scale) {
   // create the arcs which depict the orbital path of the planets
   var arcs = svg.append("g")
@@ -72,7 +88,8 @@ function drawPrimary(svg, primary) {
   }
   var element = svg.append("circle")
     .classed("primary", true)
-    .attr("r", 4);
+    .attr("r", 4)
+    .style("fill", primary.color || "#FFC107")
   return element;
 }
 
@@ -88,7 +105,9 @@ function initSatellites(svg, satellites, scale) {
         return "rotate(" + d.offsetAngle + ")translate(0, " + (-scale(d,i)) + ")";
       });
 
-  satelliteGroups.append("circle").attr("r", 2)
+  satelliteGroups.append("circle")
+    .attr("r", 2)
+    .style("fill", function(d) { return d.color || "#2196F3"; });
 
   satelliteGroups.append("title")
     .text(function(d) {

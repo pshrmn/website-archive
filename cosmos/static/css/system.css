@@ -1,21 +1,15 @@
 #system svg {
     background: #fff;
 }
+.space {
+  fill: #222233;
+}
 .arc {
   fill: none;
-  stroke: #999;
+  stroke: #ccc;
   stroke-width: 1px;
+  opacity: 0.25;
 }
 g.satellite circle {
-  fill: #fff;
-  stroke: #444;
-  stroke-width: 1px;
-}
-.primary {
-  fill: #FFC107;
-}
-.meridian {
-  stroke: #5A5A77;
-  stroke-dasharray: 1px;
-  shape-rendering: crispEdges;
+  fill: #444;
 }

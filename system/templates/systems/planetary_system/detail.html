@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load staticfiles %}
+{% load system_extras %}
 
 {% block title %}
 {{ planetarysystem.name }} | {{ block.super }}
@@ -67,7 +68,7 @@
 {% endblock javascript %}
 
 {% block inline-js %}
-var planetarySystemJSON = {{ planetary_system_json|safe }};
+var planetarySystemJSON = {{ planetarysystem.to_json|dump|safe }};
 var star = planetarySystemJSON.star;
 var planets = planetarySystemJSON.planets;
 var stepFn = orbit(star, planets, {

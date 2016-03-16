@@ -1,3 +1,5 @@
+{% load humanize %}
+
 <div class="star">
   <h2>{{ star.name }}</h2>
   {% if star.creator == user %}
@@ -8,7 +10,7 @@
   {% endif %}
   <ul>
     <li>
-      Radius: {{ star.radius }} kilometers
+      Radius: {{ star.radius|intcomma }} kilometers
     </li>
   </ul>
 </div>

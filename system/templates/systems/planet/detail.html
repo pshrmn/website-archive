@@ -62,7 +62,7 @@
 {% endblock javascript %}
 
 {% block inline-js %}
-var planetJSON = {{ planet.to_json|safe }};
+var planetJSON = {{ planet.to_json|dump|safe }};
 var planet = planetJSON;
 var moons = planetJSON.moons;
 var stepFn = orbit(planet, moons, {

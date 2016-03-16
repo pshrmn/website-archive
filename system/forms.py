@@ -47,19 +47,22 @@ class PlanetForm(ModelForm):
 
     class Meta:
         model = Planet
-        fields = ('name', 'radius', 'distance', 'day_length', 'orbit', 'creator', 'planetarysystem')
+        fields = ('name', 'radius', 'distance', 'day_length', 'orbit', 'color',
+                  'creator', 'planetarysystem')
         labels = {
             'name': 'Name',
             'radius': 'Radius',
             'distance': 'Distance from Star',
             'day_length': 'Day Length',
-            'orbit': 'Orbital Period'
+            'orbit': 'Orbital Period',
+            'color': 'Color'
         }
         help_texts = {
             'radius': 'kilometers',
             'distance': 'million kilometers',
             'day_length': 'seconds',
-            'orbit': 'days'
+            'orbit': 'days',
+            'color': 'What color the planet appears to be from afar (e.g. blue for Earth)'
         }
         error_messages = {
             'radius': {
@@ -94,20 +97,22 @@ class MoonForm(ModelForm):
 
     class Meta:
         model = Moon
-        fields = ('name', 'radius', 'distance', 'day_length', 'orbit',
+        fields = ('name', 'radius', 'distance', 'day_length', 'orbit', 'color',
                   'creator', 'planet')
         labels = {
             'name': 'Name',
             'radius': 'Radius',
             'distance': 'Distance from Planet',
             'day_length': 'Day Length',
-            'orbit': 'Orbital Period'
+            'orbit': 'Orbital Period',
+            'color': 'Color'
         }
         help_texts = {
             'radius': 'kilometers',
             'distance': 'kilometers',
             'day_length': 'seconds',
-            'orbit': 'days'
+            'orbit': 'days',
+            'color': 'What color the moon appears to be from afar'
         }
         error_messages = {
             'radius': {

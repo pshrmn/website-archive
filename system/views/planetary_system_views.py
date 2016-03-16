@@ -1,4 +1,3 @@
-import json
 from django.views.generic import (CreateView, DeleteView, UpdateView,
                                   ListView, DetailView)
 from django.shortcuts import get_object_or_404
@@ -45,7 +44,6 @@ class PlanetarySystemView(DetailView):
         context = super().get_context_data(**kwargs)
         context.update(self.kwargs)
         context['is_creator'] = self.request.user == context['planetarysystem'].creator
-        context['planetary_system_json'] = json.dumps(context['planetarysystem'].to_json())
         return context
 
 
