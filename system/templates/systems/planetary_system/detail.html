@@ -33,16 +33,18 @@
 
 <div id="system"></div>
 
-{% for star in planetarysystem.star_set.all %}
-  {% include 'systems/star/partial.html' %}
-{% empty %}
+{% with star=planetarysystem.star %}
+  {% if star %}
+    {% include 'systems/star/partial.html' %}
+  {% else %}
     <p>
       There are no stars in this planetary system.
     </p>
     {% if is_creator %}
       <a href="{% url 'add_star' username system_name %}">Add Star</a>
     {% endif %}
-{% endfor %}
+  {% endif %}
+{% endwith %}
 <div>
   <h3>Planets:</h3>
   {% if is_creator %}

@@ -31,7 +31,7 @@ class PlanetarySystem(models.Model):
         )
 
     def to_json(self):
-        star = self.star_set.first()
+        star = self.star
         planets = self.planet_set.all()
         return {
             'name': self.name,
@@ -46,7 +46,7 @@ class Star(models.Model):
     name = models.CharField(max_length=100, validators=[legal_chars])
     radius = models.IntegerField()
 
-    planetarysystem = models.ForeignKey(
+    planetarysystem = models.OneToOneField(
         'system.PlanetarySystem',
         on_delete=models.CASCADE
     )

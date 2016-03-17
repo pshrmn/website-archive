@@ -61,7 +61,7 @@ class DeleteStarView(LoginRequiredMixin, DeleteView):
         )
         if planetarysystem.creator != self.request.user:
             raise Http404
-        return planetarysystem.star_set.first()
+        return planetarysystem.star
 
 
 class UpdateStarView(LoginRequiredMixin, UpdateView):
@@ -84,7 +84,7 @@ class UpdateStarView(LoginRequiredMixin, UpdateView):
         )
         if planetarysystem.creator != self.request.user:
             raise Http404
-        return planetarysystem.star_set.first()
+        return planetarysystem.star
 
     def get_success_url(self):
         return self.object.planetarysystem.get_absolute_url()
