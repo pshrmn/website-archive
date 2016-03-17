@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from colorfield2.fields import ColorField
+from colorfield2.fields import HexColorField
 
 from .validators import legal_chars
 
@@ -78,7 +78,7 @@ class Planet(models.Model):
     day_length = models.IntegerField()
     # orbital period of rotation around the center of the system in days
     orbit = models.FloatField()
-    color = ColorField(default='#abcdef')
+    color = HexColorField(default='#abcdef')
 
     planetarysystem = models.ForeignKey(
         'system.PlanetarySystem',
@@ -131,7 +131,7 @@ class Moon(models.Model):
     distance = models.IntegerField()
     day_length = models.IntegerField()
     orbit = models.FloatField()
-    color = ColorField(default='#999')
+    color = HexColorField(default='#999')
 
     planet = models.ForeignKey(
         'system.Planet',

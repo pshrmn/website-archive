@@ -16,11 +16,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='moon',
             name='color',
-            field=colorfield2.fields.ColorField(default='#999', max_length=10),
+            field=colorfield2.fields.HexColorField(default='#999', max_length=10),
         ),
         migrations.AddField(
             model_name='planet',
             name='color',
-            field=colorfield2.fields.ColorField(default='#abcdef', max_length=10),
+            field=colorfield2.fields.HexColorField(default='#abcdef', max_length=10),
         ),
     ]

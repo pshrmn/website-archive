@@ -62,7 +62,7 @@ class PlanetForm(ModelForm):
             'distance': 'million kilometers',
             'day_length': 'seconds',
             'orbit': 'days',
-            'color': 'What color the planet appears to be from afar (e.g. blue for Earth)'
+            'color': 'Hex value of what color the planet appears to be from afar (e.g. blue for Earth)'
         }
         error_messages = {
             'radius': {
@@ -112,7 +112,7 @@ class MoonForm(ModelForm):
             'distance': 'kilometers',
             'day_length': 'seconds',
             'orbit': 'days',
-            'color': 'What color the moon appears to be from afar'
+            'color': 'Hex value of what color the moon appears to be from afar'
         }
         error_messages = {
             'radius': {
