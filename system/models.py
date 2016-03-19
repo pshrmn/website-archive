@@ -31,20 +31,43 @@ class PlanetarySystem(models.Model):
         )
 
     def to_json(self):
-        star = self.star
-        planets = self.planet_set.all()
         return {
             'name': self.name,
-            'star': star.to_json() if star else None,
-            'planets': [p.to_json() for p in planets]
+            'star': self.star.to_json() if self.star else None,
+            'planets': [p.to_json() for p in self.planet_set.all()]
         }
 
 
 class Star(models.Model):
+
+    SPECTRAL_CHOICES = (
+        ('O', 'O'),
+        ('B', 'B'),
+        ('A', 'A'),
+        ('F', 'F'),
+        ('G', 'G'),
+        ('K', 'K'),
+        ('M', 'M')
+    )
+
+    SUB_SPECTRAL_CHOICES = (
+        (0, 0),
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8),
+        (9, 9),
+    )
+
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
 
     name = models.CharField(max_length=100, validators=[legal_chars])
-    radius = models.IntegerField()
+    spectrum = models.CharField(max_length=1, choices=SPECTRAL_CHOICES, default='G')
+    subspectrum = models.PositiveSmallIntegerField(choices=SUB_SPECTRAL_CHOICES, default=2)
 
     planetarysystem = models.OneToOneField(
         'system.PlanetarySystem',
@@ -60,7 +83,8 @@ class Star(models.Model):
     def to_json(self):
         return {
             'name': self.name,
-            'radius': self.radius
+            'spectrum': self.spectrum,
+            'subspectrum': self.subspectrum
         }
 
 

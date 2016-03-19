@@ -23,15 +23,9 @@ class StarForm(ModelForm):
 
     class Meta:
         model = Star
-        fields = ('name', 'radius', 'creator')
+        fields = ('name', 'spectrum', 'subspectrum', 'creator')
         labels = {
             'name': 'Name',
-            'radius': 'Radius (kms)'
-        }
-        error_messages = {
-            'radius': {
-                'invalid': 'Radius must be a whole number'
-            }
         }
 
         widgets = {

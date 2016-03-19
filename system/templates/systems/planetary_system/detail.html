@@ -70,8 +70,19 @@
 {% endblock javascript %}
 
 {% block inline-js %}
+var starColors = {
+  'O': '#4FC3F7',
+  'B': '#B3E5FC',
+  'A': '#FBF8FF',
+  'F': '#FFF9C4',
+  'G': '#FFEB3B',
+  'K': '#FF9800',
+  'M': '#E53935'
+};
+
 var planetarySystemJSON = {{ planetarysystem.to_json|dump|safe }};
 var star = planetarySystemJSON.star;
+star.color = starColors[star.spectrum];
 var planets = planetarySystemJSON.planets;
 var stepFn = orbit(star, planets, {
   radius: 250,
