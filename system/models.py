@@ -19,6 +19,9 @@ class PlanetarySystem(models.Model):
         return '{} - {}'.format(self.pk, self.name)
 
     def url_name(self):
+        """
+        replace spaces with plus signs for prettier urls
+        """
         return self.name.replace(' ', '+')
 
     def get_absolute_url(self):
@@ -33,7 +36,7 @@ class PlanetarySystem(models.Model):
     def to_json(self):
         return {
             'name': self.name,
-            'star': self.star.to_json() if self.star else None,
+            'star': self.star.to_json() if hasattr(self, 'star') else None,
             'planets': [p.to_json() for p in self.planet_set.all()]
         }
 
@@ -88,36 +91,44 @@ class Star(models.Model):
         }
 
 
-class Planet(models.Model):
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
+class AbstractSatellite(models.Model):
 
     name = models.CharField(max_length=100, validators=[legal_chars])
-    # radius of the planet
     radius = models.IntegerField()
-    # distance from the center of the planetary system
-    # (distance from center of star to center of planet is
-    # star.radius + distance + planet.radius)
+    # distance from the outer edge of the primary to the outer edge
+    # of the satellite (distance from center of primary to center of
+    # satellite is primary.radius + satellite.distance + satellite.radius)
     distance = models.IntegerField()
     # the number of seconds in a day
     day_length = models.IntegerField()
-    # orbital period of rotation around the center of the system in days
+    # orbital period of rotation around the primary
     orbit = models.FloatField()
+    # the general color of the object
     color = HexColorField(default='#abcdef')
 
+    class Meta:
+        abstract = True
+        ordering = ["distance"]
+
+
+class Planet(AbstractSatellite):
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     planetarysystem = models.ForeignKey(
         'system.PlanetarySystem',
         on_delete=models.CASCADE,
         null=True
     )
 
-    class Meta:
-        ordering = ["distance"]
+    class Meta(AbstractSatellite.Meta):
         unique_together = (('creator', 'planetarysystem', 'name'),)
 
     def __str__(self):
         return '{} - {}'.format(self.pk, self.name)
 
     def url_name(self):
+        """
+        replace spaces with plus signs for prettier urls
+        """
         return self.name.replace(' ', '+')
 
     def get_absolute_url(self):
@@ -142,28 +153,23 @@ class Planet(models.Model):
         }
 
     def light_time(self):
+        """
+        The amount of time it would take light emitted from the primary
+        star to reach the planet.
+        """
         speed_of_light = 299792458
         distance = self.distance*1000000*1000
         return int(distance / speed_of_light)
 
 
-class Moon(models.Model):
+class Moon(AbstractSatellite):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
-
-    name = models.CharField(max_length=100, validators=[legal_chars])
-    radius = models.IntegerField()
-    distance = models.IntegerField()
-    day_length = models.IntegerField()
-    orbit = models.FloatField()
-    color = HexColorField(default='#999')
-
     planet = models.ForeignKey(
         'system.Planet',
         on_delete=models.CASCADE
     )
 
-    class Meta:
-        ordering = ["distance"]
+    class Meta(AbstractSatellite.Meta):
         unique_together = (('creator', 'planet', 'name'),)
 
     def __str__(self):

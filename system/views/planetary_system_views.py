@@ -23,7 +23,8 @@ class PublicPlanetarySystems(ListView):
     model = PlanetarySystem
 
     def get_queryset(self):
-        return PlanetarySystem.objects.filter(public=True)
+        # return 10 random public systems
+        return PlanetarySystem.objects.filter(public=True).order_by('?')[:10]
 
 
 class PlanetarySystemView(DetailView):

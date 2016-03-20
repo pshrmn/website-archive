@@ -7,16 +7,14 @@ from system.models import PlanetarySystem, Star, Planet, Moon
 
 class PlanetarySystemTestCase(TestCase):
 
-    def make_system(self, name='name', creator=None):
-        return PlanetarySystem.objects.create(name=name, creator=creator)
-
     def test_create(self):
         creator = User.objects.create(
             username='tester',
             password='badpassword'
         )
-        one = self.make_system('one', creator)
-        two = self.make_system('two')
+
+        one = PlanetarySystem.objects.create(name='one', creator=creator)
+        two = PlanetarySystem.objects.create(name='two', public=False)
 
         self.assertIsInstance(one, PlanetarySystem)
         self.assertIsInstance(two, PlanetarySystem)
@@ -24,48 +22,31 @@ class PlanetarySystemTestCase(TestCase):
         self.assertEqual(one.creator, creator)
         self.assertEqual(two.creator, None)
 
-    def test_public_field(self):
-        creator = User.objects.create(
-            username='tester',
-            password='badpassword'
-        )
-        first = PlanetarySystem.objects.create(name='first', creator=creator)
-        second = PlanetarySystem.objects.create(name='second', public=False, creator=creator)
-
-        # public defaults to True
-        self.assertEqual(first.public, True)
-        self.assertEqual(second.public, False)
-
-    def test_name_char_length(self):
-        # 110 characters
-        long_name = ('1234567890123456789012345678901234567890123456789012345678901234567890'
-                     '1234567890123456789012345678901234567890')
-        with self.assertRaises(DataError):
-            self.make_system(long_name)
+        self.assertTrue(one.public)
+        self.assertFalse(two.public)
 
     def test_unique(self):
         duplicator = User.objects.create(
             username='duplicator',
             password='duplicator'
         )
-        name = 'duplicator'
-        first = self.make_system(name, duplicator)
+        first = PlanetarySystem.objects.create(name='duplicator', creator=duplicator)
         self.assertIsInstance(first, PlanetarySystem)
         with self.assertRaises(IntegrityError):
-            self.make_system(name, duplicator)
+            PlanetarySystem.objects.create(name='duplicator', creator=duplicator)
 
     def test_url_name(self):
-        has_spaces = self.make_system('Test System')
+        has_spaces = PlanetarySystem.objects.create(name='Test System')
         self.assertEqual(has_spaces.url_name(), 'Test+System')
-        no_spaces = self.make_system('TestSystem')
+        no_spaces = PlanetarySystem.objects.create(name='TestSystem')
         self.assertEqual(no_spaces.url_name(), 'TestSystem')
 
     def test_str(self):
-        ps = self.make_system('Planets')
+        ps = PlanetarySystem.objects.create(name='Planets')
         self.assertEqual(str(ps), '{} - {}'.format(ps.pk, ps.name))
 
     def test_to_json(self):
-        ps = self.make_system('Planets')
+        ps = PlanetarySystem.objects.create(name='Planets')
         pjs = ps.to_json()
         self.assertIsInstance(pjs, dict)
         self.assertEqual(pjs['name'], ps.name)
@@ -75,7 +56,7 @@ class PlanetarySystemTestCase(TestCase):
 
 class StarTestCase(TestCase):
 
-    def make_star(self, name, radius, creator=None, system=None):
+    def make_star(self, name, spectrum='G', subspectrum=2, creator=None, system=None):
         if creator is None:
             creator = User.objects.create(
                 username='creator',
@@ -85,25 +66,27 @@ class StarTestCase(TestCase):
             system = PlanetarySystem.objects.create(name='Solar System', creator=creator)
         return Star.objects.create(
             name=name,
-            radius=radius,
+            spectrum=spectrum,
+            subspectrum=subspectrum,
             planetarysystem=system,
             creator=creator
         )
 
     def test_create(self):
-        star = self.make_star(name='Star2D2', radius=200)
+        star = self.make_star(name='Star2D2')
         self.assertIsInstance(star, Star)
 
     def test_str(self):
-        star = self.make_star(name='Death Star', radius=1000)
+        star = self.make_star(name='Death Star')
         self.assertEqual(str(star), '{} - {}'.format(star.pk, star.name))
 
     def test_to_json(self):
-        star = self.make_star(name='Death Star', radius=1000)
+        star = self.make_star(name='Death Star', spectrum='O', subspectrum=3)
         star_json = star.to_json()
         rows = [
             ('name', str),
-            ('radius', int)
+            ('spectrum', str),
+            ('subspectrum', int)
         ]
         for row in rows:
             key, val_type = row

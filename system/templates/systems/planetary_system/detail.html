@@ -82,7 +82,9 @@ var starColors = {
 
 var planetarySystemJSON = {{ planetarysystem.to_json|dump|safe }};
 var star = planetarySystemJSON.star;
-star.color = starColors[star.spectrum];
+if ( star !== null ) {
+  star.color = starColors[star.spectrum];
+}
 var planets = planetarySystemJSON.planets;
 var stepFn = orbit(star, planets, {
   radius: 250,
