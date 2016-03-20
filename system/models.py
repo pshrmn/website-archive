@@ -110,6 +110,25 @@ class AbstractSatellite(models.Model):
         abstract = True
         ordering = ["distance"]
 
+    def __str__(self):
+        return '{} - {}'.format(self.pk, self.name)
+
+    def url_name(self):
+        """
+        replace spaces with plus signs for prettier urls
+        """
+        return self.name.replace(' ', '+')
+
+    def to_json(self):
+        return {
+            'name': self.name,
+            'radius': self.radius,
+            'distance': self.distance,
+            'day_length': self.day_length,
+            'orbit': self.orbit,
+            'color': self.color,
+        }
+
 
 class Planet(AbstractSatellite):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
@@ -122,15 +141,6 @@ class Planet(AbstractSatellite):
     class Meta(AbstractSatellite.Meta):
         unique_together = (('creator', 'planetarysystem', 'name'),)
 
-    def __str__(self):
-        return '{} - {}'.format(self.pk, self.name)
-
-    def url_name(self):
-        """
-        replace spaces with plus signs for prettier urls
-        """
-        return self.name.replace(' ', '+')
-
     def get_absolute_url(self):
         return reverse(
             'planet',
@@ -142,15 +152,9 @@ class Planet(AbstractSatellite):
         )
 
     def to_json(self):
-        return {
-            'name': self.name,
-            'radius': self.radius,
-            'distance': self.distance,
-            'day_length': self.day_length,
-            'orbit': self.orbit,
-            'color': self.color,
-            'moons': [moon.to_json() for moon in self.moon_set.all()]
-        }
+        base_json = super().to_json()
+        base_json['moons'] = [moon.to_json() for moon in self.moon_set.all()]
+        return base_json
 
     def light_time(self):
         """
@@ -171,19 +175,3 @@ class Moon(AbstractSatellite):
 
     class Meta(AbstractSatellite.Meta):
         unique_together = (('creator', 'planet', 'name'),)
-
-    def __str__(self):
-        return '{} - {}'.format(self.pk, self.name)
-
-    def url_name(self):
-        return self.name.replace(' ', '+')
-
-    def to_json(self):
-        return {
-            'name': self.name,
-            'radius': self.radius,
-            'distance': self.distance,
-            'day_length': self.day_length,
-            'orbit': self.orbit,
-            'color': self.color
-        }
