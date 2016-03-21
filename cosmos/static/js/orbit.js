@@ -23,6 +23,7 @@ function orbit(primary, satellites, options) {
     // cache since this is looked up every frame
     p.normDistance = fitScale(p.distance);
     p.offsetAngle = 0;
+    p.currentAngle = 0;
   });
 
   var offsetScale = function(d, i) {
@@ -53,7 +54,11 @@ function orbit(primary, satellites, options) {
         .attr('value', period)
         .on('change', function() {
           period = d3.event.target.value;
-          periodScale.text(periodHours(period) + ' hours per second')
+          periodScale.text(periodHours(period) + ' hours per second');
+          start = null;
+          satellites.forEach(function(p) {
+            p.offsetAngle = p.currentAngle;
+          })
         });
     
   }
@@ -67,18 +72,30 @@ function orbit(primary, satellites, options) {
     var diff = timestamp - start;
     satellitesEles
       .attr("transform", function(d, i) {
-        var seconds_in_a_year = Math.abs(d.day_length * d.orbit);
-        // 1000 * period is the time scale
-        // ie if the period is 600, for every real world second that
-        // elapses, 600,000 seconds (167 hours or ~7 Earth days) elapses.
-        // For the Earth, that means that a full rotation would take ~52 seconds
-        var percent = (diff*period / seconds_in_a_year) % 1;
-        var angle = d.offsetAngle - (360*percent);
+        var angle = offsetAngle(diff * period, d);
+        d.currentAngle = angle;
         return "rotate(" + angle + ")translate(0, " + (-offsetScale(d,i)) + ")";
       });
 
     window.requestAnimationFrame(step);
   }
+}
+
+/*
+ * compute the current angle that the satellite should be at as a
+ * product of the number of seconds in an orbital period, the seconds
+ * that have elapsed, and the starting offset angle
+ *
+ * 1000 * period is the time scale
+ * i.e. if the period is 600, for every real world second that
+ * elapses, 600,000 seconds (167 hours or ~7 Earth days) elapses.
+ * For the Earth, that means that a full rotation would take ~52 seconds
+ */
+function offsetAngle(time, satellite) {
+  var secondsInAYear = Math.abs(satellite.day_length * satellite.orbit);
+  // percent as decimal [0,1)
+  var percent = (time / secondsInAYear) % 1;
+  return satellite.offsetAngle - (360*percent);
 }
 
 function periodHours(period) {
