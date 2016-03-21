@@ -27,25 +27,28 @@
   {% endif %}
 {% endwith %}
 
-<div id="system"></div>
+<div class="facts">
+  <h4>Facts:</h4>
+  <ul>
+    <li>
+      Radius: {{planet.radius}} kms
+    </li>
+    <li>
+      Distance from Star: {{planet.distance}} million kms
+    </li>
+    <li>
+      Stellar Day Length: {{ planet.day_length|pretty_time }}
+    </li>
+    <li>
+      Orbital Period: {{planet.orbit}} days
+    </li>
+    <li>
+      Time for light to reach planet: {{ planet.light_time|pretty_time }}
+    </li>
+  </ul>  
+</div>
 
-<ul>
-  <li>
-    Radius: {{planet.radius}} kms
-  </li>
-  <li>
-    Distance from Star: {{planet.distance}} million kms
-  </li>
-  <li>
-    Stellar Day Length: {{ planet.day_length|pretty_time }}
-  </li>
-  <li>
-    Orbital Period: {{planet.orbit}} days
-  </li>
-  <li>
-    Time for light to reach planet: {{ planet.light_time|pretty_time }}
-  </li>
-</ul>
+<div id="system"></div>
 
 {% for moon in planet.moon_set.all %}
 {% include 'systems/moon/partial.html' %}
@@ -68,7 +71,8 @@ var moons = planetJSON.moons;
 var stepFn = orbit(planet, moons, {
   radius: 250,
   holder: '#system',
-  period: 250
+  maxPeriod: 2500,
+  period: 1000
 });
 window.requestAnimationFrame(stepFn);
 {% endblock inline-js %}

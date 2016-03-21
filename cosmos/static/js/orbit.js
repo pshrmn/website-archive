@@ -2,7 +2,10 @@ function orbit(primary, satellites, options) {
   options = options || {};
   var holder = options.holder || document.body;
   var radius = options.radius || 250;
-  var period = options.period || 1000;
+  var hasScale = options.hasScale === undefined ? true : options.hasScale;
+  var minPeriod = 0;
+  var maxPeriod = options.maxPeriod || 2500;
+  var period = options.period || (minPeriod + maxPeriod) / 2;
   var hasArcs = options.hasArcs === undefined ? true: options.hasArcs;
 
   var furthest = d3.max(satellites, function(d) { return d.distance; });
@@ -34,6 +37,27 @@ function orbit(primary, satellites, options) {
   drawPrimary(svg, primary);
   var satellitesEles = initSatellites(svg, satellites, offsetScale);
 
+  // controls
+  var controls = d3.select(holder).append('div')
+    .classed({'controls': true});
+  if ( hasScale ) {
+    var periodControls = controls.append('label')
+      .text('Time Scale');
+    var periodScale = controls.append('p')
+      .text(periodHours(period) + ' hours per second');
+    periodControls.append('input')
+        .attr('type', 'range')
+        .attr('min', minPeriod)
+        .attr('max', maxPeriod)
+        .attr('step', 50)
+        .attr('value', period)
+        .on('change', function() {
+          period = d3.event.target.value;
+          periodScale.text(periodHours(period) + ' hours per second')
+        });
+    
+  }
+
   // the animation callback
   var start = null;
   return function step(timestamp) {
@@ -41,10 +65,13 @@ function orbit(primary, satellites, options) {
       start = timestamp;
     }
     var diff = timestamp - start;
-
     satellitesEles
       .attr("transform", function(d, i) {
         var seconds_in_a_year = Math.abs(d.day_length * d.orbit);
+        // 1000 * period is the time scale
+        // ie if the period is 600, for every real world second that
+        // elapses, 600,000 seconds (167 hours or ~7 Earth days) elapses.
+        // For the Earth, that means that a full rotation would take ~52 seconds
         var percent = (diff*period / seconds_in_a_year) % 1;
         var angle = d.offsetAngle - (360*percent);
         return "rotate(" + angle + ")translate(0, " + (-offsetScale(d,i)) + ")";
@@ -54,8 +81,12 @@ function orbit(primary, satellites, options) {
   }
 }
 
+function periodHours(period) {
+  return Math.round((period * 1000) / 3600);
+}
+
 function makeSVG(holder, radius) {
-  var parent = d3.select(holder)
+  var parent = d3.select(holder);
   var svg = parent.append('svg')
     .attr('width', radius*2)
     .attr('height', radius*2)

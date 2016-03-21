@@ -74,7 +74,8 @@ var planets = [
 var stepFn = orbit(star, planets, {
   radius: 150,
   holder: '#system',
-  period: 5000
+  period: 5000,
+  hasScale: false
 });
 window.requestAnimationFrame(stepFn);
 {% endblock inline-js %}

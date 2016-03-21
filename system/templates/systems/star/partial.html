@@ -1,7 +1,7 @@
 
 <div class="star">
   <h2>{{ star.name }}</h2>
-  <h3>A {{star.spectrum}}{{star.subspectrum}} Star</h3>
+  <h3>{{star.spectrum}}{{star.subspectrum}} Star</h3>
   {% if star.creator == user %}
   <div class="dangerous">
     <a href="{% url 'delete_star' star.creator.username star.planetarysystem.url_name %}">Delete Star</a>

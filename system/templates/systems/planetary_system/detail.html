@@ -89,7 +89,8 @@ var planets = planetarySystemJSON.planets;
 var stepFn = orbit(star, planets, {
   radius: 250,
   holder: '#system',
-  period: 2500
+  maxPeriod: 25000,
+  period: 6000
 });
 window.requestAnimationFrame(stepFn);
 {% endblock inline-js %}

@@ -13,7 +13,7 @@ header {
   background: #222233;
   color: #ccc;
   padding: 10px 25px;
-  border-bottom: 2px solid #efefef;
+  border-bottom: 2px solid #E91E63;
 }
 
 
@@ -71,6 +71,19 @@ h1, h2, h3 {
 
 h4, h5, h6, p {
   margin: 3px 0;
+}
+
+.facts {
+  background: #efefef;
+  box-shadow: 3px 3px #E91E63;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.facts ul {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
 }
 
 @media (max-width: 900px){
