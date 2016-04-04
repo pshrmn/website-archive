@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.db.utils import DataError, IntegrityError
+from django.db.utils import IntegrityError
 
 from system.models import PlanetarySystem, Star, Planet, Moon
 
