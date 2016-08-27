@@ -20,9 +20,7 @@ function Room(socket, owner, name, password) {
  * Check if a user with the given name already exists in the room
  */
 Room.prototype.nameTaken = function(name) {
-  return this.people.some(p => {
-    return p.name === name;
-  });
+  return this.people.some(p => p.name === name);
 };
 
 /*

@@ -40,7 +40,9 @@ export default React.createClass({
         <p>{this.props.msg}</p>
         {player}
         <table className="board" cellSpacing="0">
-          {rows}
+          <tbody>
+            {rows}
+          </tbody>
         </table>
       </div>
     );
