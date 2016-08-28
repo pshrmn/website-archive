@@ -10,7 +10,7 @@ const App = React.createClass({
       room: undefined
     };
   },
-  componentWillMount: function() {
+  componentDidMount: function() {
     /*
     create the socket and set any events to listen for
     */

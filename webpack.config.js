@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const config = {
-  context: path.join(__dirname, 'src'),
+  context: path.join(__dirname, 'src', 'client'),
   entry: {
     vendor: ['react', 'react-dom', 'socket.io-client'],
     bundle: './index.js'
@@ -37,9 +37,17 @@ case 'webpack:dev':
   break;
 case 'webpack:build':
   config.plugins = config.plugins.concat([
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
-      sourceMap: false
+      sourceMap: false,
+      compress: {
+        warnings: false
+      }
     })
   ]);
   break;

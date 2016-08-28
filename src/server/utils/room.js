@@ -1,9 +1,9 @@
-var GameManager = require("./manager");
+import GameManager from './manager';
 
 /*
  * A room is used for 2+ people to play a game.
  */
-function Room(socket, owner, name, password) {
+export default function Room(socket, owner, name, password) {
   this.socket = socket;
   this.name = name;
   this.owner = owner;
@@ -12,7 +12,6 @@ function Room(socket, owner, name, password) {
   this.people = [owner];
 
   this.gameManager = new GameManager(this);
-
   this.playerState();
 }
 
@@ -29,19 +28,19 @@ Room.prototype.nameTaken = function(name) {
  */
 Room.prototype.addPlayer = function(player, password) {
   var error = false;
-  var reason = "";
+  var reason = '';
   if ( password !== this.password ) {
     error = true;
-    reason = "Room " + this.name + " exists, but you entered the incorrect password";
+    reason = `Room ${this.name} exists, but you entered the incorrect password`;
   } else if ( this.nameTaken(player.name) ) {
     error = true;
-    reason = "There is already a player with this nickname in the room";
+    reason = 'There is already a player with this nickname in the room';
   } else {
     this.people.push(player);
     player.join(this.name);
     this.playerState();
   }
-  player.send("joined", {
+  player.send('joined', {
     error: error,
     reason: reason
   });
@@ -52,9 +51,9 @@ Room.prototype.addPlayer = function(player, password) {
  * Remove a player from the room using the player's socket id
  */
 Room.prototype.removePlayer = function(playerID) {
-  var found = false;
-  var wasOwner = false;
-  var spliceIndex;
+  let found = false;
+  let wasOwner = false;
+  let spliceIndex;
   // filter out the player being removed
   this.people.forEach((player, index) => {
     if ( player.is(playerID) ) {
@@ -62,7 +61,7 @@ Room.prototype.removePlayer = function(playerID) {
         wasOwner = true;
       }
       player.leave(this.name, function() {
-        player.send("left", "left room");
+        player.send('left', 'left room');
       });
       found = true;
       spliceIndex = index;
@@ -75,6 +74,7 @@ Room.prototype.removePlayer = function(playerID) {
     // longest is made the new owner. not a perfect system, but good enough.
     if ( wasOwner && this.people.length ) {
       this.owner = this.people[0];
+      this.people[0].owner = true;
     }
     this.gameManager.playerLeft(playerID);
     this.playerState();
@@ -85,7 +85,7 @@ Room.prototype.removePlayer = function(playerID) {
 /*
  * Check to see if all of the players are still in the room.
  */
-Room.prototype.checkPlayers = function() {
+Room.prototype.updatePlayers = function() {
   var connected = Object.keys(this.socket.connected);
   var setNewOwner = false;
   if ( connected.length !== this.people.length ) {
@@ -121,12 +121,15 @@ Room.prototype.shouldDelete = function() {
   return this.people.length === 0;
 };
 
+/*
+ * send a 'roomState' message to each player in the room
+ */
 Room.prototype.playerState = function() {
   var roomState = this.state();
   // send out to each player so they can see their own information
   this.people.forEach(p => {
     roomState.room.people.you = p.description();
-    p.send("roomState", roomState);
+    p.send('roomState', roomState);
   });
 };
 
@@ -162,23 +165,22 @@ Room.prototype.togglePlayer = function(socketID) {
   if ( this.gameManager.playing ) {
     return;
   }
-  
-  this.people.some(p => {
-    if ( p.is(socketID) ) {
-      p.ready = !p.ready;
-      return true;
-    }
-    return false;
-  });
+
   var players = [];
   var spectators = [];
+
   this.people.forEach(p => {
+    if ( p.is(socketID) ) {
+      p.ready = !p.ready;
+    }
+
     if ( p.ready ) {
       players.push(p);
     } else {
       spectators.push(p);
     }
   });
+
   this.gameManager.setPlayers(players, spectators);
   this.playerState();
 };
@@ -205,5 +207,3 @@ Room.prototype.endGame = function() {
 Room.prototype.updateGame = function(state, socketID) {
   this.gameManager.update(state, socketID);
 };
-
-module.exports = Room;

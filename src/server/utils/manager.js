@@ -1,4 +1,6 @@
-var GameOptions = require("../games/gameoptions");
+import GameOptions from '../games/gameoptions';
+
+const GameNames = Object.keys(GameOptions);
 
 /*
  * A GameManager handles the gameplay for the room. 
@@ -6,7 +8,7 @@ var GameOptions = require("../games/gameoptions");
  * PREGAME:
  * When no game is being played, the GameManager allows the owner of the room to
  * specify which game will be played next. During this time, players can select 
- * that they are "ready" to play. A game has a minimum and maximum number of
+ * that they are 'ready' to play. A game has a minimum and maximum number of
  * players that can play it. When the maximum number of players has readied up,
  * the game will automatically start. If there is a difference between maximum
  * and minimum players, once the minimum number has been reached, the game
@@ -19,12 +21,11 @@ var GameOptions = require("../games/gameoptions");
  * responds with the new state of the game, which is passed on to all of the
  * players and spectators.
  */
-function GameManager(room) {
-  this.gameNames = Object.keys(GameOptions);
+export default function GameManager(room) {
   this.room = room;
 
   // default to the first game in the list
-  this.currentGame = this.gameNames[0];
+  this.currentGame = GameNames[0];
   this.gameData = GameOptions[this.currentGame];
   this.game = undefined;
 
@@ -36,13 +37,19 @@ function GameManager(room) {
   this.timeout;
 }
 
+/*
+ * Update the state of the current game given the new state.
+ * Then, emit a message to everyone in the room, providing the current state
+ * of the game. If no game is being played, this does nothing. This will also
+ * call the endGame method if the game is complete after the state update.
+ */
 GameManager.prototype.update = function(state, socketID) {
   if ( !this.playing || !this.game ) {
     return;
   }
   var newState = this.game.update(state, socketID);
   if ( newState ) {
-    this.broadcast("gameState", newState);
+    this.broadcast('gameState', newState);
     if ( newState.active === false ) {
       this.endGame(newState.result.winner);
     }
@@ -57,21 +64,15 @@ GameManager.prototype.state = function() {
   return {
     playing: this.playing,
     setup: {
-      gameChoices: this.gameNames,
+      gameChoices: GameNames,
       currentGame: this.currentGame
     }
   };
 };
 
 GameManager.prototype.broadcast = function(type, msg) {
-    this.players.forEach(p => {
-      p.send(type, msg);
-    });
-    this.spectators.forEach(p => {
-      p.send(type, msg);
-    });
+    [...this.players, ...this.spectators].forEach(p => { p.send(type, msg); });
 };
-
 
 GameManager.prototype.setGame = function(name) {
   if ( GameOptions[name] ) {
@@ -110,7 +111,7 @@ GameManager.prototype.startGame = function() {
   try {
     this.game = new this.gameData.game(this.players);
     this.playing = true;
-    this.broadcast("gameState", this.game.state());
+    this.broadcast('gameState', this.game.state());
   } catch(e) {
     console.error(e);
   }
@@ -134,11 +135,6 @@ GameManager.prototype.endGame = function(winner) {
   this.room.endGame();
 }
 
-GameManager.prototype.addPlayer = function(player) {
-  // find the player in the spectators and move to the players?
-  this.players.push(player);
-}
-
 GameManager.prototype.reset = function() {
   this.players = [];
   this.spectators = [];
@@ -153,12 +149,8 @@ GameManager.prototype.playerLeft = function(socketID) {
   if ( !this.playing ) {
     return;
   }
-  var found = this.players.some(p => {
-    return p.is(socketID);
-  });
+  const found = this.players.some(p => p.is(socketID));
   if ( found ) {
     this.endGame();
   }
 };
-
-module.exports = GameManager;
