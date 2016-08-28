@@ -27,6 +27,7 @@ function renderFullPage(html) {
     <footer>
       made by <a href="http://pshrmn.com">pshrmn.com</a>
     </footer>
+    <script src="static/js/polyfill.min.js"></script>
     <script src="static/js/vendor.js"></script>
     <script src="static/js/bundle.js"></script>
   </body>
