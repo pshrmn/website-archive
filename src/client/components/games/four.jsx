@@ -15,7 +15,9 @@ export default React.createClass({
   placePiece: function(column) {
     this.context.socket.emit('gameState', {
       room: this.context.room.name,
-      column: column
+      turn: {
+        column: column
+      }
     });
   },
   _makeColumns: function() {

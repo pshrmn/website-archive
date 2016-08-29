@@ -11,8 +11,10 @@ export default React.createClass({
   sendPosition: function(row, column) {
     this.context.socket.emit('gameState', {
       room: this.context.room.name,
-      row: row,
-      column: column
+      turn: {
+        row: row,
+        column: column
+      }
     });
   },
   render: function() {

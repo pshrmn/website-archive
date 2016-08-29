@@ -52,16 +52,12 @@ export default function setupSocket(server) {
     socket.on('gameState', msg => {
       const {
         room,
-        row,
-        column
+        turn
       } = msg;
       if ( !rooms[room] ) {
         return;
       }
-      rooms[room].updateGame({
-        row,
-        column
-      }, socket.id);
+      rooms[room].updateGame(turn, socket.id);
     });
 
     socket.on('ready', function(msg){
