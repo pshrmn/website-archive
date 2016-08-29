@@ -1,11 +1,16 @@
-import React from "react";
+import React from 'react';
 
 export default React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     return this.props.id !== nextProps.id;
   },
+  contextTypes: {
+    socket: React.PropTypes.object,
+    room: React.PropTypes.object
+  },
   sendPosition: function(row, column) {
-    this.props.onMsg("gameState", {
+    this.context.socket.emit('gameState', {
+      room: this.context.room.name,
       row: row,
       column: column
     });
@@ -15,7 +20,7 @@ export default React.createClass({
     var active = this.props.active;
     var rows = this.props.board.map(function(row, rowIndex){
       var cells = row.map(function(cell, colIndex){
-        var key = rowIndex + "," + colIndex;
+        var key = rowIndex + ',' + colIndex;
         return (
           <Cell key={key}
                 active={active}
@@ -34,12 +39,12 @@ export default React.createClass({
     });
     var player = this.props.active ? (
         <p>Current Player: {this.props.nextPlayer}</p>
-      ) : "";
+      ) : '';
     return (
-      <div className="tictactoe">
+      <div className='tictactoe'>
         <p>{this.props.msg}</p>
         {player}
-        <table className="board" cellSpacing="0">
+        <table className='board' cellSpacing='0'>
           <tbody>
             {rows}
           </tbody>
@@ -55,7 +60,7 @@ var Cell = React.createClass({
   },
   onClick: function(event){
     // don't send to server when the cell is already marked
-    if ( this.props.value !== "" || !this.props.active ) {
+    if ( this.props.value !== '' || !this.props.active ) {
       return;
     }
     this.props.mark(this.props.row, this.props.column);

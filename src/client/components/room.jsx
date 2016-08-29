@@ -4,13 +4,19 @@ import GameBoard from './gameboard';
 import ScoreBoard from './scoreboard';
 
 const Room = React.createClass({
+  contextTypes: {
+    socket: React.PropTypes.object,
+    game: React.PropTypes.object
+  },
   leaveRoom: function(event){ 
-    this.props.onMsg("leave", {
+    this.context.socket.emit('leave', {
       room: this.props.name
     });
   },
   signalReady: function(event){
-    this.props.onMsg("ready", {});
+    this.context.socket.emit('ready', {
+      room: this.props.name
+    });
   },
   render: function() {
     /*
@@ -26,26 +32,24 @@ const Room = React.createClass({
           currentGame
           gameChoices
       game
-      onMsg
     */
     var you = this.props.people.you;
-    var readyText = (you && you.ready) ? "Not Ready" : "Ready";
+    var readyText = (you && you.ready) ? 'Not Ready' : 'Ready';
     return (
-      <div className="room">
-      <div className="room-info">
-        <h2>{this.props.name}</h2>
-        <div className="controls">
-          <button onClick={this.leaveRoom}>Leave Room</button>
-          <button onClick={this.signalReady}>
-            {readyText}
-          </button>
+      <div className='room'>
+        <div className='room-info'>
+          <h2>{this.props.name}</h2>
+          <div className='controls'>
+            <button onClick={this.leaveRoom}>Leave Room</button>
+            <button onClick={this.signalReady}>
+              {readyText}
+            </button>
+          </div>
+          <ScoreBoard {...this.props.people} />
         </div>
-        <ScoreBoard {...this.props.people} />
-      </div>
-      <GameBoard onMsg={this.props.onMsg}
-                 game={this.props.game}
-                 you={this.props.people.you}
-                 {...this.props.gameState} />
+        <GameBoard game={this.context.game}
+                   you={this.props.people.you}
+                   {...this.props.gameState} />
       </div>
     );
   }

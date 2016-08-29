@@ -1,15 +1,20 @@
-import React from "react";
+import React from 'react';
 
 export default React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     return this.props.id !== nextProps.id;
+  },
+  contextTypes: {
+    socket: React.PropTypes.object,
+    room: React.PropTypes.object
   },
   /*
    * determine where the piece will be placed, and after placing, check if
    * the game has been won
    */
   placePiece: function(column) {
-    this.props.onMsg("gameState", {
+    this.context.socket.emit('gameState', {
+      room: this.context.room.name,
       column: column
     });
   },
@@ -26,18 +31,18 @@ export default React.createClass({
   render: function() {
     var player = this.props.active ? (
       <p>Current Player: {this.props.nextPlayer}</p>
-    ) : "";
+    ) : '';
     return (
-      <div className="four">
-        <div className="game-message">
+      <div className='four'>
+        <div className='game-message'>
           {this.props.msg}
         </div>
         {player}
-        <div className="board">
-          <div className="leg left"></div>
+        <div className='board'>
+          <div className='leg left'></div>
           {this._makeColumns()}
-          <div className="leg right"></div>
-          <div className="slider"></div>
+          <div className='leg right'></div>
+          <div className='slider'></div>
         </div>
       </div>
     );
@@ -55,7 +60,7 @@ var Column = React.createClass({
   },
   _canPlace: function() {
     // filled from the bottom up, so first spot is last filled
-    return this.props.pieces[0] === "";
+    return this.props.pieces[0] === '';
   },
   render: function() {
     var pieces = this.props.pieces.map(function(p, i){
@@ -65,7 +70,7 @@ var Column = React.createClass({
       );
     });
     return (
-      <div className="column"
+      <div className='column'
            onClick={this.tryPlace} >
         {pieces}
       </div>
@@ -78,11 +83,11 @@ var Piece = React.createClass({
     return (nextProps.value !== this.props.value);
   },
   render: function() {
-    var className = this.props.value === "" ? "none" : this.props.value;
-    var pieceClasses = ["piece", className];
-    var spaceClasses = ["space"];
-    var pieceClassName = pieceClasses.join(" ");
-    var spaceClassName = spaceClasses.join(" ");
+    var className = this.props.value === '' ? 'none' : this.props.value;
+    var pieceClasses = ['piece', className];
+    var spaceClasses = ['space'];
+    var pieceClassName = pieceClasses.join(' ');
+    var spaceClassName = spaceClasses.join(' ');
     return (
       <div className={spaceClassName}>
         <div className={pieceClassName}></div>

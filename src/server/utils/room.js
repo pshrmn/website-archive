@@ -12,6 +12,13 @@ export default function Room(socket, owner, name, password) {
   this.people = [owner];
 
   this.gameManager = new GameManager(this);
+
+  owner.send('joined', {
+    error: false,
+    reason: 'Successfully created room',
+    room: this.name
+  });
+
   this.playerState();
 }
 
@@ -31,7 +38,7 @@ Room.prototype.addPlayer = function(player, password) {
   var reason = '';
   if ( password !== this.password ) {
     error = true;
-    reason = `Room ${this.name} exists, but you entered the incorrect password`;
+    reason = `You entered the incorrect password`;
   } else if ( this.nameTaken(player.name) ) {
     error = true;
     reason = 'There is already a player with this nickname in the room';
@@ -42,7 +49,8 @@ Room.prototype.addPlayer = function(player, password) {
   }
   player.send('joined', {
     error: error,
-    reason: reason
+    reason: reason,
+    room: this.name
   });
   return !error;
 };
@@ -165,7 +173,6 @@ Room.prototype.togglePlayer = function(socketID) {
   if ( this.gameManager.playing ) {
     return;
   }
-
   var players = [];
   var spectators = [];
 
@@ -180,7 +187,6 @@ Room.prototype.togglePlayer = function(socketID) {
       spectators.push(p);
     }
   });
-
   this.gameManager.setPlayers(players, spectators);
   this.playerState();
 };

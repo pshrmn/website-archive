@@ -9,15 +9,13 @@ const GameBoard = React.createClass({
       switch ( this.props.game.name ) {
       case 'Tic Tac Toe':
         game = (
-          <TicTacToe onMsg={this.props.onMsg}
-                     you={this.props.you}
+          <TicTacToe you={this.props.you}
                      {...this.props.game} />
         );
         break;
       case 'Four':
         game = (
-          <Four onMsg={this.props.onMsg}
-                you={this.props.you}
+          <Four you={this.props.you}
                 {...this.props.game} />
         );
         break;
@@ -47,9 +45,8 @@ const GameBoard = React.createClass({
         currentGame
         gameChoices
     */
-    var setup = this.props.playing ? '' : (
+    var setup = this.props.playing ? null : (
       <GameSetup you={this.props.you}
-                 onMsg={this.props.onMsg}
                  {...this.props.setup} />
     );
     var game = this._gameComponent();
@@ -65,10 +62,14 @@ const GameBoard = React.createClass({
 export default GameBoard;
 
 var GameSetup = React.createClass({
+  contextTypes: {
+    socket: React.PropTypes.object,
+    room: React.PropTypes.object
+  },
   sendGame: function(event){
-    var game = event.target.value;
-    this.props.onMsg('set game', {
-      game: game
+    this.context.socket.emit('set game', {
+      room: this.context.room.name,
+      game: event.target.value
     });
   },
   render: function() {

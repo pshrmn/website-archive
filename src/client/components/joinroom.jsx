@@ -1,6 +1,9 @@
 import React from 'react';
 
 const JoinRoomForm = React.createClass({
+  contextTypes: {
+    socket: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       nickname: "",
@@ -28,7 +31,7 @@ const JoinRoomForm = React.createClass({
   joinRoom: function(event) {
     event.preventDefault();
     if ( this._formComplete() ) {
-      this.props.onMsg("join", this.state);
+      this.context.socket.emit('join', this.state);
     }
   },
   setNickname: function(event) {
@@ -66,7 +69,7 @@ const JoinRoomForm = React.createClass({
                onChange={this.setRoom} />
           </p>
           <p>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Room Password</label>
           <input type="password" id="password"
                value={this.state.password}
                onChange={this.setPassword} />
