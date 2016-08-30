@@ -38,8 +38,9 @@ footer {
       display: block; }
     .login-form form button {
       margin-right: 10px; }
-    .login-form form .error {
-      color: red; }
+
+.error {
+  color: red; }
 
 .ready {
   display: inline-block;

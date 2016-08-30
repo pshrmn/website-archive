@@ -19,7 +19,7 @@ const RoomForm = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     return (nextState.nickname !== this.state.nickname ||
       nextState.password !== this.state.password ||
-      nextProps.errors !== this.props.errors );
+      nextProps.error !== this.props.error );
   },
   _formComplete: function() {
     return (this.state.nickname !== "" && this.state.password !== "");
@@ -55,8 +55,8 @@ const RoomForm = React.createClass({
     });
   },
   render: function() {
-    var hasErrors = (this.props.errors !== undefined && this.props.errors !== "");
-    var errors = hasErrors ? (<p className="error" >Error: {this.props.errors}</p>) : "";
+    var hasErrors = (this.props.error !== undefined && this.props.error !== "");
+    var errors = hasErrors ? (<p className="error" >{this.props.error}</p>) : "";
     return (
       <div className='room'>
         <div className='room-info'>
@@ -86,7 +86,9 @@ const RoomForm = React.createClass({
 });
 
 export default connect(
-  null,
+  state => ({
+    error: state.error
+  }),
   {
     joinRoom
   }
