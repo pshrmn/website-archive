@@ -38,7 +38,7 @@ export default function socketMiddleware(socket) {
       });
       break;
     case types.SUBMIT_TURN:
-      socket.emit('gameState', {
+      socket.emit('submit turn', {
         room: action.room,
         turn: action.turn
       });

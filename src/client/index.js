@@ -52,13 +52,13 @@ socket.on('left', resp => {
 });
 
 
-socket.on('roomState', resp => {
+socket.on('update room', resp => {
   store.dispatch(
     updateRoom(resp)
   );
 });
 
-socket.on('gameState', resp => {
+socket.on('update game', resp => {
   store.dispatch(
     updateGame(resp)
   );

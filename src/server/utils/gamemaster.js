@@ -49,7 +49,7 @@ export default function setupSocket(server) {
       }
     });
 
-    socket.on('gameState', msg => {
+    socket.on('submit turn', msg => {
       const {
         room,
         turn

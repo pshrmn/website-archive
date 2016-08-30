@@ -130,7 +130,7 @@ Room.prototype.shouldDelete = function() {
 };
 
 /*
- * send a 'roomState' message to each player in the room
+ * send an 'update room' message to each player in the room
  */
 Room.prototype.playerState = function() {
   const roomState = this.state();
@@ -138,7 +138,7 @@ Room.prototype.playerState = function() {
   // send out to each player so they can see their own information
   this.people.forEach(p => {
     roomState.people.you = p.description();
-    p.send('roomState', roomState);
+    p.send('update room', roomState);
   });
 };
 

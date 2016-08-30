@@ -1,6 +1,6 @@
 {
   "name": "weplay",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "Plays games with other people",
   "main": "server.js",
   "scripts": {
