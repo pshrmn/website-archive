@@ -1,6 +1,6 @@
 {
   "name": "weplay",
-  "version": "0.11.1",
+  "version": "0.12.0",
   "description": "Plays games with other people",
   "main": "server.js",
   "scripts": {
@@ -45,6 +45,7 @@
     "babel-register": "^6.14.0",
     "chai": "^3.2.0",
     "mocha": "^2.3.2",
+    "node-sass": "^3.8.0",
     "postcss-cli": "^2.1.0",
     "sinon": "^1.16.1",
     "webpack": "^1.13.2"

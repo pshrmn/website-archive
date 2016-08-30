@@ -133,10 +133,11 @@ Room.prototype.shouldDelete = function() {
  * send a 'roomState' message to each player in the room
  */
 Room.prototype.playerState = function() {
-  var roomState = this.state();
+  const roomState = this.state();
+
   // send out to each player so they can see their own information
   this.people.forEach(p => {
-    roomState.room.people.you = p.description();
+    roomState.people.you = p.description();
     p.send('roomState', roomState);
   });
 };
@@ -155,16 +156,16 @@ Room.prototype.state = function() {
       spectators.push(desc);
     }
   });
-  var gameState = this.gameManager.state();
+  // this contains information about the possible games and whether
+  // or not a game is being played, *not* the state of the game board
+  const gameState = this.gameManager.state();
   return {
-    room: {
-      name: this.name,
-      people: {
-        spectators: spectators,
-        players: players
-      },
-      gameState: gameState
-    }
+    name: this.name,
+    people: {
+      spectators: spectators,
+      players: players
+    },
+    game: gameState
   }
 };
 

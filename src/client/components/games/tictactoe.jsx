@@ -1,21 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default React.createClass({
+import { submitTurn } from '../../actions';
+
+const TicTacToe = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     return this.props.id !== nextProps.id;
   },
-  contextTypes: {
-    socket: React.PropTypes.object,
-    room: React.PropTypes.object
-  },
   sendPosition: function(row, column) {
-    this.context.socket.emit('gameState', {
-      room: this.context.room.name,
-      turn: {
+    this.props.submitTurn(
+      this.props.room.name,
+      {
         row: row,
         column: column
       }
-    });
+    );
   },
   render: function() {
     var sendPosition = this.sendPosition;
@@ -75,3 +74,12 @@ var Cell = React.createClass({
     );
   }
 });
+
+export default connect(
+  state => ({
+    room: state.room
+  }),
+  {
+    submitTurn
+  }
+)(TicTacToe);

@@ -11,7 +11,8 @@ header {
   padding: 0 25px;
   font-family: "Fugaz One";
   height: 5vh;
-  min-height: 2.25em; }
+  min-height: 2.25em;
+  font-size: 16px; }
   header a {
     text-decoration: none;
     color: #fff; }

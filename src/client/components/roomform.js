@@ -1,13 +1,15 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
+
+import { joinRoom } from '../actions';
+
+
 /*
  * This is similar to the JoinRoomForm, but the user is already "in"
  * the room, so the name doesn't have to be provided.
  */
 const RoomForm = React.createClass({
-  contextTypes: {
-    socket: React.PropTypes.object
-  },
   getInitialState: function() {
     return {
       nickname: "",
@@ -31,9 +33,15 @@ const RoomForm = React.createClass({
   joinRoom: function(event) {
     event.preventDefault();
     if ( this._formComplete() ) {
-      this.context.socket.emit('join', Object.assign({}, this.state, {
-        room: this.props.room
-      }));
+      const {
+        nickname,
+        password
+      } = this.state;
+      const {
+        room,
+        joinRoom
+      } = this.props;
+      joinRoom(nickname, room, password);
     }
   },
   setNickname: function(event) {
@@ -77,4 +85,9 @@ const RoomForm = React.createClass({
   }
 });
 
-export default RoomForm;
+export default connect(
+  null,
+  {
+    joinRoom
+  }
+)(RoomForm);

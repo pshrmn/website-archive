@@ -1,38 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import GameBoard from './gameboard';
 import ScoreBoard from './scoreboard';
+import {
+  leaveRoom,
+  toggleReady
+} from '../actions';
 
 const Room = React.createClass({
-  contextTypes: {
-    socket: React.PropTypes.object,
-    game: React.PropTypes.object
-  },
   leaveRoom: function(event){ 
-    this.context.socket.emit('leave', {
-      room: this.props.name
-    });
+    this.props.leaveRoom(this.props.room.name);
   },
   signalReady: function(event){
-    this.context.socket.emit('ready', {
-      room: this.props.name
-    });
+    this.props.toggleReady(this.props.room.name);
   },
   render: function() {
-    /*
-    props: 
-      name
-      people
-        spectators
-        players
-        you
-      gameState
-        playing
-        setup
-          currentGame
-          gameChoices
-      game
-    */
     var you = this.props.people.you;
     var readyText = (you && you.ready) ? 'Not Ready' : 'Ready';
     return (
@@ -47,12 +30,18 @@ const Room = React.createClass({
           </div>
           <ScoreBoard {...this.props.people} />
         </div>
-        <GameBoard game={this.context.game}
-                   you={this.props.people.you}
-                   {...this.props.gameState} />
+        <GameBoard />
       </div>
     );
   }
 });
 
-export default Room;
+export default connect(
+  state => ({
+    room: state.room
+  }),
+  {
+    leaveRoom,
+    toggleReady
+  }
+)(Room);

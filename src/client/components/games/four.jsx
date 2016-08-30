@@ -1,24 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default React.createClass({
+import { submitTurn } from '../../actions';
+
+const Four = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     return this.props.id !== nextProps.id;
-  },
-  contextTypes: {
-    socket: React.PropTypes.object,
-    room: React.PropTypes.object
   },
   /*
    * determine where the piece will be placed, and after placing, check if
    * the game has been won
    */
   placePiece: function(column) {
-    this.context.socket.emit('gameState', {
-      room: this.context.room.name,
-      turn: {
+    this.props.submitTurn(
+      this.props.room.name,
+      {
         column: column
       }
-    });
+    );
   },
   _makeColumns: function() {
     return this.props.board.map(function(c, i){
@@ -97,3 +96,12 @@ var Piece = React.createClass({
     );
   }
 });
+
+export default connect(
+  state => ({
+    room: state.room
+  }),
+  {
+    submitTurn
+  }
+)(Four)

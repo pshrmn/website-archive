@@ -1,14 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { joinRoom } from '../actions';
 
 const JoinRoomForm = React.createClass({
-  contextTypes: {
-    socket: React.PropTypes.object
-  },
   getInitialState: function() {
     return {
-      nickname: "",
-      room: "",
-      password: ""
+      nickname: '',
+      room: '',
+      password: ''
     };
   },
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -18,20 +18,25 @@ const JoinRoomForm = React.createClass({
       nextProps.errors !== this.props.errors );
   },
   _formComplete: function() {
-    return (this.state.nickname !== "" && this.state.room !== "" &&
-      this.state.password !== "");
+    return (this.state.nickname !== '' && this.state.room !== '' &&
+      this.state.password !== '');
   },
   _resetForm: function() {
     this.setState({
-      nickname: "",
-      room: "",
-      password: ""
+      nickname: '',
+      room: '',
+      password: ''
     });
   },
   joinRoom: function(event) {
     event.preventDefault();
     if ( this._formComplete() ) {
-      this.context.socket.emit('join', this.state);
+      const {
+        nickname,
+        room,
+        password
+      } = this.state;
+      this.props.joinRoom(nickname, room, password);
     }
   },
   setNickname: function(event) {
@@ -50,29 +55,29 @@ const JoinRoomForm = React.createClass({
     });
   },
   render: function() {
-    var hasErrors = (this.props.errors !== undefined && this.props.errors !== "");
-    var errors = hasErrors ? (<p className="error" >Error: {this.props.errors}</p>) : "";
+    var hasErrors = (this.props.errors !== undefined && this.props.errors !== '');
+    var errors = hasErrors ? (<p className='error' >Error: {this.props.errors}</p>) : '';
     return (
-      <div className="login-form">
+      <div className='login-form'>
         <form>
           {errors}
           <p>
-          <label htmlFor="nickname">Nickname</label>
-          <input type="text" id="nickname"
-               value={this.state.nickname}
-               onChange={this.setNickname} />
+          <label htmlFor='nickname'>Nickname</label>
+          <input type='text' id='nickname'
+                 value={this.state.nickname}
+                 onChange={this.setNickname} />
           </p>
           <p>
-          <label htmlFor="room">Room</label>
-          <input type="text" id="room"
-               value={this.state.room}
-               onChange={this.setRoom} />
+          <label htmlFor='room'>Room</label>
+          <input type='text' id='room'
+                 value={this.state.room}
+                 onChange={this.setRoom} />
           </p>
           <p>
-          <label htmlFor="password">Room Password</label>
-          <input type="password" id="password"
-               value={this.state.password}
-               onChange={this.setPassword} />
+          <label htmlFor='password'>Room Password</label>
+          <input type='password' id='password'
+                 value={this.state.password}
+                 onChange={this.setPassword} />
           </p>
           <p>
           <button onClick={this.joinRoom}>Join Room</button>
@@ -83,4 +88,9 @@ const JoinRoomForm = React.createClass({
   }
 });
 
-export default JoinRoomForm;
+export default connect(
+  null,
+  {
+    joinRoom
+  }
+)(JoinRoomForm);

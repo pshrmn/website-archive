@@ -1,93 +1,120 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import {
+  setGame
+} from '../actions';
+
 import TicTacToe from './games/tictactoe';
 import Four from './games/four';
 
 const GameBoard = React.createClass({
   _gameComponent: function() {
-    var game;
-    if ( this.props.game ) {
-      switch ( this.props.game.name ) {
+    const {
+      game,
+      room
+    } = this.props;
+
+    let gameboard;
+    let turn = '';
+    if ( game !== undefined && room.game.playing ) {
+      const you = room.people.you;
+      const next = game.nextPlayer;
+
+      switch ( game.name ) {
       case 'Tic Tac Toe':
-        game = (
-          <TicTacToe you={this.props.you}
-                     {...this.props.game} />
+        gameboard = (
+          <TicTacToe you={you}
+                     {...game} />
         );
         break;
       case 'Four':
-        game = (
-          <Four you={this.props.you}
-                {...this.props.game} />
+        gameboard = (
+          <Four you={you}
+                {...game} />
         );
         break;
       default:
-        game = '';
+        gameboard = null;
       }
-    }
-    var turn = '';
-    if ( this.props.game ) {
-      turn = (this.props.game.nextPlayer === this.props.you.name) ? 
-        'Your Turn' : this.props.game.nextPlayer + '\'s Turn';
+      turn = (next === you.name) ? 'Your Turn' : `${next}'s Turn`;
     }
     return (
       <div className='game'>
         {turn}
-        {game}
+        {gameboard}
       </div>
     );
   },
   render: function() {
-    /*
-    game
-    you
-    gameInfo
-      playing
-      setup
-        currentGame
-        gameChoices
-    */
-    var setup = this.props.playing ? null : (
-      <GameSetup you={this.props.you}
-                 {...this.props.setup} />
+    const {
+      room,
+      game
+    } = this.props;
+    const setup = room.game && room.game.playing ? null : (
+      <GameSetup />
     );
-    var game = this._gameComponent();
+    // the setup and board are rendered separately so that you can still
+    // see the board after a game has completed (until a new one starts)
     return (
       <div className='gameboard'>
         {setup}
-        {game}
+        {this._gameComponent()}
       </div>
     );
   }
 });
 
-export default GameBoard;
+export default connect(
+  state => ({
+    room: state.room,
+    game: state.game
+  })
+)(GameBoard);
 
-var GameSetup = React.createClass({
-  contextTypes: {
-    socket: React.PropTypes.object,
-    room: React.PropTypes.object
+const GameSetup = connect(
+  state => ({
+    room: state.room
+  }),
+  {
+    setGame
+  }
+)(React.createClass({
+  selectGame: function(event){
+    const {
+      setGame,
+      room
+    } = this.props;
+    setGame(room.name, event.target.value);
   },
-  sendGame: function(event){
-    this.context.socket.emit('set game', {
-      room: this.context.room.name,
-      game: event.target.value
-    });
-  },
-  render: function() {
-    var gameName = this.props.currentGame;
-    var html;
-    if ( this.props.you.owner ) {
-      var choices = this.props.gameChoices.map(function(choice, index){
-        return (
-          <label key={index}>
-            {choice}
-            <input type='radio'
-                   name='game'
-                   checked={choice === gameName}
-                   value={choice}
-                   onChange={this.sendGame} />
-          </label>
-        );
-      }, this);
+  render: function() {   
+    const {
+      room
+    } = this.props;
+    if ( !room ) {
+      return null;
+    }
+
+    const you = room.people.you;
+    const game = room.game;
+    if ( game.playing ) {
+      return null;
+    }
+
+    const setup = game.setup;
+    const gameName = setup.currentGame;
+    let html
+    if ( you !== undefined && you.owner ) {
+      const choices = setup.gameChoices.map((choice, index) => 
+        <label key={index}>
+          {choice}
+          <input type='radio'
+                 name='game'
+                 checked={choice === gameName}
+                 value={choice}
+                 onChange={this.selectGame} />
+        </label>
+      );
 
       html = (
         <div>
@@ -98,10 +125,10 @@ var GameSetup = React.createClass({
     } else {
       html = 'Playing: ' + gameName;
     }
-    return this.props.playing ? '' : (
+    return (
       <div className='game-setup'>
         {html}
       </div>
     );
   }
-});
+}));
