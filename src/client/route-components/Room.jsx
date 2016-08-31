@@ -5,6 +5,8 @@ import { RoomLoginForm } from '../components/roomform';
 import RoomInfo from '../components/room';
 import GameTable from '../components/gametable';
 
+import { leaveRoom } from '../actions';
+
 const RoomPage = React.createClass({
   render: function() {
     // first, we need to verify whether or not the user is allowed in the room
@@ -23,11 +25,19 @@ const RoomPage = React.createClass({
         <GameTable />
       </div>
     );
+  },
+  componentWillUnmount: function() {
+    if ( this.props.room !== undefined ) {
+      this.props.leaveRoom(this.props.room.name);
+    }
   }
 });
 
 export default connect(
   state => ({
     room: state.room
-  })
+  }),
+  {
+    leaveRoom
+  }
 )(RoomPage);

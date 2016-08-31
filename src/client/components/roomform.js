@@ -4,19 +4,12 @@ import { connect } from 'react-redux';
 import { joinRoom } from '../actions';
 
 function InputP(props) {
-  const {
-    id,
-    name,
-    value,
-    type = 'text',
-    update
-  } = props;
   return (
     <p>
-      <label htmlFor={id}>{name}</label>
-      <input type={type} id='nickname'
-             value={value}
-             onChange={event => update(event.target.value)} />
+      <label htmlFor={props.id}>{props.name}</label>
+      <input type={props.type || 'text'} id='nickname'
+             value={props.value || ''}
+             onChange={ event => props.update(event.target.value) } />
     </p>
   );
 }

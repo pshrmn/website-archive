@@ -11,7 +11,8 @@ import {
   hadError,
   leftRoom,
   updateRoom,
-  updateGame
+  updateGame,
+  leaveRoom
 } from './actions';
 import socketMiddleware from './middleware/socketMiddleware';
 
