@@ -7,7 +7,7 @@ import {
   toggleReady
 } from '../actions';
 
-const Room = React.createClass({
+const RoomInfo = React.createClass({
   leaveRoom: function(event){ 
     this.props.leaveRoom(this.props.room.name);
   },
@@ -44,4 +44,4 @@ export default connect(
     leaveRoom,
     toggleReady
   }
-)(Room);
+)(RoomInfo);

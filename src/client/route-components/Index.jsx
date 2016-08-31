@@ -1,12 +1,12 @@
 import React from 'react';
 
-import JoinRoomForm from '../components/joinroom';
+import { LoginForm } from '../components/roomform';
 
 export default function Index(props) {  
   return (
     <div className='room'>
       <div className='room-info'>
-        <JoinRoomForm />
+        <LoginForm />
       </div>
     </div>
   );
