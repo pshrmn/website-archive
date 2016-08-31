@@ -1,7 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
-import { submitTurn } from '../../actions';
 
 const Four = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -13,35 +10,32 @@ const Four = React.createClass({
    */
   placePiece: function(column) {
     this.props.submitTurn(
-      this.props.room.name,
+      this.props.roomName,
       {
         column: column
       }
     );
   },
-  _makeColumns: function() {
-    return this.props.board.map(function(c, i){
-      return (
-        <Column key={i}
-                    pieces={c}
-                    index={i}
-                    onPlace={this.placePiece} />
-      );
-    }, this);
-  },
   render: function() {
-    var player = this.props.active ? (
-      <p>Current Player: {this.props.nextPlayer}</p>
-    ) : '';
+    const {
+      active,
+      nextPlayer,
+      msg
+    } = this.props;
     return (
       <div className='four'>
         <div className='game-message'>
-          {this.props.msg}
+          {msg}
         </div>
-        {player}
+        { active ? <p>Current Player: {nextPlayer}</p> : null }
         <div className='board'>
           <div className='leg left'></div>
-          {this._makeColumns()}
+          {this.props.board.map((c, i) => 
+            <Column key={i}
+                    pieces={c}
+                    index={i}
+                    onPlace={this.placePiece} />
+          )}
           <div className='leg right'></div>
           <div className='slider'></div>
         </div>
@@ -52,28 +46,19 @@ const Four = React.createClass({
 
 var Column = React.createClass({
   tryPlace: function(event) {
-    if ( this._canPlace() ) {
+    // filled from the bottom up, so first spot is last filled
+    if ( this.props.pieces[0] === '' ) {
       this.setState({
         preview: undefined
       });
       this.props.onPlace(this.props.index);
     }
   },
-  _canPlace: function() {
-    // filled from the bottom up, so first spot is last filled
-    return this.props.pieces[0] === '';
-  },
   render: function() {
-    var pieces = this.props.pieces.map(function(p, i){
-      return (
-        <Piece key={i}
-                   value={p} />
-      );
-    });
     return (
       <div className='column'
            onClick={this.tryPlace} >
-        {pieces}
+        { this.props.pieces.map((p, i) => <Piece key={i} value={p} />) }
       </div>
     );
   }
@@ -84,11 +69,11 @@ var Piece = React.createClass({
     return (nextProps.value !== this.props.value);
   },
   render: function() {
-    var className = this.props.value === '' ? 'none' : this.props.value;
-    var pieceClasses = ['piece', className];
-    var spaceClasses = ['space'];
-    var pieceClassName = pieceClasses.join(' ');
-    var spaceClassName = spaceClasses.join(' ');
+    const className = this.props.value === '' ? 'none' : this.props.value;
+    const pieceClasses = ['piece', className];
+    const spaceClasses = ['space'];
+    const pieceClassName = pieceClasses.join(' ');
+    const spaceClassName = spaceClasses.join(' ');
     return (
       <div className={spaceClassName}>
         <div className={pieceClassName}></div>
@@ -97,11 +82,4 @@ var Piece = React.createClass({
   }
 });
 
-export default connect(
-  state => ({
-    room: state.room
-  }),
-  {
-    submitTurn
-  }
-)(Four)
+export default Four;

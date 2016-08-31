@@ -18,15 +18,7 @@ const JoinRoomForm = React.createClass({
       nextProps.error !== this.props.error );
   },
   _formComplete: function() {
-    return (this.state.nickname !== '' && this.state.room !== '' &&
-      this.state.password !== '');
-  },
-  _resetForm: function() {
-    this.setState({
-      nickname: '',
-      room: '',
-      password: ''
-    });
+    return (this.state.nickname !== '' && this.state.room !== '' && this.state.password !== '');
   },
   joinRoom: function(event) {
     event.preventDefault();

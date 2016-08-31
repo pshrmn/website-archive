@@ -1,3 +1,6 @@
+.game-setup label {
+  display: block; }
+
 .tictactoe {
   font-size: 10px; }
   .tictactoe p {

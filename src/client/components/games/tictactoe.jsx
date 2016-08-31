@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import { submitTurn } from '../../actions';
 
@@ -9,7 +8,7 @@ const TicTacToe = React.createClass({
   },
   sendPosition: function(row, column) {
     this.props.submitTurn(
-      this.props.room.name,
+      this.props.roomName,
       {
         row: row,
         column: column
@@ -17,20 +16,21 @@ const TicTacToe = React.createClass({
     );
   },
   render: function() {
-    var sendPosition = this.sendPosition;
-    var active = this.props.active;
-    var rows = this.props.board.map(function(row, rowIndex){
-      var cells = row.map(function(cell, colIndex){
-        var key = rowIndex + ',' + colIndex;
-        return (
-          <Cell key={key}
-                active={active}
-                value={cell}
-                row={rowIndex}
-                column={colIndex}
-                mark={sendPosition} />
-        );
-      });
+    const {
+      msg,
+      active,
+      board,
+      nextPlayer
+    } = this.props;
+    const rows = board.map((row, rowIndex) => {
+      const cells = row.map((cell, colIndex) => 
+        <Cell key={`${rowIndex},${colIndex}`}
+              active={this.props.active}
+              value={cell}
+              row={rowIndex}
+              column={colIndex}
+              mark={this.sendPosition} />
+      );
 
       return (
         <tr key={rowIndex}>
@@ -38,13 +38,11 @@ const TicTacToe = React.createClass({
         </tr>
       );
     });
-    var player = this.props.active ? (
-        <p>Current Player: {this.props.nextPlayer}</p>
-      ) : '';
+
     return (
       <div className='tictactoe'>
-        <p>{this.props.msg}</p>
-        {player}
+        <p>{msg}</p>
+        { active ? <p>Current Player: {nextPlayer}</p> : null }
         <table className='board' cellSpacing='0'>
           <tbody>
             {rows}
@@ -75,11 +73,4 @@ var Cell = React.createClass({
   }
 });
 
-export default connect(
-  state => ({
-    room: state.room
-  }),
-  {
-    submitTurn
-  }
-)(TicTacToe);
+export default TicTacToe;

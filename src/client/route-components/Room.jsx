@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import RoomLogin from '../components/roomform';
-import Room from '../components/room';
+import RoomInfo from '../components/room';
+import GameTable from '../components/gametable';
 
 const RoomPage = React.createClass({
   render: function() {
@@ -15,8 +16,11 @@ const RoomPage = React.createClass({
     } = this.props;
     const mustLogIn = room === undefined || room.name !== routeParams.room;
     return (
-      <div>
-        { mustLogIn ? <RoomLogin room={routeParams.room} /> : <Room {...room} /> }
+      <div className='room'>
+        <div className='room-info'>
+          { mustLogIn ? <RoomLogin room={routeParams.room} /> : <RoomInfo /> }
+        </div>
+        <GameTable />
       </div>
     );
   }

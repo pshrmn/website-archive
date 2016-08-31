@@ -51,7 +51,6 @@ socket.on('left', resp => {
   });
 });
 
-
 socket.on('update room', resp => {
   store.dispatch(
     updateRoom(resp)

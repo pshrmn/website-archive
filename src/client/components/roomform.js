@@ -1,9 +1,7 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 
 import { joinRoom } from '../actions';
-
 
 /*
  * This is similar to the JoinRoomForm, but the user is already "in"
@@ -23,12 +21,6 @@ const RoomForm = React.createClass({
   },
   _formComplete: function() {
     return (this.state.nickname !== "" && this.state.password !== "");
-  },
-  _resetForm: function() {
-    this.setState({
-      nickname: "",
-      password: ""
-    });
   },
   joinRoom: function(event) {
     event.preventDefault();
@@ -58,28 +50,26 @@ const RoomForm = React.createClass({
     var hasErrors = (this.props.error !== undefined && this.props.error !== "");
     var errors = hasErrors ? (<p className="error" >{this.props.error}</p>) : "";
     return (
-      <div className='room'>
-        <div className='room-info'>
-          <h2>{this.props.room}</h2>
-          <form>
-            {errors}
-            <p>
-            <label htmlFor="nickname">Nickname</label>
-            <input type="text" id="nickname"
-                 value={this.state.nickname}
-                 onChange={this.setNickname} />
-            </p>
-            <p>
-            <label htmlFor="password">Room Password</label>
-            <input type="password" id="password"
-                 value={this.state.password}
-                 onChange={this.setPassword} />
-            </p>
-            <p>
-            <button onClick={this.joinRoom}>Join Room</button>
-            </p>
-          </form>
-        </div>
+      <div>
+        <h2>{this.props.room}</h2>
+        <form>
+          {errors}
+          <p>
+          <label htmlFor="nickname">Nickname</label>
+          <input type="text" id="nickname"
+               value={this.state.nickname}
+               onChange={this.setNickname} />
+          </p>
+          <p>
+          <label htmlFor="password">Room Password</label>
+          <input type="password" id="password"
+               value={this.state.password}
+               onChange={this.setPassword} />
+          </p>
+          <p>
+          <button onClick={this.joinRoom}>Join Room</button>
+          </p>
+        </form>
       </div>
     );
   }

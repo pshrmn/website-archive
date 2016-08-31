@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import GameBoard from './gameboard';
 import ScoreBoard from './scoreboard';
 import {
   leaveRoom,
@@ -16,21 +15,22 @@ const Room = React.createClass({
     this.props.toggleReady(this.props.room.name);
   },
   render: function() {
-    var you = this.props.people.you;
-    var readyText = (you && you.ready) ? 'Not Ready' : 'Ready';
+    const {
+      room
+    } = this.props;
+    const you = room.people.you;
     return (
-      <div className='room'>
-        <div className='room-info'>
-          <h2>{this.props.name}</h2>
-          <div className='controls'>
-            <button onClick={this.leaveRoom}>Leave Room</button>
-            <button onClick={this.signalReady}>
-              {readyText}
-            </button>
-          </div>
-          <ScoreBoard {...this.props.people} />
+      <div>
+        <h2>{room.name}</h2>
+        <div className='controls'>
+          <button onClick={this.leaveRoom}>
+            Leave Room
+          </button>
+          <button onClick={this.signalReady}>
+            { you && you.ready ? 'Not Ready' : 'Ready' }
+          </button>
         </div>
-        <GameBoard />
+        <ScoreBoard {...room.people} />
       </div>
     );
   }

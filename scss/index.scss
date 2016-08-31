@@ -39,18 +39,13 @@ footer {
     font-size: 2em;
 }
 
-.login-form {
-    margin: 25px 50px 0;
-    form {
-        padding: 15px;
+form {
+    label {
+        display: block;
+    }
 
-        label {
-            display: block;
-        }
-
-        button {
-            margin-right: 10px;
-        }
+    button {
+        margin-right: 10px;
     }
 }
 

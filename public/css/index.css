@@ -30,14 +30,11 @@ footer {
 #home {
   font-size: 2em; }
 
-.login-form {
-  margin: 25px 50px 0; }
-  .login-form form {
-    padding: 15px; }
-    .login-form form label {
-      display: block; }
-    .login-form form button {
-      margin-right: 10px; }
+form label {
+  display: block; }
+
+form button {
+  margin-right: 10px; }
 
 .error {
   color: red; }
