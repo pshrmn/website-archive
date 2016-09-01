@@ -70,6 +70,9 @@ GameManager.prototype.state = function() {
   };
 };
 
+/*
+ * emit a message to every person in the room
+ */
 GameManager.prototype.broadcast = function(type, msg) {
     [...this.players, ...this.spectators].forEach(p => { p.send(type, msg); });
 };

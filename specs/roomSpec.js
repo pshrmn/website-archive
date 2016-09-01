@@ -19,18 +19,6 @@ describe("Room", function() {
     });
   });
 
-  describe("nameTaken", function() {
-    var r = new Room(undefined, owner, "Yankees", "redsucks");            
-
-    it("should return true if a player with the name is in the room", function() {
-      expect(r.nameTaken("Steinbrenner")).equal(true);
-    });
-
-    it("should return false if no player in the room has the name", function() {
-      expect(r.nameTaken("Henry")).equal(false);
-    });
-  });
-
   describe("addPlayer", function() {
     var r = new Room(undefined, owner, "Yankees", "redsucks");
     
@@ -80,10 +68,6 @@ describe("Room", function() {
       expect(r.people.length).equal(1);
       expect(r.owner).equal(jr);
     });
-  });
-
-  describe("checkPlayers", function() {
-    // do nothing for now
   });
 
   describe("shouldDelete", function() {

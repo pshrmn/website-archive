@@ -89,5 +89,22 @@ export default function setupSocket(server) {
       }
       room.setGame(msg.game, socket.id);
     });
+
+    /*
+     * when a user disconnects from a room and no other users are in it, the
+     * room is removed, so we should delete the reference to it. If the room
+     * still exists after a user has left, we should call the room's updatePlayers
+     * method. This will set a new "owner" if the previous owner has left.
+     */
+    socket.on('disconnect', () => {
+      const socketRooms = io.sockets.adapter.rooms;
+      for ( const room in rooms ) {
+        if ( socketRooms[room] === undefined ) {
+          delete rooms[room];
+        } else {
+          rooms[room].updatePlayers();
+        }
+      }
+    });
   });
 };
