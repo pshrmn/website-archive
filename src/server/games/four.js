@@ -108,8 +108,7 @@ Four.prototype._whichRow = function(column) {
  */
 Four.prototype._checkForGameOver = function(col, row) {
   // check for a win
-  var arrs = generatePossibleWins(col, row, this.board);
-  var won = arrs.some(arr => {
+  var won = generatePossibleWins(col, row, this.board).some(arr => {
     for ( var i=0; i < arr.length - 3; i++ ) {
       var slice = arr.slice(i, i+4)
       if ( allTheSamePlayer(slice) ) {
@@ -130,9 +129,7 @@ Four.prototype._checkForGameOver = function(col, row) {
   }
 
   // check for a tie
-  var tie = this.board.every(column => {
-    return column[0] !== "";
-  });
+  var tie = this.board.every(column => column[0] !== '');
   if ( tie ) {
     this.active = false;
     this.message = "It's a draw";

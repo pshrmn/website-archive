@@ -3,8 +3,9 @@ import Player from './player';
 import Room from './room';
 
 /*
- * The Game Master takes the server, creates a socket.io socket, and adds a
- * listener for the 'connection' event.
+ * The Room Keeper manages the all of the players. When a new room is created,
+ * it adds the room to its rooms object. All other events passed in through a
+ * socket should include the name of the room.
  */
 export default function setupSocket(server) {
   const rooms = {};
@@ -17,6 +18,8 @@ export default function setupSocket(server) {
 
   io.on('connection', function(socket){
 
+    // this event is used for adding people to a room. The person who first
+    // creates the room will be made the room's "owner" (until he/she leaves)
     socket.on('join', msg => {
       const {
         room,
@@ -35,6 +38,8 @@ export default function setupSocket(server) {
       }
     });
 
+    // this event informs the room that a player has left it. If there are no
+    // players left in the room after this happens, the room is deleted.
     socket.on('leave', msg => {
       const {
         room
@@ -49,6 +54,7 @@ export default function setupSocket(server) {
       }
     });
 
+    // this event passes on turn information for a game to a room.
     socket.on('submit turn', msg => {
       const {
         room,
@@ -60,6 +66,9 @@ export default function setupSocket(server) {
       rooms[room].updateGame(turn, socket.id);
     });
 
+    // this event toggles whether or not a person is ready to play a game
+    // once enough players in a room have signalled that they are ready,
+    // the game should begin
     socket.on('ready', function(msg){
       const {
         room
@@ -71,28 +80,14 @@ export default function setupSocket(server) {
       currentRoom.togglePlayer(socket.id);
     });
 
+    // this event selects the game that will be played. It can only be
+    // controlled by the room's "owner"
     socket.on('set game', function(msg){
       var room = rooms[msg.room];
       if ( !room ) {
         return;
       }
       room.setGame(msg.game, socket.id);
-    });
-
-    /*
-     * when a user disconnects from a room and no other users are in it, the
-     * room is removed. I haven't seen a way to detect that a socket room no
-     * longer exists, so iterate over all of them.
-     */
-    socket.on('disconnect', () => {
-      const socketRooms = io.sockets.adapter.rooms;
-      for ( const room in rooms ) {
-        if ( socketRooms[room] === undefined ) {
-          delete rooms[room];
-        } else {
-          rooms[room].updatePlayers();
-        }
-      }
     });
   });
 };

@@ -3,7 +3,7 @@ require("babel-register");
 var express = require("express");
 var http = require("http");
 
-var gamemaster = require("./src/server/utils/gamemaster").default;
+var roomkeeper = require("./src/server/utils/roomkeeper").default;
 const handleRender = require("./src/server/renderer").default;
 
 var app = express();
@@ -15,7 +15,7 @@ app.use("/static", express.static(__dirname + "/public/"));
 app.get("/", handleRender);
 app.get("*", handleRender);
 
-gamemaster(server);
+roomkeeper(server);
 
 server.listen(app.get("port"), function(){
   console.log("server started at", (new Date()));

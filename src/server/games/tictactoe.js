@@ -123,12 +123,11 @@ TicTacToe.prototype._checkForWin = function() {
     [[2,0],[1,1],[0,2]]
   ];
 
-  return combos.some(combo => {
-    var cells = combo.map(cell => {
-      return this.board[cell[0]][cell[1]];
-    });
-    return allTheSame(cells);
-  });
+  return combos.some(combo => 
+    allTheSame(
+      combo.map(cell => this.board[cell[0]][cell[1]])
+    )
+  );
 };
 
 /*
@@ -136,11 +135,7 @@ TicTacToe.prototype._checkForWin = function() {
  * on the turn that fills the board)
  */
 TicTacToe.prototype._checkForTie = function() {
-  return this.board.every(row => {
-    return row.every(cell => {
-      return cell !== "";
-    });
-  });
+  return this.board.every(row => row.every(cell => cell !== ''))
 };
 
 /*
@@ -152,9 +147,7 @@ function allTheSame(cells) {
   if ( first === "" ) {
     return false;
   }
-  return cells.every(c => {
-    return c === first;
-  });
+  return cells.every(c => c === first);
 }
 
 function emptyBoard() {
