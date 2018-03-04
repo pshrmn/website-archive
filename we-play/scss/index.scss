@@ -1,0 +1,148 @@
+body, head {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+body {
+    background: #efefef;
+}
+
+header {
+    background: #222233;
+    padding: 0 25px;
+    font-family: "Fugaz One";
+    height: 5vh;
+    min-height: 2.25em;
+    font-size: 16px;
+
+    a {
+        text-decoration: none;
+        color: #fff;
+    }
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    padding: 5px 0;
+    width: 100vw;
+
+    a {
+        color: #222233;
+    }
+}
+
+#home {
+    font-size: 2em;
+}
+
+form {
+    label {
+        display: block;
+    }
+
+    button {
+        margin-right: 10px;
+    }
+}
+
+.error {
+    color: red;
+}
+
+.ready {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background: #DE2525;
+    margin-right: 3px;
+
+    &.green {
+        background: green;
+    }
+}
+
+.ui {
+    font-size: 20px;
+    font-family: "Oxygen", sans-serif;
+
+    button {
+        font-family: "Oxygen", sans-serif;
+        font-size: 0.8em;
+        background: #ddd;
+        color: #222233;
+        font-weight: bold;
+        border-radius: 5px;
+        padding: 2px 5px;
+        cursor: pointer;
+    }
+
+    p {
+        margin: 0.2em 0;
+    }
+
+    ul, ol {
+        margin: 0;
+    }
+}
+
+.room {
+    .room-info {
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        max-width: 200px;
+        width: 85vw;
+        height: 95vh;
+        padding: 5px 15px;
+        background: #ddd;
+        border-right: 1px solid #aaa;
+
+        h2 {
+            margin: 0.25em 0;
+            word-wrap: break-word;
+        }
+
+        ul{
+            list-style: none;
+            padding: 0;
+        }
+
+        .person {
+            overflow-x: hidden;
+            margin-right: 15px;
+
+            &.you {
+                font-weight: bold;
+            }
+
+            .symbols {
+                display: inline-block;
+                font-weight: normal;
+            }
+        } 
+    }
+
+    
+    .gameboard {
+        display: inline-block;
+        vertical-align: top;
+        max-width: 85vw;
+        box-sizing: border-box;
+        padding: 15px;
+    }
+}
+
+
+
+.controls {
+    button {
+        display: block;
+        margin: 0.5em 0;
+        background: #bbb;
+    }
+}
