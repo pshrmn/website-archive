@@ -1,0 +1,19 @@
+#recipes{
+	list-style: none;
+}
+.choice{
+	margin: 0 15px 15px 0;
+}
+
+.edit{
+	font-size: 0.8em;
+}
+
+.choice p{
+	padding: 5px 10px;
+}
+
+.choice .title a{
+	font-size: 1.5em;
+	color: #2B5B69;
+}

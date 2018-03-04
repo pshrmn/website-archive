@@ -1,0 +1,23 @@
+iframe{
+	width: 100%;
+	height: 1000px;
+}
+
+
+h1, h2{
+	color: #444;
+	font-weight: normal;
+	padding: 5px 0;
+}
+
+h1{
+	font-size: 1.5em;
+}
+
+h2{
+	font-size: 1.1em;
+}
+
+p{
+    margin: 5px 0;
+}

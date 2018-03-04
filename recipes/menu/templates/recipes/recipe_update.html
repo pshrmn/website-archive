@@ -1,0 +1,16 @@
+{% extends "recipes/recipe_form.html" %}
+
+{% block title %}
+Update Recipe | MyMenu
+{% endblock title %}
+
+
+{% block submit_form %}
+	<form action="{% url 'update_recipe' object.id %}" method="post" id="recipe_form">
+		{% csrf_token %}
+		{{ form.as_p }}
+		{% block button %}
+		<p class="submit"><button type="submit" name="submit">Update Recipe</button></p>
+		{% endblock button %}
+	</form>
+{% endblock submit_form %}

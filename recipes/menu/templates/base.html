@@ -1,0 +1,66 @@
+{% load staticfiles %}
+
+<!doctype html>
+<html>
+<head>
+<title>
+{% block title%}
+MyMenu
+{% endblock title %}
+</title>
+
+{% block stylesheets %}
+<link href='http://fonts.googleapis.com/css?family=Monda:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="{% static 'css/ie.css' %}">
+<![endif]-->
+{% endblock stylesheets %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+<header>
+{% block header %}
+    <div class="home">
+        <a href="/">MyMenu</a>    
+    </div>
+    <menu id="main_menu">
+    {% if user.is_authenticated %}     
+        <li><a href="{% url 'public_recipe_list' %}">All Recipes</a></li>
+        <li><a href="{% url 'recipe_list' %}">Your Recipes</a></li>
+    {% else %}
+        <li>
+            <a href="{% url 'recipe_list' %}">View Recipes</a>
+        </li>
+    {% endif %}
+        <li>
+            <a href="{% url 'create_recipe' %}">Add Recipe</a>
+        </li>
+        <li>
+            <form action="/recipes/search" method="get">
+                <input type="text" name="name" placeholder="Search recipes..."></input>
+                <button type="submit">Search</button>
+            </form>
+        </li>
+        {% if user.is_authenticated %}     
+            <li>
+                {{ user.username|capfirst }}
+                <a href="{% url 'auth_logout' %}?next=/">Logout</a>
+            </li>
+        {% else %}
+            <li><a href="{% url 'auth_login' %}">Login</a></li>
+            <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
+        {% endif %}
+    </menu>
+{% endblock header %}
+</header>
+<div class="content">
+{% block content %}
+{% endblock content %}
+</div>
+{% block javascript %}
+{% endblock javascript %}
+</body>
+</html>
