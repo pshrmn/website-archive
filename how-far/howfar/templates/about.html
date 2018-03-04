@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+About | {{ block.super }}
+{% endblock title %}
+
+{% block inline-css %}
+section {
+    margin-bottom: 25px;
+}
+{% endblock inline-css %}
+
+{% block content %}
+<section>
+    <h3>Why?</h3>
+    <p>
+        People can perform some pretty crazy athletic feats. <a href="https://en.wikipedia.org/wiki/Martin_Strel">Martin Strel</a> swam the entire length of the Mississippi River. <a href="https://en.wikipedia.org/wiki/Cliff_Young_(athlete)">Cliff Young</a> won a 544 mile ultramarathon across Australia at age 61, covering the distance in less than six days. While very few people can match these endeavors, <strong>How Far?</strong> provides a way to set your own long distance goals and achieve them over a more reasonable time frame.
+    </p>
+</section>
+<section>
+    <h3>How are distances measured?</h3>
+    <p>
+        Distances are measured <a href="https://en.wikipedia.org/wiki/As_the_crow_flies">as the crow flies</a> based on the coordinates of each city. The measurements are calculated using the <a href="http://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
+    </p>
+</section>
+{% endblock content %}

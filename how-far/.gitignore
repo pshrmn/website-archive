@@ -1,0 +1,7 @@
+venv
+.env
+howfar/settings/local.py
+__pycache__
+*.py[co]
+staticfiles
+node_modules

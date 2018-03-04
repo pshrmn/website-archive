@@ -1,0 +1,39 @@
+$opaque-green: rgba(61, 179, 102, 0.25);
+
+.goal {
+    margin-bottom: 15px;
+}
+
+.title {
+  text-decoration: none;
+  font-size: 1.25em;
+}
+
+.progress-bar {
+    width: 300px;
+    height: 20px;
+    position: relative;
+    padding: 5px 0;
+}
+
+.progress-text{
+    position: absolute;
+    right: 5px;
+}
+
+.bar {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.total {
+    background: rgba(61, 179, 102, 0.25);
+    width: 100%;
+}
+
+.current {
+    background: #3DB366;
+}

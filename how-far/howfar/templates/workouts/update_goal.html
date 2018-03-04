@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/map.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+{% endblock stylesheets %}
+
+{% block content %}
+<form action="{% url 'update_goal' goal.pk %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p class="submit"><button type="submit" name="submit">Update</button></p>
+</form>
+<p class="note">
+    You can click on the city markers in the map to select a start or end city. The input that is highlighted is the location that will be set when you click a city.
+</p>
+<div class="map"></div>
+{% endblock content %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/maps.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'js/update_goal.js' %}"></script>
+{% endblock javascript %}
+
+{% block inline-js %}
+var cities = [
+    {% for city in cities %}
+    {
+        name: "{{ city.name }}",
+        latitude: {{ city.latitude }},
+        longitude: {{ city.longitude }},
+        pk: {{ city.pk }}
+    },
+    {% endfor %}
+];
+drawCities(cities);
+{% endblock inline-js %}

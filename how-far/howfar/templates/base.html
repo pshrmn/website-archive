@@ -1,0 +1,88 @@
+{% load staticfiles %}
+
+<!doctype html>
+<html>
+<head>
+<title>
+{% block title%}
+How Far?
+{% endblock title %}
+</title>
+
+{% block stylesheets %}
+<link href='https://fonts.googleapis.com/css?family=Oswald|Roboto' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+{% endblock stylesheets %}
+
+<style type="text/css">
+{% block inline-css %}
+{% endblock inline-css %}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+</head>
+<body>
+<div class="header-holder">
+    <header>
+    {% block header %}
+    <a class="home" href="/"><img src="{% static 'img/earth.png' %}">How Far?</a>
+    <nav>
+        <ul>
+            {% if user.is_authenticated %}
+            <li>
+                <a href="{% url 'goals' %}">Goals</a>
+            </li>
+            <li>
+                <a href="{% url 'add_goal' %}">Add Goal</a>
+            </li>
+            <li>
+                <a href="{% url 'about' %}">About</a>
+            </li>
+            </li>
+            <li class="username">
+                {{ user.username | capfirst }}
+            </li>
+            <li>
+                <a href="{% url 'logout' %}?next=/">Logout</a>
+            </li>
+            {% else %}
+            <li>
+                <a href="{% url 'about' %}">About</a>
+            </li>
+            <li>
+                <a href="{% url 'login' %}">Login</a>
+            </li>
+            <li>
+                <a href="{% url 'signup' %}">Sign Up</a>
+            </li>
+            {% endif %}
+            
+        </ul>
+    </nav>
+    {% endblock header %}
+    </header>    
+</div>
+<div class="info-bar">
+    <div>
+    {% block info-bar %}
+    {% endblock info-bar %}
+    </div>
+</div>
+<div class="content">
+{% block content %}
+{% endblock content %}
+</div>
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+{% endblock javascript %}
+
+<script type="text/javascript">
+{% block inline-js %}
+{% endblock inline-js %}
+</script>
+
+</body>
+</html>

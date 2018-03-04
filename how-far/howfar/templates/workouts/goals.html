@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    Your Goals | {{ block.super }}
+{% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/goals.css' %}">
+{% endblock stylesheets %}
+
+{% block info-bar %}
+    <a href="{% url 'add_goal' %}">Add a goal.</a>
+{% endblock info-bar %}
+
+{% block content %}
+<ol>
+{% for goal in goal_list %}
+    <li class="goal">
+        <a class="title" href="{% url 'goal' goal.id %}">
+            {{ goal.start.name }} to {{ goal.end.name }}
+        </a>
+        <div class="progress-bar"></div>
+        <div class="dangerous">
+            <a href="{% url 'update_goal' goal.pk %}">Update Goal</a>
+            <a href="{% url 'delete_goal' goal.pk %}">Delete Goal</a>
+        </div>
+    </li>
+{% empty %}
+    <li>
+        You have no goals.
+    </li>
+{% endfor %}
+</ol>
+{% endblock content %}
+
+{% block inline-js %}
+var percFormat = d3.format('.2%');
+var progress = [
+    {% for goal in goal_list %}
+    {
+        progress: {{ goal.progress }},
+        length: {{ goal.length }},
+        percent: percFormat({{ goal.progress }} / {{ goal.length }})
+    },
+    {% endfor %}
+];
+
+// attach to the li instead of the bar in case I want to do more
+// with the data in the future
+var goals = d3.selectAll('li.goal')
+    .data(progress);
+
+var bars = goals.select('.progress-bar')
+    .attr('title', function(d){
+        return d;
+    });
+
+bars.append('div')
+    .classed({
+        'bar': true,
+        'total': true
+    });
+
+bars.append('div')
+    .classed({
+        'bar': true,
+        'current': true
+    })
+    .style('width', function(d){
+        return d.percent;
+    })
+bars.append('div')
+    .classed('progress-text', true)
+    .text(function(d){ 
+        return d.progress + '/' + d.length;
+    });
+{% endblock inline-js %}

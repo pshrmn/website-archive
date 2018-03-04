@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>
+    Add a new workout for the goal:
+</h1>
+<h2>
+    {{ goal.start }} to {{ goal.end }}
+</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p class="submit"><button type="submit" name="submit">Save</button></p>
+</form>
+{% endblock content %}

@@ -1,0 +1,38 @@
+from django.db import models
+from django.conf import settings
+
+from distances.models import Location
+
+
+class Exercise(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+class Goal(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
+    start = models.ForeignKey(Location, related_name='start')
+    end = models.ForeignKey(Location, related_name='end')
+    length = models.IntegerField()
+    progress = models.FloatField(default=0)
+    complete = models.BooleanField(default=False)
+    public = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-progress"]
+
+    def __str__(self):
+        return "{} - {} to {}".format(self.pk, self.start, self.end)
+
+
+class Workout(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
+    exercise = models.ForeignKey(Exercise)
+    distance = models.FloatField()
+    goal = models.ForeignKey(Goal)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return '{} miles'.format(self.distance)

@@ -1,0 +1,17 @@
+$opaque-green: rgba(61, 179, 102, 0.25);
+
+form p, form label {
+    display: inline-block;
+}
+
+form p {
+    padding: 5px;
+}
+
+select { 
+    font-size: 16px;
+}
+
+p.active {
+    background: $opaque-green;
+}
