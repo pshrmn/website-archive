@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+{% endblock stylesheets %}
+
+{% block content %}
+<form action="{% url 'update_moon' username system_name planet_name moon.url_name %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p class="submit">
+      <button type="submit" name="submit">Update</button>
+      <a href="{% url 'planet' username system_name planet_name %}">Cancel</a>
+    </p>
+</form>
+
+{% include 'systems/moon/references.html' %}
+{% endblock content %}
+
+{% block extra-head %}
+{{ form.media }}
+{% endblock extra-head %}

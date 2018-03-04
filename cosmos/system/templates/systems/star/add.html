@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+{% endblock stylesheets %}
+
+{% block content %}
+<form action="{% url 'add_star' username system_name %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p class="submit">
+      <button type="submit" name="submit">Save</button>
+      <a href="{% url 'system' username system_name %}">Cancel</a>
+    </p>
+</form>
+
+{% include 'systems/star/references.html' %}
+{% endblock content %}

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load system_extras %}
+
+{% block title %}
+{{ planetarysystem.name }} | {{ block.super }}
+{% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/system.css' %}">
+{% endblock stylesheets %}
+
+
+{% block content %}
+<h1>
+    {{ planetarysystem.name }}
+</h1>
+<p>
+{% if planetarysystem.public %}
+    Public
+{% else %}
+    Private
+{% endif %}
+</p>
+{% if is_creator %}
+<div class="dangerous">
+    <a href="{% url 'delete_system' username system_name %}">Delete</a>
+    <a href="{% url 'update_system' username system_name %}">Update</a>
+</div>
+{% endif %}
+
+<div id="system"></div>
+
+{% with star=planetarysystem.star %}
+  {% if star %}
+    {% include 'systems/star/partial.html' %}
+  {% else %}
+    <p>
+      There are no stars in this planetary system.
+    </p>
+    {% if is_creator %}
+      <a href="{% url 'add_star' username system_name %}">Add Star</a>
+    {% endif %}
+  {% endif %}
+{% endwith %}
+<div>
+  <h3>Planets:</h3>
+  {% if is_creator %}
+    <a href="{% url 'add_planet' username system_name %}">Add A Planet</a>
+  {% endif %}
+  <ul>
+  {% for planet in planetarysystem.planet_set.all %}
+    <li>
+      <a href="{% url 'planet' username system_name planet.url_name %}">{{ planet.name }}</a>
+    </li>
+  {% empty %}
+    <li>
+      There are no planets in this planetary system. I suppose it isn't much of a <em>planetary</em> system.
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+<script src="{% static 'js/orbit.js' %}" type="text/javascript"></script>
+{% endblock javascript %}
+
+{% block inline-js %}
+var starColors = {
+  'O': '#4FC3F7',
+  'B': '#B3E5FC',
+  'A': '#FBF8FF',
+  'F': '#FFF9C4',
+  'G': '#FFEB3B',
+  'K': '#FF9800',
+  'M': '#E53935'
+};
+
+var planetarySystemJSON = {{ planetarysystem.to_json|dump|safe }};
+var star = planetarySystemJSON.star;
+if ( star !== null ) {
+  star.color = starColors[star.spectrum];
+}
+var planets = planetarySystemJSON.planets;
+var stepFn = orbit(star, planets, {
+  radius: 250,
+  holder: '#system',
+  maxPeriod: 25000,
+  period: 6000
+});
+window.requestAnimationFrame(stepFn);
+{% endblock inline-js %}

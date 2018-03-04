@@ -1,0 +1,97 @@
+html, body {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  margin: 0;
+}
+
+.home{
+  font-size: 2em;
+  font-weight: bold;
+}
+
+header {
+  background: #222233;
+  color: #ccc;
+  padding: 10px 25px;
+  border-bottom: 2px solid #E91E63;
+}
+
+
+header ul {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-end;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+header nav {
+  margin-left: auto;
+  padding: 10px 0;
+}
+
+header li {
+  margin: 0 10px;
+}
+
+header a, header a:visited {
+  color: #efefef;
+  text-decoration: none;
+}
+
+.user {
+  background: #5E5E69;
+  border-radius: 5px;
+}
+
+.user a, .user a:visited {
+  color: #efefef;
+}
+
+a, a:visited {
+  color: #444;
+}
+
+main {
+  width: 80%;
+  margin: 25px auto 0;
+  min-height: 80vh;
+}
+
+footer {
+  text-align: center;
+  padding: 5px 0;
+  width: 100vw;
+}
+
+h1, h2, h3 {
+  margin: 5px 0;
+}
+
+h4, h5, h6, p {
+  margin: 3px 0;
+}
+
+.facts {
+  background: #efefef;
+  box-shadow: 3px 3px #E91E63;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.facts ul {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+
+@media (max-width: 900px){
+  header {
+    min-width: 500px;
+  }
+  main {
+    width: 90%;
+    min-width: 500px;
+  }
+}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load system_extras %}
+
+{% block title %}
+  Planet {{ planet.name }} | {{ block.super }}
+{% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/system.css' %}">
+{% endblock stylesheets %}
+
+
+{% block content %}
+{% with system=planet.planetarysystem creator=system.creator %}
+  <h1>{{ planet.name }}</h1>
+  <h3>
+    A Member of the <a href="{% url 'system' username system_name %}">{{ system.name }}</a> Planetary System.
+  </h3>
+  {% if planet.creator == user %}
+  <div class="dangerous">
+  <a href="{% url 'delete_planet' username system_name planet.url_name %}">Delete Planet</a>
+  <a href="{% url 'update_planet' username system_name planet.url_name %}">Update Planet</a>
+  <a href="{% url 'add_moon' username system_name planet.url_name %}">Add A Moon</a>
+  </div>
+  {% endif %}
+{% endwith %}
+
+<div class="facts">
+  <h4>Facts:</h4>
+  <ul>
+    <li>
+      Radius: {{planet.radius}} kms
+    </li>
+    <li>
+      Distance from Star: {{planet.distance}} million kms
+    </li>
+    <li>
+      Stellar Day Length: {{ planet.day_length|pretty_time }}
+    </li>
+    <li>
+      Orbital Period: {{planet.orbit}} days
+    </li>
+    <li>
+      Time for light to reach planet: {{ planet.light_time|pretty_time }}
+    </li>
+  </ul>  
+</div>
+
+<div id="system"></div>
+
+{% for moon in planet.moon_set.all %}
+{% include 'systems/moon/partial.html' %}
+{% empty %}
+<div>
+  There are no moons orbiting this planet.
+</div>
+{% endfor %}
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+<script src="{% static 'js/orbit.js' %}" type="text/javascript"></script>
+{% endblock javascript %}
+
+{% block inline-js %}
+var planetJSON = {{ planet.to_json|dump|safe }};
+var planet = planetJSON;
+var moons = planetJSON.moons;
+var stepFn = orbit(planet, moons, {
+  radius: 250,
+  holder: '#system',
+  maxPeriod: 2500,
+  period: 1000
+});
+window.requestAnimationFrame(stepFn);
+{% endblock inline-js %}

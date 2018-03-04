@@ -1,0 +1,99 @@
+{% load staticfiles %}
+
+<!doctype html>
+<html>
+<head>
+<title>
+{% block title %}
+Cosmos
+{% endblock title %}
+</title>
+
+{% block stylesheets %}
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+{% endblock stylesheets %}
+
+<style type="text/css">
+{% block inline-css %}
+{% endblock inline-css %}
+</style>
+
+{% block head-javascript %}
+{% endblock head-javascript %}
+
+{% block extra-head %}
+{% endblock extra-head %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<header>
+    
+{% block header %}
+  <nav>
+    <ul>
+      <li>
+        <a href="{% url 'home' %}" class="home">
+          <img src="{% static 'img/logo.png' %}" />
+        </a>
+      </li>
+      {% if user.is_authenticated %}
+      <li>
+        <a href="{% url 'public_systems' %}">Public Systems</a>
+      </li>
+      <li class="user">
+        <ul>
+          <li>
+            <a href="{% url 'profile' user.username %}">
+              {{ user.username | capfirst }}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'list_systems' username=user.username %}">Your Systems</a>
+          </li>
+          <li>
+            <a href="{% url 'add_system' user.username %}">Add A System</a>
+          </li>
+          <li>
+              <a href="{% url 'logout' %}?next=/">Logout</a>
+          </li>
+        </ul>
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'public_systems' %}">Public Systems</a>
+      </li>
+      <li class="user">
+        <ul>
+          <li>
+              <a href="{% url 'login' %}">Login</a>
+          </li>
+          <li>
+              <a href="{% url 'signup' %}">Sign Up</a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}            
+    </ul>
+  </nav>
+{% endblock header %}
+</header>
+<main>
+{% block content %}
+{% endblock content %}
+</main>
+
+<footer>
+  made by <a href="http://www.pshrmn.com">pshrmn.com</a>
+</footer>
+
+{% block javascript %}
+{% endblock javascript %}
+
+<script type="text/javascript">
+{% block inline-js %}
+{% endblock inline-js %}
+</script>
+
+</body>
+</html>

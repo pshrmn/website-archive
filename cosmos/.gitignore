@@ -1,0 +1,10 @@
+*.py[co]
+__pycache__
+
+venv
+staticfiles
+cosmos/settings/dev.py
+
+*.log
+.env
+setenv.bat
