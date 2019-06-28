@@ -1,0 +1,17 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cryptonite</title>
+  <link href="https://fonts.googleapis.com/css?family=Stardos+Stencil|Roboto+Slab" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+</head>
+<body>
+  <div id="app-holder"></div>
+  <script src="{% static 'js/polyfill.min.js' %}"></script>
+  <script src="{% static 'js/vendor.js' %}"></script>
+  <script src="{% static 'js/bundle.js' %}"></script>
+</body>
+</html>

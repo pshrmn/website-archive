@@ -1,0 +1,33 @@
+@import 'variables';
+
+.tool-loader {
+
+  .tool-choices {
+    display: flex;
+    flex-flow: column nowrap;
+
+    @media (min-width: 800px) {
+      display: block;
+    }
+
+    button {
+      margin: 5px;
+    }
+  }
+
+  .tool {
+    background: $white;
+    border: 1px solid $dark-gray;
+    padding: 5px;
+    margin: 10px 0;
+
+    h3 {
+      margin: 0;
+    }
+
+    button {
+      margin: 5px 0;
+      font-size: 0.75em;
+    }
+  }
+}

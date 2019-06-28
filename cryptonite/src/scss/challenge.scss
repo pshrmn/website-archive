@@ -1,0 +1,32 @@
+@import 'variables';
+
+.challenge {
+  form {
+    margin-top: 15px;
+  }
+
+  textarea.decrypted {
+    width: 100%;
+    font-size: 1.25em;
+  }
+
+  .message {
+    margin: 5px 0;
+    font-size: 1.25em;
+
+    label {
+      display: block;
+    }
+
+    span {
+      display: inline-block;
+      width: 1em;
+      margin: 0 3px;
+      text-align: center;
+    }
+
+    .char {
+      border-bottom: 1px solid $black;
+    }
+  }
+}

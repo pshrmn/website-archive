@@ -1,0 +1,12 @@
+@import 'variables';
+
+footer {
+  text-align: center;
+  background: $navy-blue;
+  color: $white;
+  min-height: 10vh
+}
+
+footer a {
+ color: $white;
+}

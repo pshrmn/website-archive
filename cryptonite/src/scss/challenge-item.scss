@@ -1,0 +1,72 @@
+@import 'variables';
+
+.challenge-item {
+  font-size: 1.25em;
+  display: inline-flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+
+  .title {
+    h2 {
+      margin: 2px 0;
+      font-size: 1.25em;
+      font-weight: normal;
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-flow: row wrap;
+
+    font-size: 1em;
+  }
+
+  .tag {
+    font-size: 0.8em;
+    margin-right: 5px;
+  }
+
+  .cipher-tag {
+    padding: 0px 2px;
+    border-radius: 5px;
+    background: $black;
+    color: $light-gray;
+    display: inline-block;
+
+    &.shift {
+      background: $green;
+    }
+
+    &.vigenère {
+      background: $orange;
+    }
+  }
+
+  .byline {
+    font-size: 0.75em;
+    color: $dark-gray;
+  }
+
+  .status {
+    color: $dark-gray;
+    background: $gray;
+    border-radius: 5px;
+    padding: 1px 3px;
+
+    .star {
+      color: $dark-gray;
+    }
+
+    &.done {
+      color: $black;
+      .star {
+        color: $gold;
+      }
+    }
+    
+  }
+
+  .description {
+    font-size: 0.8em;
+  }
+}

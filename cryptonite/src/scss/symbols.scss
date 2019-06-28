@@ -1,0 +1,17 @@
+@import 'variables';
+
+.symbol {
+  display: inline-block;
+}
+
+.star {
+  color: $gold;
+}
+
+.locked {
+  color: $red;
+}
+
+.unlocked {
+  color: $dark-gray;
+}
